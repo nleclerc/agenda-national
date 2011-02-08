@@ -1,0 +1,18 @@
+<?php
+	
+	$databases = array(
+		'agenda' => array(
+			'host' => '',
+			'database' => '',
+			'user' => '',
+			'password' => '',
+			'charset' => 'UTF-8'
+		),
+		'member' => array(
+			'host' => '',
+			'database' => '',
+			'user' => '',
+			'password' => '',
+			'charset' => 'UTF-8'
+		),
+	);

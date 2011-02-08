@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8"/>
+<meta name='HandheldFriendly' content='True' />
+<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<link rel="apple-touch-icon" href="images/calendar-big.png" />
+
+<title>iAgenda Mobile</title>
+
+<link rel="shortcut icon" href="images/favicon.png">
+<link rel="stylesheet" href="css/mobile.css" type="text/css" />
+
+<script src="scripts/jquery-1.4.4.min.js"></script>
+<script src="scripts/common.js"></script>
+<script src="scripts/index.js"></script>
+
+<script>
+$(checkScrollToBottom);
+$(window).scroll(checkScrollToBottom);
+$(window).resize(checkScrollToBottom);
+</script>
+
+<script src="/ga.js"></script>
+</head>
+<body>
+
+<div id="header">
+<img id="headerLogo" alt="iAgenda" src="images/calendar.png" onclick="jumpTo('.')">
+<div id="headerTitle" class="lineBlock">iAgenda Mobile</div>
+<img id="quitButton" class="hidden" alt="Quit" src="images/close.png" onclick="logout()">
+</div>
+
+<div id="errorMessage"></div>
+<div id='eventList'></div>
+
+<div id="loadStatus" class="listDate">...</div>
+
+</body>
+</html>

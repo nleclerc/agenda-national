@@ -13,6 +13,8 @@ Ce projet vise à développer un agenda intégrable au site de Mensa France : ht
 Celui-ci doit permettre aux responsables et aux membres d'organiser et de communiquer simplement
 sur les évènements qu'ils organisent.
 
+Il est basé sur l'iAgenda IDF développé par Eric Kastler.
+
 
 2. Licence
 ----------
