@@ -15,4 +15,8 @@
 			'password' => '',
 			'charset' => 'UTF-8'
 		),
+		'4D' => array(
+			'host' => '',
+			'charset' => 'ISO-8859-1'
+		)
 	);
