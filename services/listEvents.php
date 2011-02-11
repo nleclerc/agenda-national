@@ -13,34 +13,8 @@ else {
 	$year = $_GET['year'];
 	
 	try {
-		$db = openDb('agenda');
-		
-		$query =
-			'select'.
-			'	id,'.
-			'	titre,'.
-			'	annee, mois, jour '.
-			'from'.
-			'	iActivite '.
-			'where'.
-			'	annee=? and'.
-			'	mois=? '.
-			'order by jour asc';
-		
-		$foundEvents = $db->getList($query, $year, $month);
-		$events = array();
-		
-		for ($i=count($foundEvents)-1; $i>=0; $i--) {
-			$data = $foundEvents[$i];
-			$newEvent = array(
-				'id' => $data['id'],
-				'title' => filterOutput($data['titre']), // TODO : remove html decode
-				'date' => formatEventDate($data)
-			);
-			
-			array_unshift($events, $newEvent);
-		}
-		
+		$db = new CalendarDbConnector();
+		$events = $db->listEventsForMonth($year, $month);
 		
 		$isLoggedIn = isLoggedIn();
 		

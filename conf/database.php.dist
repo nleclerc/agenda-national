@@ -1,7 +1,7 @@
 <?php
 	
 	$databases = array(
-		'agenda' => array(
+		'calendar' => array(
 			'host' => '',
 			'database' => '',
 			'user' => '',
@@ -15,7 +15,7 @@
 			'password' => '',
 			'charset' => 'UTF-8'
 		),
-		'4D' => array(
+		'remoteMember' => array(
 			'host' => '',
 			'charset' => 'ISO-8859-1'
 		)
