@@ -3,6 +3,19 @@
 class LocalMemberDbConnector {
 	private $db;
 	
+	private $contactCategories = array(
+		1 => 'phone',
+		2 => 'workphone',
+		3 => 'fax',
+		4 => 'mobile',
+		5 => 'workmobile',
+		6 => 'website',
+		7 => 'aim',
+		9 => 'workemail',
+		10 => 'icq',
+		14 => 'email'
+	);
+	
 	public function __construct() {
 		$this->db = new EzPDO('member');
 	}
@@ -20,12 +33,89 @@ class LocalMemberDbConnector {
 	
 	public function findMember($login, $password) {
 		$foundMember = $this->db->getRow(
-			'SELECT * FROM Membre WHERE ((idWeb = ? AND passWeb = ?) OR (idMembre = ? AND password = ?))',
+			'SELECT'.
+			'	idMembre as id,'.
+//			'	creation as creationDate,'.
+//			'	droits as privilege,'.
+			'	civilite as title,'.
+			'	nom as lastname,'.
+			'	prenom as firstname,'.
+			"	CONCAT(prenom,' ',nom) as name,".
+			'	idRegion as region,'.
+			'	devise as motto '.
+			'FROM Membre WHERE ((idWeb = ? AND passWeb = ?) OR (idMembre = ? AND password = ?))',
 			$login, $password,
 			intval($login), $password
 		);
 		
+		if ($foundMember) {
+			$memberId = $foundMember['id'];
+			
+			$foundContacts = $this->findContacts($memberId);
+			$foundAddress = $this->findAddress($memberId);
+			
+			if (!$foundContacts)
+				$foundContacts = array();
+			
+			if ($foundAddress)
+				array_push($foundContacts, array('type'=>'address','value'=>$foundAddress));
+			
+			if ($foundContacts)
+				$foundMember['contacts'] = $foundContacts;
+		}
+		
 		return $foundMember;
+	}
+	
+	private function findAddress($memberId) {
+		$result = null;
+		
+		$foundAddress = $this->db->getRow(
+			'SELECT'.
+			'	adresse1,'.
+			'	adresse2,'.
+			'	cp,'.
+			'	ville,'.
+			'	pays '.
+			'FROM'.
+			'	Adresse a,'.
+			'	Ville v,'.
+			'	Pays p '.
+			'WHERE'.
+			"	confidentiel=0 AND conf_web=0 AND annuaire=1 AND fin='0000-00-00' AND".
+			'	a.idVille = v.idVille AND v.idPays = p.idPays AND'.
+			'	a.idMembre=?',
+			$memberId
+		);
+		
+		if ($foundAddress) {
+			$result = '';
+			$result.= $foundAddress['adresse1']."\n";
+			
+			if ($foundAddress['adresse2'])
+				$result.= $foundAddress['adresse2']."\n";
+			
+			$result.= $foundAddress['cp'].' '.$foundAddress['ville']."\n";
+			$result.= $foundAddress['pays'];
+		}
+		
+		// trim because it seems some countries have trailing spaces...
+		return trim($result);
+	}
+	
+	private function findContacts($memberId) {
+		$contacts = $this->db->getList(
+			'SELECT idCategorie AS type, adresse AS value '.
+			'FROM Contact '.
+			"WHERE suppression='0000-00-00' AND confidentiel=0 AND conf_web=0 AND idMembre=?",
+			$memberId
+		);
+		
+		// replace contact type codes with appropriate labels.
+		for ($i=0; $i<count($contacts); $i++)
+			$contacts[$i]['type'] = $this->contactCategories[$contacts[$i]['type']];
+		
+		return $contacts;
 	}
 
 	public function findOrFetchMember($remoteDbConnector, $login, $password){
