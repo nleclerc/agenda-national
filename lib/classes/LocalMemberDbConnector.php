@@ -80,6 +80,10 @@ class LocalMemberDbConnector {
 			$foundInterests = $this->findInterests($memberId);
 			if ($foundInterests)
 				$memberData['interests'] = $foundInterests;
+			
+			$foundLanguages = $this->findLanguages($memberId);
+			if ($foundLanguages)
+				$memberData['languages'] = $foundLanguages;
 		}
 		
 		return $memberData;
@@ -137,7 +141,7 @@ class LocalMemberDbConnector {
 	}
 	
 	private function findInterests($memberId) {
-		$interests = $this->db->getList(
+		$result = $this->db->getList(
 			'SELECT '.
 			'	i.description as name, '.
 			'	c.competence as skill, '.
@@ -156,9 +160,29 @@ class LocalMemberDbConnector {
 			$memberId
 		);
 		
-		return $interests;
+		return $result;
 	}
-
+		
+	private function findLanguages($memberId) {
+		$result = $this->db->getList(
+			'SELECT '.
+			'	l.langue as name, '.
+			'	n.niveau as level '.
+			'FROM '.
+			'	Langue_membre j, '.
+			'	Langue l, '.
+			'	Niveau_langue n '.
+			'WHERE '.
+			'	j.idLangue = l.idLangue AND '.
+			'	j.idNiveau = n.idNiveau AND '.
+			"	j.suppression = '0000-00-00' AND ".
+			'	j.idMembre = ?',
+			$memberId
+		);
+		
+		return $result;
+	}
+	
 	public function findOrFetchMember($remoteDbConnector, $login, $password){
 		$foundMember = $this->findMember($login, $password);
 		
