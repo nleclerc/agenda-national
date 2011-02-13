@@ -18,17 +18,13 @@ else {
 		
 		$currentUser = getCurrentUserData();
 		
-		if (!$currentUser)
-			$errorMessage = "Vous n'êtes pas identifié.";
-		else {
-			$result = array(
-				"username" => $currentUser['fullname'],
-				"month" => $month,
-				"year" => $year,
-				"events" => $events
-			);
-		}
-		$result["loggedIn"] = $currentUser != null;
+		$result = array(
+			"username" => $currentUser['fullname'],
+			"month" => $month,
+			"year" => $year,
+			"events" => $events,
+			"loggedIn" => true
+		);
 	} catch (Exception $e) {
 		$errorMessage = $e->getMessage();
 	}

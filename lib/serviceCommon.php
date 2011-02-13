@@ -17,8 +17,8 @@ function getCurrentUserData() {
 	$lastname = null;
 	$privilege = null;
 	
-	$web_c = $_COOKIE['web_c'];
-	$web_d = $_COOKIE['web_d'];
+	$web_c = getCookie('web_c');
+	$web_d = getCookie('web_d');
 	
 	if ($web_c) {
 		$h = floor(time()/7200);
@@ -45,7 +45,7 @@ function getCurrentUserData() {
 			'privilege' => $privilege
 		);
 	
-	return null;
+	throw new Exception("Vous n'êtes pas identifié.");
 }
 
 function logout() {
@@ -76,40 +76,4 @@ function registerUserSessionCookies($userData) {
 	setMCookie('WM', $userData['email'], 0);
 	
 	return $web_c;
-}
-
-function clearMCookie($name) {
-	setMCookie($name,'',1);
-}
-
-function setMCookie ($name, $value = null, $expire = null, $path = '/', $domain = null) {
-	// If on actual mensa.fr server then set domain as main site code requires.
-	if (preg_match('/mensa.fr$/', $_SERVER['SERVER_NAME']))
-		$domain = '.mensa.fr';
-	
-	setcookie($name, $value, $expire, $path, $domain);
-}
-
-function getCurrentUsername() {
-	return 'Joe Black';
-}
-
-function formatNb($value, $minlength) {
-	$result = "$value";
-	
-	while (strlen($result) < $minlength)
-		$result = "0$result";
-	
-	return $result;
-}
-
-function getQueryParameter($parmName){
-	$value = null;
-	
-	if (isset($_POST[$parmName]))
-		$value = $_POST[$parmName];
-	else if (isset($_GET[$parmName]))
-		$value = $_GET[$parmName];
-	
-	return $value;
 }
