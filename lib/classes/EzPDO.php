@@ -13,8 +13,9 @@ class EzPDO extends PDO {
 		
 		$dbconf = $databases[$dbname];
 		
-		parent::__construct('mysql:host='.$dbconf['host'].';dbname='.$dbconf['database'].';charset='.$dbconf['charset'], $dbconf['user'], $dbconf['password']);
+		parent::__construct('mysql:host='.$dbconf['host'].';dbname='.$dbconf['database'], $dbconf['user'], $dbconf['password']);
 		$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);	
+		$this->exec('SET CHARACTER SET '.$dbconf['charset']);
 	}
 
 	public function prepare($sql, $options=NULL) {
