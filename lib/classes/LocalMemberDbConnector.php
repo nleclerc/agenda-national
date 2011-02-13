@@ -31,25 +31,40 @@ class LocalMemberDbConnector {
 		return $foundSubscription != false;
 	}
 	
-	public function findMember($login, $password) {
-		$foundMember = $this->db->getRow(
+	private function findMember($whereClause=null) {
+		$query =
 			'SELECT'.
-			'	idMembre as id,'.
-//			'	creation as creationDate,'.
-//			'	droits as privilege,'.
-			'	civilite as title,'.
-			'	nom as lastname,'.
-			'	prenom as firstname,'.
-			"	CONCAT(prenom,' ',nom) as name,".
-			'	idRegion as region,'.
-			'	devise as motto '.
-			'FROM Membre WHERE ((idWeb = ? AND passWeb = ?) OR (idMembre = ? AND password = ?))',
-			$login, $password,
-			intval($login), $password
-		);
+			' idMembre as id,'.
+//			' creation as creationDate,'.
+//			' droits as privilege,'.
+			' civilite as title,'.
+			' nom as lastname,'.
+			' prenom as firstname,'.
+			" CONCAT(prenom,' ',nom) as name,".
+			' idRegion as region,'.
+			' devise as motto '.
+			'FROM Membre';
 		
-		if ($foundMember) {
-			$memberId = $foundMember['id'];
+		if ($whereClause)
+			$query.=" WHERE $whereClause";
+		
+		
+		$foundMember = $this->db->getRow($query, array_slice(func_get_args(), 1));
+		$foundMember = $this->fillMemberData($foundMember);
+		return $foundMember;
+	}
+	
+	public function findMemberByCredential($login, $password) {
+		return $this->findMember('(idWeb=? AND passWeb=?) OR (idMembre=? AND password=?)', $login, $password, $login, $password);
+	}
+	
+	public function findMemberById($memberId) {
+		return $this->findMember('id=?', $memberId);
+	}
+	
+	private function fillMemberData($memberData) {
+		if ($memberData) {
+			$memberId = $memberData['id'];
 			
 			$foundContacts = $this->findContacts($memberId);
 			$foundAddress = $this->findAddress($memberId);
@@ -61,10 +76,10 @@ class LocalMemberDbConnector {
 				array_push($foundContacts, array('type'=>'address','value'=>$foundAddress));
 			
 			if ($foundContacts)
-				$foundMember['contacts'] = $foundContacts;
+				$memberData['contacts'] = $foundContacts;
 		}
 		
-		return $foundMember;
+		return $memberData;
 	}
 	
 	private function findAddress($memberId) {

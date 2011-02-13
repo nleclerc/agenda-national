@@ -26,10 +26,17 @@ class EzPDO extends PDO {
 		return $statement;
 	}
 	
-	public function getRow($sqlQuery) {
+	public function getRow($sqlQuery, $parms=null) {
 		$stm = $this->prepare($sqlQuery);
 		
-		if ($stm->execute(array_slice(func_get_args(), 1)))
+		$actualParms = null;
+		
+		if (is_array($parms))
+			$actualParms = $parms;
+		else
+			$actualParms = array_slice(func_get_args(), 1);
+		
+		if ($stm->execute($actualParms))
 			return $stm->fetch();
 		
 		return null;
