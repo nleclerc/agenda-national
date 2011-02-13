@@ -40,10 +40,14 @@ class RemoteMemberDbConnector {
 		$memberData['id'] = (int)$foundMember->ref;
 		$memberData['region'] = (string)$foundMember->region;
 		$memberData['email'] = (string)$foundMember->courriel;
-		$memberData['subscriptionTerm'] = preg_replace('%(\d{2})/(\d{2})/(\d{2})%', '$1-$2-20$3', $foundMember->echeance);
+		$memberData['subscriptionTerm'] = $this->reformatDate($foundMember->echeance);
 		$memberData['privilege'] = (int)$foundMember->droits;
 		
 		return $memberData;
+	}
+	
+	private function reformatDate($originalDate) {
+		return preg_replace('%(\d{2})/(\d{2})/(\d{2})%', '20$3-$2-$1', $originalDate);
 	}
 
 	/**

@@ -9,10 +9,12 @@ try {
 	$dbl = new LocalMemberDbConnector();
 	$dbr = new RemoteMemberDbConnector();
 	
-	$foundUser = $dbl->findOrFetchMember($dbr, getQueryParameter('login'), getQueryParameter('password'));
+	$foundUser = $dbl->findMemberAuthData($dbr, getQueryParameter('login'), getQueryParameter('password'));
+
+	// No need for check because either user is found or exception is raised.
 	
-	if ($foundUser)
-		;
+	$result = $foundUser;
+	
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
 }

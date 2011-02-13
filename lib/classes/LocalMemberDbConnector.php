@@ -31,34 +31,106 @@ class LocalMemberDbConnector {
 		return $foundSubscription != false;
 	}
 	
-	private function findMember($whereClause=null) {
+	/**
+	 * Finds user data necessary for main site compatible authentication.
+	 * 
+	 * @param string $login
+	 * @param string $password
+	 */
+	public function findMemberAuthData($remoteDbConnector, $login, $password) {
+		$foundMember = $this->db->getRow(
+			'SELECT'.
+			' idMembre as id,'.
+			' idRegion as region,'.
+			' droits as privilege,'.
+			' nom as lastname,'.
+			' prenom as firstname '.
+			'FROM Membre '.
+			'WHERE (idWeb=? AND passWeb=?) OR (idMembre=? AND password=?)',
+			$login, $password, $login, $password
+		);
+		
+		if ($foundMember) {
+			// Local data found, proceeding normaly.
+			$foundMember['id'] = intval($foundMember['id']);
+			$foundMember['privilege'] = intval($foundMember['privilege']);
+			
+			$memberId = $foundMember['id'];
+			
+			$primaryEmail = $this->findMemberPrimaryEmail($memberId);
+			
+			if (!$primaryEmail)
+				$primaryEmail = '';
+			
+			$foundMember['email'] = $primaryEmail;
+			$foundMember['subscriptionTerm'] = $this->findMemberSubscriptionTerm($memberId);
+		} else {
+			$fetchedMember = $this->fetchAndSaveRemoteMemberData($remoteDbConnector, $login, $password);
+			
+			if ($fetchedMember)
+				$foundMember = $fetchedMember;
+			else {
+				// Do nothing, either data is fetched or exception is raised.
+			}
+		}
+		
+		return $foundMember;
+	}
+	
+	private function findMemberPrimaryEmail($memberId) {
+		$result = $this->db->getRow(
+			'SELECT adresse FROM Contact WHERE (idCategorie = 14 OR idCategorie = 9) AND idMembre = ?',
+			$memberId
+		);
+		
+		if ($result)
+			return $result['adresse'];
+		
+		return '';
+	}
+	
+	private function findMemberSubscriptionTerm($memberId) {
+		$result = $this->db->getRow(
+			'SELECT fin FROM Cotisation WHERE idMembre = ? ORDER BY fin DESC',
+			$memberId
+		);
+		
+		if ($result)
+			return $result['fin'];
+		
+		throw new Exception("Ce membre n'a pas de cotisation : $memberId");
+	}
+	
+	private function fetchAndSaveRemoteMemberData($remoteDbConnector, $login, $password) {
+		$fetchedData = $remoteDbConnector->fetchMember($login, $password);
+		$this->db->execute(
+			'UPDATE Membre SET idWeb = ?, passWeb = ?, password = ? WHERE idMembre = ?',
+			$login, $password, $password, $fetchedData['id']
+		);
+		
+		return $fetchedData;
+	}
+	
+	public function findMemberPublicData($memberId) {
 		$query =
 			'SELECT'.
 			' idMembre as id,'.
-//			' creation as creationDate,'.
-			' droits as privilege,'.
 			' civilite as title,'.
 			' nom as lastname,'.
 			' prenom as firstname,'.
 			" CONCAT(prenom,' ',nom) as name,".
 			' idRegion as region,'.
 			' devise as motto '.
-			'FROM Membre';
+			'FROM Membre '.
+			'WHERE id=?';
 		
-		if ($whereClause)
-			$query.=" WHERE $whereClause";
+		$foundMember = $this->db->getRow($query, $memberId);
 		
-		$foundMember = $this->db->getRow($query, array_slice(func_get_args(), 1));
-		$foundMember = $this->fillMemberData($foundMember);
+		if ($foundMember) {
+			$foundMember = $this->fillMemberData($foundMember);
+		}
+		
 		return $foundMember;
-	}
-	
-	public function findMemberByCredential($login, $password) {
-		return $this->findMember('(idWeb=? AND passWeb=?) OR (idMembre=? AND password=?)', $login, $password, $login, $password);
-	}
-	
-	public function findMemberById($memberId) {
-		return $this->findMember('id=?', $memberId);
 	}
 	
 	private function fillMemberData($memberData) {
@@ -181,21 +253,5 @@ class LocalMemberDbConnector {
 		);
 		
 		return $result;
-	}
-	
-	public function findOrFetchMember($remoteDbConnector, $login, $password){
-		$foundMember = $this->findMember($login, $password);
-		
-		if (!$foundMember){
-			$fetchedData = $remoteDbConnector->fetchMember($login, $password);
-			$this->db->execute(
-				'UPDATE Membre SET idWeb = ?, passWeb = ?, password = ? WHERE idMembre = ?',
-				$login, $password, $password, $fetchedData['id']
-			);
-			
-			$foundMember = findMember($login, $password);
-		}
-		
-		return $foundMember;
 	}
 }
