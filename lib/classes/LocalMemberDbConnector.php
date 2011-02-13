@@ -36,7 +36,7 @@ class LocalMemberDbConnector {
 			'SELECT'.
 			' idMembre as id,'.
 //			' creation as creationDate,'.
-//			' droits as privilege,'.
+			' droits as privilege,'.
 			' civilite as title,'.
 			' nom as lastname,'.
 			' prenom as firstname,'.

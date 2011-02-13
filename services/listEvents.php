@@ -1,7 +1,7 @@
 <?php
 require '../lib/serviceCommon.php';
 
-$errorMessage = '';
+$errorMessage = null;
 $result = array();
 	
 if (!isset($_GET['month']))
@@ -16,19 +16,19 @@ else {
 		$db = new CalendarDbConnector();
 		$events = $db->listEventsForMonth($year, $month);
 		
-		$isLoggedIn = isLoggedIn();
+		$currentUser = getCurrentUserData();
 		
-		if (!$isLoggedIn)
+		if (!$currentUser)
 			$errorMessage = "Vous n'êtes pas identifié.";
 		else {
 			$result = array(
-				"username" => getCurrentUsername(),
+				"username" => $currentUser['fullname'],
 				"month" => $month,
 				"year" => $year,
 				"events" => $events
 			);
 		}
-		$result["loggedIn"] = $isLoggedIn;
+		$result["loggedIn"] = $currentUser != null;
 	} catch (Exception $e) {
 		$errorMessage = $e->getMessage();
 	}
@@ -36,4 +36,3 @@ else {
 
 $result["errorMessage"] = $errorMessage;
 echo json_encode($result);
-?>
