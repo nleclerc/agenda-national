@@ -48,7 +48,6 @@ class LocalMemberDbConnector {
 		if ($whereClause)
 			$query.=" WHERE $whereClause";
 		
-		
 		$foundMember = $this->db->getRow($query, array_slice(func_get_args(), 1));
 		$foundMember = $this->fillMemberData($foundMember);
 		return $foundMember;
@@ -77,6 +76,10 @@ class LocalMemberDbConnector {
 			
 			if ($foundContacts)
 				$memberData['contacts'] = $foundContacts;
+			
+			$foundInterests = $this->findInterests($memberId);
+			if ($foundInterests)
+				$memberData['interests'] = $foundInterests;
 		}
 		
 		return $memberData;
@@ -131,6 +134,29 @@ class LocalMemberDbConnector {
 			$contacts[$i]['type'] = $this->contactCategories[$contacts[$i]['type']];
 		
 		return $contacts;
+	}
+	
+	private function findInterests($memberId) {
+		$interests = $this->db->getList(
+			'SELECT '.
+			'	i.description as name, '.
+			'	c.competence as skill, '.
+			'	n.Niveau_interet as level '.
+			'FROM '.
+			'	Interet_membre j, '.
+			'	Interet i, '.
+			'	Competence c, '.
+			'	Niveau_interet n '.
+			'WHERE '.
+			'	j.idInteret = i.idInteret AND '.
+			'	j.competence = c.idCompetence AND '.
+			'	j.niveau_interet = n.idNiveau_interet AND '.
+			"	suppression = '0000-00-00' AND ".
+			'	idMembre = ?',
+			$memberId
+		);
+		
+		return $interests;
 	}
 
 	public function findOrFetchMember($remoteDbConnector, $login, $password){
