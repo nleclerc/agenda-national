@@ -12,10 +12,15 @@ try {
 	$foundUser = $dbl->findMemberAuthData($dbr, getQueryParameter('login'), getQueryParameter('password'));
 
 	// No need for check because either user is found or exception is raised.
+	registerUserSessionCookies($foundUser);
 	
-	$result = $foundUser;
+	$result['username'] = $foundUser['firstname'].' '.$foundUser['lastname'];
+	$result['loggedIn'] = true;
 	
 } catch (Exception $e) {
+	// Login failed so clearing auth cookies.
+	logout();
+	
 	$errorMessage = $e->getMessage();
 }
 
