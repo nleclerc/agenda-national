@@ -19,8 +19,8 @@ function showLoginForm(){
 
 	body += '<input id="loginSubmit" type="submit" value="Valider">';
 
-	body += '<a class="footerLink" href="mailto:nl@spirotron.fr?subject=[iAgenda] Remarque">Contact</a>';
-	body += '<a class="footerLink" href="https://github.com/nleclerc/iagenda-mobile">Code Source</a>';
+	body += '<a class="footerLink" href="mailto:nicolas.leclerc@mensa.fr?subject=[MENSA-AGENDA] Remarque">Contact</a>';
+	body += '<a class="footerLink" href="https://github.com/mensa-france/agenda-national">Code Source</a>';
 	body += '<a class="footerLink" id="qrcodelink" href="#" onclick="toggleQRCode();return false;">QRCode</a>';
 
 	body += '<div id="qrcode"></div>';
