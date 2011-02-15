@@ -9,13 +9,13 @@ function showLoginForm(){
 	
 	// The iframe and form action are used to allow browsers to save login information.
 	body += '<iframe name="dummyFrame" class="hidden" src="dummy.txt"></iframe>';
-	body += '<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt">';
+	body += '<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt" method="post">';
 	body += '<div id="errorMessage"></div>';
 	body += '<div class="inputLabel">Identifiant</div>';
 	body += '<input type="text" id="login" name="login">';
 
 	body += '<div class="inputLabel">Mot de passe</div>';
-	body += '<input type="password" id="pwd" name="pwd">';
+	body += '<input type="password" id="password" name="password">';
 
 	body += '<input id="loginSubmit" type="submit" value="Valider">';
 
@@ -32,7 +32,7 @@ function showLoginForm(){
 }
 
 function handleLoginSubmit(eventObject){
-	$.getJSON("services/login.php", {login: $('#login').val(), pwd: $('#pwd').val()}, handleLoginresult);
+	$.getJSON("services/login.php", {login: $('#login').val(), password: $('#password').val()}, handleLoginresult);
 }
 
 function handleLoginresult(data){

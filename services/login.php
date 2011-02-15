@@ -3,6 +3,7 @@ require '../lib/serviceCommon.php';
 logout();
 
 $errorMessage = null;
+$loggedIn = false;
 $result = array();
 
 try {
@@ -15,7 +16,7 @@ try {
 	registerUserSessionCookies($foundUser);
 	
 	$result['username'] = $foundUser['firstname'].' '.$foundUser['lastname'];
-	$result['loggedIn'] = true;
+	$loggedIn = true;
 	
 } catch (Exception $e) {
 	// Login failed so clearing auth cookies.
@@ -25,4 +26,5 @@ try {
 }
 
 $result["errorMessage"] = $errorMessage;
+$result['loggedIn'] = $loggedIn;
 echo json_encode($result);
