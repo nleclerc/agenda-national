@@ -27,7 +27,7 @@ sur : http://www.gnu.org/licenses/gpl-3.0-standalone.html
 4. Contact
 ----------
 
-Pour toute question, merci de me contacter Nicolas Leclerc via email : nicolas.leclerc@mensa.fr
+Pour toute question, merci de contacter Nicolas Leclerc via email : nicolas.leclerc@mensa.fr
 
 ==========================
 EOF
