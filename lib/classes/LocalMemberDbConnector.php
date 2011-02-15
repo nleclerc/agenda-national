@@ -129,7 +129,7 @@ class LocalMemberDbConnector {
 				'name' => $foundData['name']
 			);
 			
-			for ($i=0; $i<$foundData['contacts'] && !isset($result['email']); $i++)
+			for ($i=0; $i<count($foundData['contacts']) && !isset($result['email']); $i++)
 				if ($foundData['contacts'][$i]['type'] == 'email')
 					$result['email'] = $foundData['contacts'][$i]['value'];
 			
