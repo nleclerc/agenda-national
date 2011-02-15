@@ -16,17 +16,16 @@ try {
 	else {
 		$month = $_GET['month'];
 		$year = $_GET['year'];
+	
+		$db = new CalendarDbConnector();
+		$events = $db->listEventsForMonth($year, $month);
 		
-			$db = new CalendarDbConnector();
-			$events = $db->listEventsForMonth($year, $month);
-			
-			
-			$result = array(
-				"username" => $currentUser['fullname'],
-				"month" => $month,
-				"year" => $year,
-				"events" => $events
-			);
+		$result = array(
+			"username" => $currentUser['fullname'],
+			"month" => $month,
+			"year" => $year,
+			"events" => $events
+		);
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
