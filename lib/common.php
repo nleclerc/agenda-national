@@ -5,7 +5,7 @@ function __autoload($class_name) {
 }
 
 function filterOutput($value) {
-	$result = utf8_encode($value);
+	$result = iconv("iso-8859-15", "utf8", $value);
 	
 	// workarounds for charset pb.
 	$result = preg_replace('/\x{0080}/u', '€', $result); // Fixes euro char.

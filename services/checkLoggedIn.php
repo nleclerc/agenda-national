@@ -9,6 +9,7 @@ try {
 	
 	$result = array(
 		"username" => $currentUser['fullname'],
+		"userid" => $currentUser['id'],
 		"loggedIn" => true
 	);
 } catch (Exception $e) {

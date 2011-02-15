@@ -9,19 +9,20 @@ try {
 	$currentUser = getCurrentUserData();
 	$loggedIn = true;
 	
-	if (!isset($_GET['month']))
+	$month = getQueryParameter('month');
+	$year = getQueryParameter('year');
+	
+	if (!$month)
 		$errorMessage = "Le mois n'a pas été spécifié.";
-	else if (!isset($_GET['year']))
+	else if (!$year)
 		$errorMessage = "L'année n'a pas été spécifié.";
 	else {
-		$month = $_GET['month'];
-		$year = $_GET['year'];
-	
 		$db = new CalendarDbConnector();
 		$events = $db->listEventsForMonth($year, $month);
 		
 		$result = array(
 			"username" => $currentUser['fullname'],
+			"userid" => $currentUser['id'],
 			"month" => $month,
 			"year" => $year,
 			"events" => $events

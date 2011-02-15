@@ -111,6 +111,34 @@ class LocalMemberDbConnector {
 		return $fetchedData;
 	}
 	
+	public function findMemberShortDataBatch($memberIdArray) {
+		$result = array();
+		
+		foreach($memberIdArray as $memberId)
+			array_push($result, $this->findMemberShortData($memberId));
+		
+		return $result;
+	}
+	
+	public function findMemberShortData($memberId) {
+		$foundData = $this->findMemberPublicData($memberId);
+		
+		if ($foundData) {
+			$result = array(
+				'id' => $foundData['id'],
+				'name' => $foundData['name']
+			);
+			
+			for ($i=0; $i<$foundData['contacts'] && !isset($result['email']); $i++)
+				if ($foundData['contacts'][$i]['type'] == 'email')
+					$result['email'] = $foundData['contacts'][$i]['value'];
+			
+			return $result;
+		}
+		
+		return null;
+	}
+	
 	public function findMemberPublicData($memberId) {
 		$query =
 			'SELECT'.
@@ -122,7 +150,7 @@ class LocalMemberDbConnector {
 			' idRegion as region,'.
 			' devise as motto '.
 			'FROM Membre '.
-			'WHERE id=?';
+			'WHERE idMembre=?';
 		
 		$foundMember = $this->db->getRow($query, $memberId);
 		

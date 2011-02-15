@@ -16,6 +16,7 @@ try {
 	registerUserSessionCookies($foundUser);
 	
 	$result['username'] = $foundUser['firstname'].' '.$foundUser['lastname'];
+	$result['userid'] = $foundUser['id'];
 	$loggedIn = true;
 	
 } catch (Exception $e) {

@@ -116,10 +116,8 @@ function logout(){
 function formatMaxParticipants(count){
 	if (count > 0)
 		return ''+count;
-	else if (count < 0)
-		return "illimité";
-	else
-		return "inconnu (ERREUR)";
+	
+	return "illimité";
 }
 
 function formatDate(date) {

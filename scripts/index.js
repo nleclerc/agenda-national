@@ -139,10 +139,8 @@ function loadEventData(eventId, callback) {
 			
 			if (data.maxParticipants > 0)
 				details += data.maxParticipants;
-			else if (data.maxParticipants < 0)
-				details += "illimité";
 			else
-				details += "inconnu (ERREUR)";
+				details += "illimité";
 			
 			details += " - ";
 			details += data.author;
