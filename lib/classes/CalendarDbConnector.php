@@ -74,6 +74,15 @@ class CalendarDbConnector {
 		return null;
 	}
 	
+	public function addParticipant($eventId, $memberId) {
+		$this->removeParticipant($eventId, $memberId);
+		return $this->db->execute("INSERT INTO iInscription (id, ref) VALUES (?, ?)", $eventId, $memberId);
+	}
+	
+	public function removeParticipant($eventId, $memberId) {
+		return $this->db->execute("DELETE FROM iInscription WHERE id=? AND ref=?", $eventId, $memberId);
+	}
+	
 	private function findParticipants($eventId) {
 		$foundIds = $this->db->getList('SELECT ref as memberId FROM iInscription WHERE id=?', $eventId);
 		$result = array();
