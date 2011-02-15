@@ -21,7 +21,16 @@ try {
 		
 		if ($eventDetails) {
 			$authorId = $eventDetails['authorId'];
-			$authorDetails = $dbm->findMemberShortData($authorId);
+			
+			// default author details.
+			$authorDetails = array(
+				'name' => 'Mensa IDF',
+				'email' => 'idf@mensa.fr'
+			);
+			
+			// if not mensa IDF
+			if ($authorId > 0)
+				$authorDetails = $dbm->findMemberShortData($authorId);
 			
 			if (!$authorDetails)
 				throw new Exception('Autheur inconnu : '.$authorId);
