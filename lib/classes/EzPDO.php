@@ -21,7 +21,7 @@ class EzPDO extends PDO {
 	public function prepare($sql, $options=NULL) {
 		$statement = parent::prepare($sql);
 		
-		if(strpos(strtoupper($sql), 'SELECT') === 0)
+		if(preg_match('/^\s*select\s/i', $sql))
 			$statement->setFetchMode(PDO::FETCH_ASSOC);
 		
 		return $statement;
