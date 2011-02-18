@@ -27,7 +27,7 @@ try {
 			array_push($authorsIds, $event['author']);
 		
 		$dbm = new LocalMemberDbConnector();
-		$authors = $dbm->findMemberShortDataBatch($authorsIds);
+		$authors = $dbm->findMemberShortDataBatch($authorsIds, true);
 		
 		for ($i=0; $i<count($events); $i++) {
 			$authorId = $events[$i]['author'];

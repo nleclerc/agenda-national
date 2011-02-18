@@ -111,11 +111,17 @@ class LocalMemberDbConnector {
 		return $fetchedData;
 	}
 	
-	public function findMemberShortDataBatch($memberIdArray) {
+	public function findMemberShortDataBatch($memberIdArray, $indexById=false) {
 		$result = array();
 		
-		foreach($memberIdArray as $memberId)
-			$result[$memberId] = $this->findMemberShortData($memberId);
+		foreach($memberIdArray as $memberId) {
+			$memberData = $this->findMemberShortData($memberId);
+			
+			if ($indexById)
+				$result[$memberId] = $memberData;
+			else
+				array_push($result, $memberData);
+		}
 		
 		return $result;
 	}
