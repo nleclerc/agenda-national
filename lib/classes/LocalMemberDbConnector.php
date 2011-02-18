@@ -115,7 +115,7 @@ class LocalMemberDbConnector {
 		$result = array();
 		
 		foreach($memberIdArray as $memberId)
-			array_push($result, $this->findMemberShortData($memberId));
+			$result[$memberId] = $this->findMemberShortData($memberId);
 		
 		return $result;
 	}

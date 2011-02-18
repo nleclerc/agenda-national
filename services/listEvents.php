@@ -7,6 +7,7 @@ $result = array();
 	
 try {
 	$currentUser = getCurrentUserData();
+	$currentId = $currentUser['id'];
 	$loggedIn = true;
 	
 	$month = getQueryParameter('month');
@@ -18,11 +19,29 @@ try {
 		$errorMessage = "L'année n'a pas été spécifié.";
 	else {
 		$db = new CalendarDbConnector();
-		$events = $db->listEventsForMonth($year, $month);
+		$events = $db->listEventsForMonth($currentId, $year, $month);
+		
+		$authorsIds = array();
+		
+		foreach($events as $event)
+			array_push($authorsIds, $event['author']);
+		
+		$dbm = new LocalMemberDbConnector();
+		$authors = $dbm->findMemberShortDataBatch($authorsIds);
+		
+		for ($i=0; $i<count($events); $i++) {
+			$authorId = $events[$i]['author'];
+			$authorName = "Mensa IDF"; // default name.
+			
+			if ($authorId > 0)
+				$authorName =  $authors[$authorId]['name'];
+			
+			$events[$i]['author'] = $authorName;
+		}
 		
 		$result = array(
 			"username" => $currentUser['fullname'],
-			"userid" => $currentUser['id'],
+			"userid" => $currentId,
 			"month" => $month,
 			"year" => $year,
 			"events" => $events

@@ -7,31 +7,41 @@ class CalendarDbConnector {
 		$this->db = new EzPDO('calendar');
 	}
 	
-	public function listEventsForMonth($year, $month) {
+	public function listEventsForMonth($currentMemberId, $year, $month) {
 		$query =
 			'select'.
-			'	id,'.
-			'	titre,'.
-			'	annee, mois, jour '.
+			'	a.id,'.
+			'	titre as title,'.
+			'	annee, mois, jour,'.
+			'	if(i.ref is not null,true,false) as isParticipating,'.
+			'	membre as author,'.
+			'	limite as maxParticipants,'.
+			'	count(ii.ref) as participantCount '.
 			'from'.
-			'	iActivite '.
+			'	iActivite a '.
+			'left join'.
+			'	iInscription i on a.id = i.id and i.ref = ? '.
+			'left join'.
+			'	iInscription ii on a.id = ii.id '.
 			'where'.
 			'	annee=? and'.
 			'	mois=? '.
+			'group by a.id '.
 			'order by jour asc';
 		
-		$foundEvents = $this->db->getList($query, $year, $month);
+		$foundEvents = $this->db->getList($query, $currentMemberId, $year, $month);
 		$events = array();
 		
 		for ($i=count($foundEvents)-1; $i>=0; $i--) {
 			$data = $foundEvents[$i];
-			$newEvent = array(
-				'id' => $data['id'],
-				'title' => $data['titre'],
-				'date' => $this->formatEventDate($data)
-			);
+			$data['date'] = $this->formatEventDate($data);
+			$data['isParticipating'] = $data['isParticipating'] == true; // converts because query returns 0 or 1 as a string.
 			
-			array_unshift($events, $newEvent);
+			unset($data['annee']);
+			unset($data['mois']);
+			unset($data['jour']);
+			
+			array_unshift($events, $data);
 		}
 		
 		return $events;

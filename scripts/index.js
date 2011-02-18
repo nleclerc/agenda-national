@@ -1,4 +1,3 @@
-var queue = new Array();
 
 var currentDate = getCurrentDate();
 var listingDate = new Date();
@@ -8,9 +7,6 @@ var eventCount = 0;
 
 var stopLoading = false;
 var eventLoading = false;
-var queueInProcess = false;
-
-var init = true;
 
 function setLoadStatus(data){
 	$('#loadStatus').html(data);
@@ -21,7 +17,7 @@ function resetLoadStatus(){
 }
 
 function isBottom(){
-	// compares to docheight-1 because of dezsire Z browser bug.
+	// compares to docheight-1 because of android browser bug.
 	return ($(window).height()+$(window).scrollTop()) >= ($(document).height()-1);
 }
 
@@ -31,7 +27,6 @@ function checkScrollToBottom(){
 		return true;
 	}
 	
-	init = false;
 	return false;
 }
 
@@ -41,8 +36,6 @@ function loadNextEvents(){
 			eventLoading = true;
 			setLoadStatus('Chargement en cours...');
 			$.getJSON("services/listEvents.php", {month:listingDate.getMonth()+1, year:listingDate.getFullYear()}, handleNewEvents);
-		} else {
-			processQueue(); // in case max loading happens because screen is too tall.
 		}
 	}
 }
@@ -61,10 +54,7 @@ function handleNewEvents(data){
 		if (data.events.length == 0) {
 			// found empty month, stop loading
 			stopLoading = true;
-			init = false;
-			
 			setLoadStatus("Plus d'autres évènements ensuite.");
-			processQueue();
 		} else {
 			listingDate = addMonth(listingDate);
 			
@@ -77,9 +67,7 @@ function handleNewEvents(data){
 			resetLoadStatus();
 		}
 		
-		// process queue only if not at bottom ie. not reloading events.
-		if (!init || !checkScrollToBottom())
-			processQueue();
+		checkScrollToBottom();
 	}
 }
 
@@ -92,13 +80,24 @@ function addEvent(eventData){
 		first = true;		
 	}
 	
-	var eventDiv = createListItem(eventData.title, '', null, 'event.html?eventId='+eventData.id);
+	var details = "";
+	
+	details += eventData.participantCount+" / ";
+	
+	if (eventData.maxParticipants > 0)
+		details += eventData.maxParticipants;
+	else
+		details += "illimité";
+	
+	details += " - ";
+	details += eventData.author;
+	
+	var eventDiv = createListItem(eventData.title, details, null, 'event.html?eventId='+eventData.id, false, eventData.isParticipating);
 	
 	eventDiv.setFirst(first);
 	eventDiv.setId('item-event-'+eventData.id);
 	
 	eventDiv.hide().appendTo(dateBlock).fadeIn(500);
-	queue.push(eventData.id);
 	eventCount++;
 }
 
@@ -113,47 +112,6 @@ function createDateBlock(date){
 	return dateBlock;
 }
 
-function processQueue(){
-	if (queue.length == 0 || queueInProcess)
-		return;
-	
-	queueInProcess = true;
-	loadEventData(queue.shift(), processQueue);
-}
-
 function openEvent(eventId) {
 	window.location.href = "event.html?eventId="+eventId;
-}
-
-function loadEventData(eventId, callback) {
-	var itemDesc = $('#item-event-'+eventId+' '+'.listItemDetails');
-	itemDesc.html('<img src="images/loading.gif">');
-	
-	$.getJSON("services/getEventData.php", {"eventId":eventId}, function(data){
-		var details = "";
-		
-		if (data.errorMessage)
-			details += "Erreur : "+data.errorMessage;
-		else {
-			details += data.participants.length+" / ";
-			
-			if (data.maxParticipants > 0)
-				details += data.maxParticipants;
-			else
-				details += "illimité";
-			
-			details += " - ";
-			details += data.author;
-		}
-		
-		itemDesc.hide().html(details).fadeIn(200);
-
-		if (data.isParticipating)
-			$('#item-event-'+eventId+' '+'.listItemTitle').addClass("highlightedItem");
-		
-		queueInProcess = false;
-
-		if (callback)
-			callback();
-	});
 }
