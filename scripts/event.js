@@ -55,9 +55,6 @@ function handleData(data) {
 function formatDescription(source) {
 	var result = source;
 	
-	// workaround to prevent br tags to mess with url parsing (add spaces before and after).
-	result = result.replace(/\s*<br\s*\/?>\s*/gim, ' <br /> \n');
-	
 	// highlight some specific values.
 	result = result.replace(/(\d?\dh\d{0,2})/ig, '<span class="highlight">$1</span>'); // hours
 	result = result.replace(/(\d+[\.,]?\d*\s*(€|euros?))/ig, '<span class="highlight">$1</span>'); // price
@@ -82,6 +79,9 @@ function formatDescription(source) {
 	// location hack using custom tag in html.
 	result = result.replace(/<lieu>(.+?)<\/lieu>/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
 
+	// replace soft text linebreaks with br tags.
+	result = result.replace(/(\r)?\n(\r)?/gim, '<br />\n');
+	
 	return result;
 }
 
