@@ -22,7 +22,7 @@ function handleData(data) {
 		$('#eventDetails').addClass('participatingEvent');
 		enable($('#unsubscribeButton'));
 	}
-	else
+	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length)
 		enable($('#subscribeButton'));
 	
 	eventId = data.id;
