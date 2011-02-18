@@ -27,7 +27,7 @@ class CalendarDbConnector {
 			$data = $foundEvents[$i];
 			$newEvent = array(
 				'id' => $data['id'],
-				'title' => filterOutput($data['titre']),
+				'title' => $data['titre'],
 				'date' => $this->formatEventDate($data)
 			);
 			
