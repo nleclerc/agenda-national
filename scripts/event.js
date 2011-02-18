@@ -58,7 +58,7 @@ function formatDescription(source) {
 	// highlight some specific values.
 	result = result.replace(/(\d?\dh\d{0,2})/ig, '<span class="highlight">$1</span>'); // hours
 	result = result.replace(/(\d+[\.,]?\d*\s*(€|euros?))/ig, '<span class="highlight">$1</span>'); // price
-	result = result.replace(/(gratuite?s?)/ig, '<span class="highlight">$1</span>'); // price
+	result = result.replace(/(gratuite?(ment)?s?)/ig, '<span class="highlight">$1</span>'); // price
 //	result = result.replace(/(ATTENTION)/g, '<span class="highlight">$1</span>');
 //	result = result.replace(/(NOTE)/g, '<span class="highlight">$1</span>');
 	
@@ -80,7 +80,7 @@ function formatDescription(source) {
 	result = result.replace(/<lieu>(.+?)<\/lieu>/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
 
 	// replace soft text linebreaks with br tags.
-	result = result.replace(/(\r)?\n(\r)?/gim, '<br />\n');
+	result = result.replace(/\r?\n\r?/gim, '<br />\n');
 	
 	return result;
 }
