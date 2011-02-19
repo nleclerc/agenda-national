@@ -9,13 +9,7 @@ function loadEvent(hash){
 }
 
 function handleEventData(data) {
-	if (data.isParticipating) {
-//		$('#eventDetails').addClass('participatingEvent');
-//		enable($('#unsubscribeButton'));
-	}
-	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length){
-//		enable($('#subscribeButton'));
-	}
+	document.title = data.title+' ['+document.title+']';
 	
 	eventId = data.id;
 	userId = data.userid;
@@ -38,7 +32,7 @@ function handleEventData(data) {
 	
 	var bodyRow = $('<tr>').appendTo(eventTable);
 	
-	$('<td>').attr({id:'eventDescription'}).html(formatDescription(data.description)).appendTo(bodyRow);
+	var description = $('<td>').attr({id:'eventDescription'}).html(formatDescription(data.description)).appendTo(bodyRow);
 	
 	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<tr>').attr({id:'participantColumn'}).appendTo(bodyRow));
 	
@@ -57,26 +51,20 @@ function handleEventData(data) {
 		$('<a>').addClass('participantLink').append(name).append(details).appendTo($('<td>').appendTo(row));
 	}
 	
-	
-	/*
-	if (data.authorEmail)
-		$('#eventAuthor').html('<a id="organizerMailto" href="mailto:'+data.authorEmail+'?subject=[iAgenda] '+data.title+'">'+data.author+'</a>');
-	else
-		$('#eventAuthor').html(data.author);
-	
-	$('#eventDetailsDesc').html(formatDescription(data.description));
-	
-	$('#participantCount').html(data.participants.length+' / '+formatMaxParticipants(data.maxParticipants));
-	
-	for (var i=0; i<data.participants.length; i++) {
-		var p = data.participants[i];
-		$('#participants').append(getParticipantHtml(p, data.userid==p.id, i>0));
-	}
-	
-	showEventBody();
-	*/
+	description.append('<div id="controlBar">'+
+			'<button type="button" id="subscribeButton" disabled="true" onclick="subscribe()">S\'inscrire</button>'+
+			'<button type="button" id="unsubscribeButton" disabled="true" onclick="unsubscribe()">Se désinscrire</button>'+
+			'</div>');
 	
 	setMainContent(eventTable);
+	
+	if (data.isParticipating) {
+		$('#eventDetails').addClass('participatingEvent');
+		enable($('#unsubscribeButton'));
+	}
+	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length){
+		enable($('#subscribeButton'));
+	}
 }
 
 function formatDescription(source) {

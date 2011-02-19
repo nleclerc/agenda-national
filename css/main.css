@@ -260,3 +260,7 @@ a:HOVER, a:ACTIVE {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
+#controlBar{
+	margin-top: 10px;
+}
