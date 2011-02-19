@@ -1,406 +1,232 @@
 @CHARSET "UTF-8";
 
-html
-{
+html,body {
 	margin: 0;
 	padding: 0;
-}
-body
-{
-	color: #666;
-	margin: 0;
-	padding: 0;
-	text-align: left;
-	background: #FFF url(../img/bg.gif) repeat-y;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	line-height: 14px;
+	color: #666666;
+	background: white;
+	font-family: sans-serif;
+	font-size: small;
 }
 
-p
-{
-	margin: 0;
-	margin-top: 10px;
-	padding: 0;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 11px;
-	line-height: 14px;
-}
-
-.color {
-  color: #C30;
-}
-
-a:link
-{
-	font-weight: bold;
-	text-decoration: none;
-        color: #C30;
-}
-
-a:visited
-{
-	font-weight: bold;
-	text-decoration: none;
-	color: #666;
-}
-
-a:hover, a:active
-{
-	text-decoration: none;
-	color: #666;
-}
-
-acronym { border-bottom: none; }
-
-.select
-{
-	font-weight: bold;
-	color: #666;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 18px;
-	line-height: 22px;
-}
-
-.archives
-{
-	font-weight: bold;
-	color: #666;
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 18px;
-	line-height: 22px;
-}
-
-#container
-{
-	position: relative;
-	width: 760px;
-	padding: 0;
-	margin: 20px auto;
-}
-
-#intro
-{
-	width: 760px;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-#easy-access, #easy-access a
-{
-	color: #666;
-  margin: 0 0 0 7px;
-	font-size: 0.8em;
-	line-height: 1em;
-	text-decoration: none;
-}
-#easy-access
-{
-  text-align: right;
-  position: relative;
-  top: -10px;
-  right: 2px;
-  margin: 0 0 0 15px;
-}
-
-#easy-access a:hover, #easy-access a:focus
-{
-  color: #C30;
-}
-
-/***pageHeader***/
-#pageHeader
-{
-	height: 83px;
-	background-image: url(../img/headerbg2R.jpg);
-	background-repeat: no-repeat;
-	background-position: left;
-}
-
-#pageHeader h1
-{
-	margin: 0;
-	width: 760px;
-	height: 43px;
-	background-image: url(../img/title.jpg);
-	background-repeat: no-repeat;
-	background-position: left;
-}
-
-#pageHeader span { display: none; }
-
-#pageHeader h2
-{
-	width: 760px;
-	height: 42px;
-	margin: 0;
-	padding: 0;
-        background-image: url(../img/subR.jpg);
-	background-repeat: no-repeat;
-	background-position: right top;
-}
-
-#membres
-{
-  position: absolute;
-  right: 0px;
-  margin-top: 8px;
-  padding: 0 5px 0 0;
-  text-align: right;
-  font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  line-height: 14px;
-}
-
-#membres input[type=submit]
-{
-	background-color: #C30;
-        color: #FFF;}
-
-#membres div
-{
-  display: inline;
-  margin: 0 0.5ex;
-  font-size: 18px;
-}
-
-#membres form
-{
-  display: inline;
-}
-
-/***preamble***/
-#preamble
-{
-	margin-left: 199px;
+body {
+	padding-top: 20px;
 	padding-left: 20px;
 	padding-right: 20px;
-	padding-bottom: 4px;
-	width: 520px;
-	background-image: url(../img/hordot.gif);
-	background-repeat: repeat-x;
-	background-position: 0%;
+	padding-bottom: 10px;
 }
 
-#preamble h1
-{
-	margin: 20px 0 20px 0;
-	font-size: 26px;
+.errorMessage{
+	background-color: red;
+	color: black;
 }
 
-#preamble h3
-{
-	margin: 20px 0 10px 0;
+.hidden {
+	display: none;
+}
+
+a:link {
+	font-weight: bold;
+	text-decoration: none;
+	color: #C30;
+}
+
+a:visited {
+	font-weight: bold;
+	text-decoration: none;
+	color: #666;
+}
+
+a:hover, a:active {
+	text-decoration: none;
+	color: #666;
+}
+
+.select {
+	font-weight: bold;
 	font-size: 18px;
+	line-height: 22px;
 }
 
-#preamble h5
-{
-	margin: 20px 0 10px 0;
-	font-size: 12px;
+.archives {
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 22px;
 }
 
-#preamble p.p3
-{
-	padding-bottom: 20px;
+#header{
+	height: 50px;
+}
+
+#title{
 	margin: 0;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	
+	display: compact;
 }
 
-#preamble ul
-{
+#loginForm {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	
+	white-space: nowrap;
+	display: compact;
+	font-size: large;
+}
+
+#loginForm input{
+	border: solid 1px #666666;
+}
+
+#loginForm input[type=submit] {
+	background-color: #C30;
+	color: white;
+}
+
+#loginForm input[type=text], #loginForm input[type=password] {
+	width: 100px;
+}
+
+#memberName{
+	display: inline;
+}
+
+#eventTable ul {
 	margin: 0;
 	padding: 0 0 0 30px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	list-style-type : none;
+	list-style-type: none;
 }
 
-#preamble li
-{
+#eventTable li {
 	padding-left: 12px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-        background: transparent url(../img/squareR.gif) no-repeat top left;
 }
 
-/*
-#preamble
-{
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-bottom: 4px;
-	background: transparent url(../img/hordot.gif) repeat-x bottom 0%;
-}
-*/
-
-#preamble p.p1
-{
-	margin-left: 20px;
-	margin-right: 20px;
-	background-color: #EEE;
-	padding-right: 3px;
-	padding-left: 3px;
+#eventTable .dayHeader{
+	width: 80px;
+	text-align: center;
 }
 
-#preamble table
-{
-        border: 1px solid gray;
+#eventTable {
+	border: 1px solid gray;
 	border-collapse: collapse;
 	background-color: #EEE;
-        margin: 0 auto;
+	margin: 0 auto;
 	margin-top: 1em;
 }
 
-#preamble th
-{
+#eventTable th {
 	text-align: center;
 	border: 1px gray solid;
-        background-color: #C30;
+	background-color: #C30;
 	color: white;
 }
 
-#preamble td
-{
-        border: 1px gray solid;
-        padding: 2px 5px;
+#eventTable td {
+	border: 1px gray solid;
+	padding: 2px 5px;
 }
 
-#preamble table.admin
-{
+#eventTable table.admin {
 	width: 500px;
 	border: 1px gray solid;
 	background-color: #EEE;
 }
 
-#preamble th.admin
-{
+#eventTable th.admin {
 	text-align: center;
 	border: 1px gray solid;
-    background-color: #C30;
+	background-color: #C30;
 	color: white;
 }
 
-#preamble td.admin
-{
+#eventTable td.admin {
 	width: 100px;
 }
 
-#preamble input[type=submit]
-{
+#eventTable input[type=submit] {
 	width: 80px;
 	height: 20px;
-    background-color: #C30;
+	background-color: #C30;
 	color: #000;
 }
 
-#preamble input[type=submit].admin
-{
+#eventTable input[type=submit].admin {
 	width: 50px;
 	height: 20px;
-    background-color: #C30;
+	background-color: #C30;
 	color: #000;
 }
 
-#preamble .warning {
-  color: red;
-}
-
-#preamble .parcentre {
-  margin: 20px auto;
-  text-align: center;
-  font-weight: bold;
+#eventTable .warning {
+	color: red;
 }
 
 #buffet {
-  line-height: 18px;
+	line-height: 18px;
 }
 
 #buffet select {
-  font-size: 11px;
+	font-size: 11px;
 }
 
 #buffet textarea {
-  font-size: 11px;
-  margin: 5px 10px;
+	font-size: 11px;
+	margin: 5px 10px;
 }
 
-#buffet input[type="submit"]
-{
-  display: block;
-  margin: 1ex auto;
-  background-color: #C30;
-  color: #FFF;}
-
-#explanation h3
-{
-	background-image: url(../img/exph3.gif);
-	background-repeat: no-repeat;
-	background-position: left;
-}
-
-/***linkList***/
-#menu
-{
-	position: absolute;
-	top: 260px;
-	left: 0;
-	padding: 0;
-	margin: 0;
-	width: 180px;
+#buffet input[type="submit"] {
+	display: block;
+	margin: 1ex auto;
+	background-color: #C30;
+	color: #FFF;
 }
 
 /***lselect***/
-#lselect h3
-{
+#lselect h3 {
 	padding: 0;
 	margin: 0;
 	width: 199px;
 	height: 21px;
 }
 
-#lselect h3
-{
-	background: transparent url(../img/bul2.gif) no-repeat right;
+#lselect h3 {
 	color: #666;
 	border-top: 1px #666 solid;
 	border-bottom: 1px #666 solid;
 }
 
-#lselect ul, #blog ul
-{
+#lselect ul,#blog ul {
 	margin: 20px 0 20px 0;
 	padding: 0;
 	list-style-type: none;
 }
 
-#lselect li, #blog li
-{
+#lselect li,#blog li {
 	padding-left: 12px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-
 }
 
-#lselect a
-{
+#lselect a {
 	padding-left: 18px;
 	display: block;
-	background-image: url(../img/bul2.gif);
 	background-repeat: no-repeat;
 	background-position: 0 2px;
 }
 
-#lselect a:hover
-{
-	background: transparent url(../img/bul1.gif) no-repeat 0 2px;
+#lselect a:hover {
 	padding-left: 18px;
 	display: block;
 }
 
-#lselect a.c
-{
-	font: 11px/14px Verdana, Geneva, Arial, Helvetica, sans-serif;
+#lselect a.c {
 	color: #999;
 	font-weight: normal;
 	text-decoration: none;
@@ -408,93 +234,9 @@ acronym { border-bottom: none; }
 	display: inline;
 }
 
-#lselect a.c:hover
-{
+#lselect a.c:hover {
 	padding-left: 0;
 	display: inline;
 }
 
-/***larchives***/
-#blog h3
-{
-	padding: 0;
-	margin: 0;
-	width: 199px;
-	height: 21px;
-}
 
-#blog h3
-{
-	background: transparent url(../img/bul1.gif) no-repeat right;
-	color: #666;
-	border-top: 1px #666 solid;
-	border-bottom: 1px #666 solid;
-}
-
-#blog a:link
-{
-	font-weight: bold;
-	text-decoration: none;
-	color: #666;
-}
-
-#blog a:visited
-{
-	font-weight: bold;
-	text-decoration: none;
-	color: #666;
-}
-
-#blog a:hover, a:active
-{
-	text-decoration: none;
-	color: #C30;
-}
-
-#blog a.t:link
-{
-	font-weight: bold;
-	text-decoration: none;
-	color: #C30;
-}
-
-#blog a.t:visited
-{
-	font-weight: bold;
-	text-decoration: none;
-	color: #C30;
-}
-
-#blog a.t:hover, a:active
-{
-	text-decoration: none;
-	color: #666;
-}
-
-#footer
-{
-	width: 520px;
-	margin-left: 199px;
-	margin-top: 39px;
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-bottom: 4px;
-	margin-bottom: 39px;
-	background-color: #EEE;
-	background-image: url(../img/hordot.gif);
-	background-repeat: repeat-x;
-	background-position: 0%;
-}
-
-#extraDiv1
-{
-	width: 196px;
-	height: 177px;
-	top: 73px;
-	left: 1px;
-	position: absolute;
-	background-image: url(../img/toureiffel.jpg);
-	background-repeat: no-repeat;
-}
-
-#extraDiv1 span { display: none;}

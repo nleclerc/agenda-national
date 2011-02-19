@@ -1,43 +1,314 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-<meta charset="UTF-8"/>
-<meta name='HandheldFriendly' content='True' />
-<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="apple-touch-icon" href="images/calendar-big.png" />
-
-<title>iAgenda Mobile</title>
-
-<link rel="shortcut icon" href="images/favicon.png">
-<link rel="stylesheet" href="css/mobile.css" type="text/css" />
-
-<script src="scripts/jquery-1.5.min.js"></script>
-<script src="scripts/common.js"></script>
-<script src="scripts/index.js"></script>
-
-<script>
-$(checkScrollToBottom);
-$(window).scroll(checkScrollToBottom);
-$(window).resize(checkScrollToBottom);
-</script>
-
-<script src="/ga.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Agenda [Mensa]</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
+
 <body>
+	<div id="header">
+		<h1 id="title">Mensa</h1>
+		<form id="loginForm" action="dummy.txt" method="post">
+			<div id="memberName">Nicolas LECLERC</div>
+			<input id="Deconnection" type="submit" value="Déconnexion" name="Deconnexion">
+		</form>
+	</div>
 
-<div id="header">
-<img id="headerLogo" alt="iAgenda" src="images/calendar.png" onclick="jumpTo('.')">
-<div id="headerTitle" class="lineBlock">iAgenda Mobile</div>
-<img id="quitButton" class="hidden" alt="Quit" src="images/close.png" onclick="logout()">
-</div>
-
-<div id="errorMessage"></div>
-<div id='eventList'></div>
-
-<div id="loadStatus" class="listDate">...</div>
-
+	
+	<table id="eventTable" class="hidden">
+		<tbody>
+			<tr>
+				<th colspan="7" style="text-align: center;"><a
+					href="http://www.mensa-idf.org/index.php?action=iAgenda_iagenda&mois=1&annee=2011"
+					style="color: white;">&lt;</a> &nbsp;&nbsp;Fev 2011&nbsp;&nbsp; <a
+					href="http://www.mensa-idf.org/index.php?action=iAgenda_iagenda&mois=3&annee=2011"
+					style="color: white;">&gt;</a></th>
+			</tr>
+			<tr>
+				<td class="dayHeader">lundi</td>
+				<td class="dayHeader">mardi</td>
+				<td class="dayHeader">mercredi</td>
+				<td class="dayHeader">jeudi</td>
+				<td class="dayHeader">vendredi</td>
+				<td class="dayHeader">samedi</td>
+				<td class="dayHeader">dimanche</td>
+			</tr>
+			<tr>
+				<td><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=0"></a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=1">1</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=2">2</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=917">Réunion
+					amicale</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=3">3</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=4">4</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=911">Apéro
+					M's</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=5">5</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=896">Musée
+					du Louvre, exposition "L'antiquité rêvée"</a></li>
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=921">Comité
+					National</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=6">6</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=907">Le
+					Cercle de l'Embellie (ou club littéraire des M's)</a></li>
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=919">Concert
+					de musique ancienne</a></li>
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=922">Comité
+					directeur IDF</a></li>
+				</ul>
+				</span></td>
+			</tr>
+			<tr>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=7">7</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=8">8</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=925">Apéritif
+					LGBT et LGBT friendly</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=9">9</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=924">Conférence-débat:«
+					Diaspora et Panafricanisme »</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=10">10</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=910">Conférence
+					Développement Durable N°1</a></li>
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=932">un
+					mensan sur les planches</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=11">11</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=933">un
+					mensan sur les planches</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=12">12</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=923">Soirée
+					Funky Town</a></li>
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=934">un
+					mensan sur les planches</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=13">13</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=916">Après-midi
+					jeux de société (à partir de 15h)</a></li>
+				</ul>
+				</span></td>
+			</tr>
+			<tr>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=14">14</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=15">15</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=16">16</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=17">17</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=912">Dîner
+					Brasserie (3ème jeudi du mois)</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=18">18</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: #FF9; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=19">19</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: #FF9;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=926">Texas
+					HoldeM's</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=20">20</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=914">Brunch
+					des M's</a></li>
+				</ul>
+				</span></td>
+			</tr>
+			<tr>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=21">21</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=22">22</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=913">Soirée
+					Bar/Pub ! (4ème mardi du mois)</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=23">23</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=24">24</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=920">Conférence:"Chimie
+					durable : une nouvelle donne".</a></li>
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=939">un
+					mensan sur les planches</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=25">25</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=936">un
+					mensan sur les planches</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=26">26</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=938">un
+					mensan sur les planches</a></li>
+				</ul>
+				</span></td>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=27">27</a>
+				<span style="font-size: 9px;">
+				<ul style="margin: 0; padding: 0; background-color: white;">
+					<li><a
+						href="mensa-idf-event.html?mois=2&id=943">café
+					psycho</a></li>
+				</ul>
+				</span></td>
+			</tr>
+			<tr>
+				<td style="background-color: white; vertical-align: top;"><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=28">28</a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=29"></a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=30"></a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=31"></a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=32"></a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=33"></a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+				<td><a
+					href="mensa-idf-event-edit.html?mois=2&annee=2011&iaj=34"></a>
+				<span style="font-size: 9px;">
+				
+				</span></td>
+			</tr>
+		</tbody>
+	</table>
 </body>
-</html>

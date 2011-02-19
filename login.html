@@ -1,38 +1,33 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-<meta charset="UTF-8"/>
-<meta name='HandheldFriendly' content='True' />
-<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="apple-touch-icon" href="images/calendar-big.png" />
-
-<title>iAgenda Mobile</title>
-
-<link rel="shortcut icon" href="images/favicon.png">
-<link rel="stylesheet" href="css/mobile.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Agenda [Mensa]</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 
 <script src="scripts/jquery-1.5.min.js"></script>
-<script type="text/javascript" src="scripts/common.js"></script>
-<script type="text/javascript" src="scripts/login.js"></script>
-<script type="text/javascript">
+<script src="scripts/common.js"></script>
+<script src="scripts/login.js"></script>
 
-$(showLoginForm);
-
+<script>
+$(function(){
+	$('#loginForm').submit(handleLoginSubmit);
+});
 </script>
 
-<script type="text/javascript" src="/ga.js"></script>
+<script src="/ga.js"></script>
 </head>
+
 <body>
-
-<div id="header">
-<img id="headerLogo" alt="iAgenda" src="images/calendar.png">
-<div id="headerTitle" class="lineBlock">iAgenda Mobile</div>
-</div>
-
-<div id="contentBody"></div>
-
+	<iframe name="dummyFrame" class="hidden" src="dummy.txt"></iframe>
+	<div id="header">
+		<h1 id="title">Mensa</h1>
+		<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt" method="post">
+			<input type="text" id="login" name="login">
+			<input type="password" name="password" id="password">
+			<input type="submit" value="Valider">
+		</form>
+	</div>
+	
+	<div id="errorMessage"></div>
 </body>
-</html>
