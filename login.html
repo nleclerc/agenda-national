@@ -16,7 +16,7 @@ $(function(){
 	$('#loginForm').submit(handleLoginSubmit);
 	
 	if (!Modernizr.input.placeholder) {
-		// TODO: handle case without placeholder support.
+		applyPlaceholderWorkaround();
 	}
 });
 
@@ -32,8 +32,8 @@ $(function(){
 		<h1 id="title">Agenda Mensa</h1>
 		<div id="authenticationZone">
 			<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt" method="post">
-				<input type="text" id="login" name="login">
-				<input type="password" name="password" id="password">
+				<input type="text" id="login" name="login" placeholder="Identifiant">
+				<input type="password" name="password" id="password" placeholder="Mot de passe">
 				<input type="submit" value="Valider">
 			</form>
 		</div>

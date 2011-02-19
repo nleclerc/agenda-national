@@ -25,6 +25,10 @@ body {
 	display: none;
 }
 
+input.placeholderWorkaround{
+	color: #CCCCCC;
+}
+
 td {
 	vertical-align: top;
 }
