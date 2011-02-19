@@ -49,13 +49,16 @@ a:hover, a:active {
 	height: 50px;
 }
 
-#title{
+#title {
 	margin: 0;
 	position: absolute;
 	top: 20px;
 	left: 20px;
-	
-	display: compact;
+}
+
+#title a {
+	color: #666666;
+	text-decoration: none;
 }
 
 #authenticationZone {
