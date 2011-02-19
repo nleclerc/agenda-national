@@ -9,7 +9,8 @@ function loadEvent(hash){
 }
 
 function handleEventData(data) {
-	document.title = data.title+' ['+document.title+']';
+//	document.title = data.title+' ['+document.title+']';
+	document.title = $('<div>').html(data.title).text()+' [Agenda Mensa]'; // decode event title because of current db format.
 	
 	eventId = data.id;
 	userId = data.userid;
