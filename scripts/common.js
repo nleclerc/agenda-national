@@ -6,19 +6,37 @@ function initialize(){
 			setErrorMessage('Erreur serveur: '+x.status);
 		}
 	});
-	
-	processCurrentAction();
 }
 
-function setLoggedIn(data, skipProcess) {
+function getJson(url, parms, callback) {
+	$.getJSON(url, parms, function(data){
+		if (processLogin(data))
+			callback(data);
+	});
+}
+
+function processLogin(data) {
+	if (!data.loggedIn) {
+		jumpTo('login.html');
+		return false;
+	}
+	else
+		setLoggedIn(data);
+	
+	if (data.errorMessage) {
+		setErrorMessage(data.errorMessage);
+		return false;
+	}
+	
+	return true;
+}
+
+function setLoggedIn(data) {
 	var authZone = $('#authenticationZone');
 	authZone.html('');
 	
 	authZone.append($('<div id="memberName">').html(data.username));
 	authZone.append($('<input type="submit">').val('Déconnection').click(logout));
-	
-	if(!skipProcess)
-		processCurrentAction();
 }
 
 function processCurrentAction(){
@@ -108,6 +126,11 @@ function getCurrentDate(){
 	return formatDate(new Date());
 }
 
+function getToday(){
+	var today = new Date();
+	return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+}
+
 function getDoubleDigit(number){
 	var result = ''+number;
 	
@@ -171,6 +194,26 @@ function setErrorMessage(message){
 function addMonth(date){
 	return new Date(date.getFullYear(), date.getMonth()+1, 1);
 }
+
+function removeDay(ref){
+	return modDate(ref, -1);
+}
+
+function addDay(ref){
+	return modDate(ref, 1);
+}
+
+function modDate(ref, dayDelta, monthDelta, yearDelta){
+	if (!yearDelta)
+		yearDelta = 0;
+	if (!monthDelta)
+		monthDelta = 0;
+	if (!dayDelta)
+		dayDelta = 0;
+	
+	return new Date(ref.getFullYear()+yearDelta, ref.getMonth()+monthDelta, ref.getDate()+dayDelta);
+}
+
 
 function isBefore(testedDate, referenceDate){
 	return parseDate(testedDate) < parseDate(referenceDate);

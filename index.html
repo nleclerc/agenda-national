@@ -9,18 +9,18 @@
 <script src="scripts/modernizr-1.6.min.js"></script>
 <script src="scripts/common.js"></script>
 <script src="scripts/index.js"></script>
-<script src="scripts/login.js"></script>
 
 <script>
-$(initialize);
+$(function(){
+	initialize();
+	loadEvents();
+});
 </script>
 
 <script src="/ga.js"></script>
 </head>
 
 <body>
-	<iframe name="dummyFrame" class="hidden" src="dummy.txt"></iframe>
-	
 	<div id="header">
 		<h1 id="title">Mensa</h1>
 		<div id="authenticationZone"></div>

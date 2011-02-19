@@ -26,20 +26,11 @@ body {
 }
 
 a:link {
-	font-weight: bold;
 	text-decoration: none;
-	color: #C30;
-}
-
-a:visited {
-	font-weight: bold;
-	text-decoration: none;
-	color: #666;
 }
 
 a:hover, a:active {
-	text-decoration: none;
-	color: #666;
+	text-decoration: underline;
 }
 
 .select {
@@ -83,7 +74,7 @@ a:hover, a:active {
 }
 
 #authenticationZone input[type=submit] {
-	background-color: #C30;
+	background-color: #CC3300;
 	color: white;
 }
 
@@ -96,74 +87,93 @@ a:hover, a:active {
 	display: inline;
 }
 
-#eventTable ul {
-	margin: 0;
-	padding: 0 0 0 30px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	list-style-type: none;
-}
-
-#eventTable li {
-	padding-left: 12px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
-
-#eventTable .dayHeader{
-	width: 80px;
-	text-align: center;
-}
-
 #eventTable {
 	border: 1px solid gray;
 	border-collapse: collapse;
-	background-color: #EEE;
-	margin: 0 auto;
-	margin-top: 1em;
+	width: 100%;
+}
+
+#eventTable td {
+	border: 1px gray solid;
 }
 
 #eventTable th {
 	text-align: center;
 	border: 1px gray solid;
-	background-color: #C30;
+	background-color: #CC3300;
 	color: white;
-}
-
-#eventTable td {
-	border: 1px gray solid;
 	padding: 2px 5px;
 }
 
-#eventTable table.admin {
-	width: 500px;
-	border: 1px gray solid;
-	background-color: #EEE;
-}
-
-#eventTable th.admin {
-	text-align: center;
-	border: 1px gray solid;
-	background-color: #C30;
-	color: white;
-}
-
-#eventTable td.admin {
+#eventTable .dayHeader{
 	width: 100px;
+	text-align: center;
+	padding: 2px 5px;
+	background-color: #EEEEEE;
+}
+
+#eventTable .dayCell {
+	vertical-align: top;
+	height: 50px;
+	padding: 0;
+	font-size: small;
+}
+
+.dayCell .dateLabel{
+	background-color: #EEEEEE;
+	padding: 0 3px;
+}
+
+.paddingMonth .dateLabel{
+	color: #BBBBBB;
+}
+
+.dayCell ul {
+	padding: 0;
+	margin: 0;
+	padding-left: 18px;
+	padding-right: 3px;
+	list-style-type: square;
+}
+
+.today{
+	background-color: #feffce;
+}
+
+.dayCell li {
+	color: #666666;
+	margin-bottom: 3px;
+}
+
+.eventLink {
+	font-weight: normal;
+	color: #666666;
+}
+
+.highlighted {
+	color: #CC3300;
+}
+
+#eventTable .paddingMonth{
+	background-color: #EEEEEE;
+}
+
+#eventTable .dateLabel{
+	text-align: right;
 }
 
 #eventTable input[type=submit] {
 	width: 80px;
 	height: 20px;
-	background-color: #C30;
-	color: #000;
+	background-color: #CC3300;
+	color: black;
 }
 
 #eventTable input[type=submit].admin {
 	width: 50px;
 	height: 20px;
-	background-color: #C30;
-	color: #000;
+	background-color: #CC3300;
+	color: black;
 }
 
 #eventTable .warning {
@@ -186,8 +196,8 @@ a:hover, a:active {
 #buffet input[type="submit"] {
 	display: block;
 	margin: 1ex auto;
-	background-color: #C30;
-	color: #FFF;
+	background-color: #CC3300;
+	color: white;
 }
 
 /***lselect***/
@@ -199,21 +209,15 @@ a:hover, a:active {
 }
 
 #lselect h3 {
-	color: #666;
-	border-top: 1px #666 solid;
-	border-bottom: 1px #666 solid;
+	color: #666666;
+	border-top: 1px #666666 solid;
+	border-bottom: 1px #666666 solid;
 }
 
 #lselect ul,#blog ul {
 	margin: 20px 0 20px 0;
 	padding: 0;
 	list-style-type: none;
-}
-
-#lselect li,#blog li {
-	padding-left: 12px;
-	margin-top: 10px;
-	margin-bottom: 10px;
 }
 
 #lselect a {
@@ -229,7 +233,7 @@ a:hover, a:active {
 }
 
 #lselect a.c {
-	color: #999;
+	color: #999999;
 	font-weight: normal;
 	text-decoration: none;
 	padding-left: 0;
