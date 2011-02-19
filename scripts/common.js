@@ -9,6 +9,7 @@ function initialize(){
 }
 
 function getJson(url, parms, callback) {
+	setErrorMessage();
 	$.getJSON(url, parms, function(data){
 		if (processLogin(data))
 			callback(data);
@@ -187,8 +188,13 @@ function beautifyDate(date, referenceDate){
 
 function setErrorMessage(message){
 	var errorZone = $("#errorMessage");
-	errorZone.addClass("errorMessage");
-	errorZone.html(message);
+	if(message){
+		errorZone.addClass("errorMessage");
+		errorZone.html(message);
+		errorZone.show();
+	}
+	else
+		errorZone.hide();
 }
 
 function addMonth(date){

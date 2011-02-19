@@ -6,15 +6,33 @@ var listingDate = new Date();
 var monthLabels = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
 var dayLabels = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 
-function loadEvents(){
-	getJson("services/listEvents.php", {month:listingDate.getMonth()+1, year:listingDate.getFullYear()}, buildEventTable);
+function loadEvents(hash){
+	var listingDate = new Date();
+	
+	if (hash && hash.match(/^#\d{4}-\d{2}$/)) {
+		var tokens = hash.substr(1).split('-');
+		listingDate = new Date(tokens[0], parseInt(tokens[1])-1)
+	}
+
+	var listingMonth = listingDate.getMonth()+1;
+	var listingYear = listingDate.getFullYear();
+
+	getJson("services/listEvents.php", {month:listingMonth, year:listingYear}, buildEventTable);
+}
+
+function createMonthLink(year, month, label){
+	var targetDate = new Date(year, month-1);
+	return $('<a>').addClass('monthLink').text(label).attr({href:'#'+targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1)});
 }
 
 function buildEventTable(data) {
 	var events = data.events;
 	
 	var table = $('<table id="eventTable">');
-	$('<tr>').appendTo(table).append($('<th colspan="7">').text(monthLabels[data.month-1]+' '+data.year));
+	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table))
+	createMonthLink(data.year, parseInt(data.month)-1, '<').appendTo(globalHeader);
+	$('<span>').text(monthLabels[data.month-1]+' '+data.year).appendTo(globalHeader);
+	createMonthLink(data.year, parseInt(data.month)+1, '>').appendTo(globalHeader);
 	
 	var dayHeaders = $('<tr>').appendTo(table);
 	$(dayLabels).each(function(index, item){

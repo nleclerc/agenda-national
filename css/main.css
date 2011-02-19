@@ -124,6 +124,12 @@ a:hover, a:active {
 	padding: 0 3px;
 }
 
+.monthLink, .monthLink:visited {
+	color: white;
+	padding: 0 10px;
+	text-decoration: none;
+}
+
 .paddingMonth .dateLabel{
 	color: #BBBBBB;
 }
