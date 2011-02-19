@@ -29,11 +29,11 @@ td {
 	vertical-align: top;
 }
 
-a:link {
+a, a:VISITED {
 	text-decoration: none;
 }
 
-a:hover, a:active {
+a:HOVER, a:ACTIVE {
 	text-decoration: underline;
 }
 
