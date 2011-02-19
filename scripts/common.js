@@ -8,6 +8,10 @@ function initialize(){
 	});
 }
 
+function setMainContent(node){
+	$('#mainContent').html('').append(node);
+}
+
 function getJSON(url, parms, callback) {
 	setErrorMessage();
 	$.getJSON(url, parms, function(data){

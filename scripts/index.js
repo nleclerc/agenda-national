@@ -76,7 +76,7 @@ function buildEventTable(data) {
 		$('<li>').append(link).appendTo(cellIndex[currentEvent.date]);
 	}
 	
-	$('#mainContent').html('').append(table);
+	setMainContent(table);
 }
 
 function isMonday(date){

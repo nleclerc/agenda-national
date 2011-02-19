@@ -25,24 +25,16 @@ body {
 	display: none;
 }
 
+td {
+	vertical-align: top;
+}
+
 a:link {
 	text-decoration: none;
 }
 
 a:hover, a:active {
 	text-decoration: underline;
-}
-
-.select {
-	font-weight: bold;
-	font-size: 18px;
-	line-height: 22px;
-}
-
-.archives {
-	font-weight: bold;
-	font-size: 18px;
-	line-height: 22px;
 }
 
 #header{
@@ -90,7 +82,7 @@ a:hover, a:active {
 	display: inline;
 }
 
-#eventTable {
+#eventTable, #eventBody {
 	border: 1px solid gray;
 	border-collapse: collapse;
 	width: 100%;
@@ -109,6 +101,7 @@ a:hover, a:active {
 }
 
 #eventTable .dayHeader{
+	font-weight: bold;
 	width: 100px;
 	text-align: center;
 	padding: 2px 5px;
@@ -181,77 +174,89 @@ a:hover, a:active {
 #eventTable input[type=submit].admin {
 	width: 50px;
 	height: 20px;
-	background-color: #CC3300;
+	background-color: #CC3300;eventBody
 	color: black;
 }
 
-#eventTable .warning {
-	color: red;
+
+#eventBody th, #eventBody td {
+	border: 1px gray solid;
 }
 
-#buffet {
-	line-height: 18px;
-}
-
-#buffet select {
-	font-size: 11px;
-}
-
-#buffet textarea {
-	font-size: 11px;
-	margin: 5px 10px;
-}
-
-#buffet input[type="submit"] {
-	display: block;
-	margin: 1ex auto;
+#eventBody th {
+	font-size: x-large;
+	text-align: left;
 	background-color: #CC3300;
 	color: white;
+	padding: 2px 5px;
 }
 
-/***lselect***/
-#lselect h3 {
-	padding: 0;
-	margin: 0;
-	width: 199px;
-	height: 21px;
+#eventBody .header {
+	font-weight: bold;
+	background-color: #EEEEEE;
+	padding: 2px 5px;
 }
 
-#lselect h3 {
-	color: #666666;
-	border-top: 1px #666666 solid;
-	border-bottom: 1px #666666 solid;
-}
-
-#lselect ul,#blog ul {
-	margin: 20px 0 20px 0;
-	padding: 0;
-	list-style-type: none;
-}
-
-#lselect a {
-	padding-left: 18px;
-	display: block;
-	background-repeat: no-repeat;
-	background-position: 0 2px;
-}
-
-#lselect a:hover {
-	padding-left: 18px;
-	display: block;
-}
-
-#lselect a.c {
-	color: #999999;
+#eventDate, #eventAuthor, #eventAuthor a {
 	font-weight: normal;
+	color: #ccaca2;
+}
+
+#eventAuthor {
+	font-size: medium;
+	font-style: italic;
+}
+
+#eventDescription {
+	padding: 10px 5px;
+}
+
+#eventDescription .highlight {
+	font-weight: bold;
+	color: black;
+}
+
+#eventDescription a {
+	color: #CC3300;
+}
+
+#participantColumn {
+	padding: 0;
+}
+
+#participantColumn, #participantTable {
+	width: 250px;
+}
+
+#participantTable {
+	border-collapse: collapse;
+	border: none;
+}
+
+#participantTable td {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	padding: 3px 5px;
+}
+
+.participantLink, .participantLink:HOVER{
+	cursor: pointer;
 	text-decoration: none;
-	padding-left: 0;
-	display: inline;
+	display: block;
 }
 
-#lselect a.c:hover {
-	padding-left: 0;
-	display: inline;
+.participantName{
+	font-weight: bold;
+}
+.participantDetails{
+	color: #BBBBBB;
+	font-style: italic;
 }
 
-
+.ellipsedText{
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

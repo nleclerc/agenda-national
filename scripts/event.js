@@ -1,40 +1,59 @@
 var eventId = null;
 var userId = null;
 
-function loadEvent(){
-	$.getJSON("services/getEventData.php"+window.location.search, null, handleData);
+function loadEvent(hash){
+	if (hash && hash.match(/#\d+/))
+		getJSON("services/getEventData.php", {eventId: hash.substr(1)}, handleEventData);
+	else
+		setErrorMessage('Evènement non spécifié.');
 }
 
-function showEventBody(){
-	$('#eventbody').fadeIn(200);
-}
-
-function handleData(data) {
-	if (isDefined(data.loggedIn) && !data.loggedIn) {
-		window.location.href = "login.html";
-		return;
-	}
-	
-	if (data.errorMessage)
-		setErrorMessage(data.errorMessage);
-	
+function handleEventData(data) {
 	if (data.isParticipating) {
-		$('#eventDetails').addClass('participatingEvent');
-		enable($('#unsubscribeButton'));
+//		$('#eventDetails').addClass('participatingEvent');
+//		enable($('#unsubscribeButton'));
 	}
-	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length)
-		enable($('#subscribeButton'));
+	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length){
+//		enable($('#subscribeButton'));
+	}
 	
 	eventId = data.id;
 	userId = data.userid;
 	
-	setLoggedIn(data.username);
+	var eventTable = $('<table>').attr({id:'eventBody'});
+	var headerCell = $('<th>').attr({colspan:2}).appendTo($('<tr>').appendTo(eventTable));
 	
-	$('#eventDetailsTitle').html(data.title);
-	document.title = data.title+' ['+document.title+']';
+	$('<span>').attr({id:'eventDate'}).text(data.date+' ').appendTo(headerCell);
+	$('<span>').attr({id:'eventTitle'}).html(data.title).appendTo(headerCell);
 	
-	$('#eventDate').html(beautifyDate(data.date, getCurrentDate()));
+	var authorLink = $('<a>').attr({id:'authorLink'}).html(data.author);
+	if (data.authorEmail)
+		authorLink.attr({href:'mailto:'+data.authorEmail+'?subject=[iAgenda] '+data.title});
 	
+	$('<span>').attr({id:'eventAuthor'}).text(' par ').append(authorLink).appendTo(headerCell);
+	
+	eventTable.append('<tr><td class="header">Description</td><td class="header">Participants ( '+
+			data.participants.length+' / '+
+			formatMaxParticipants(data.maxParticipants)+' )</td></tr>');
+	
+	var bodyRow = $('<tr>').appendTo(eventTable);
+	
+	$('<td>').attr({id:'eventDescription'}).html(formatDescription(data.description)).appendTo(bodyRow);
+	
+	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<tr>').attr({id:'participantColumn'}).appendTo(bodyRow));
+	
+	for (var i=0; i<data.participants.length; i++) {
+		var currentParticipant = data.participants[i];
+		var row = $('<tr>').appendTo(participantTable);
+		$('<a>').addClass('participantLink').append(
+			$('<div>').addClass('participantName').html(currentParticipant.name)
+		).append(
+			$('<div>').addClass('participantDetails').html(currentParticipant.id+' - '+currentParticipant.email)
+		).appendTo($('<td>').appendTo(row));
+	}
+	
+	
+	/*
 	if (data.authorEmail)
 		$('#eventAuthor').html('<a id="organizerMailto" href="mailto:'+data.authorEmail+'?subject=[iAgenda] '+data.title+'">'+data.author+'</a>');
 	else
@@ -50,6 +69,9 @@ function handleData(data) {
 	}
 	
 	showEventBody();
+	*/
+	
+	setMainContent(eventTable);
 }
 
 function formatDescription(source) {
