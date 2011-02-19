@@ -45,11 +45,16 @@ function handleEventData(data) {
 	for (var i=0; i<data.participants.length; i++) {
 		var currentParticipant = data.participants[i];
 		var row = $('<tr>').appendTo(participantTable);
-		$('<a>').addClass('participantLink').append(
-			$('<div>').addClass('participantName').html(currentParticipant.name)
-		).append(
-			$('<div>').addClass('participantDetails').html(currentParticipant.id+' - '+currentParticipant.email)
-		).appendTo($('<td>').appendTo(row));
+		var name = $('<div>').addClass('participantName').html(currentParticipant.name);
+		var details = $('<div>').addClass('participantDetails').html(currentParticipant.id);
+		
+		if (currentParticipant.id == data.userid)
+			name.addClass('highlighted');
+		
+		if (currentParticipant.email)
+			details.append(' - '+currentParticipant.email);
+		
+		$('<a>').addClass('participantLink').append(name).append(details).appendTo($('<td>').appendTo(row));
 	}
 	
 	
