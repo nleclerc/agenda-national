@@ -36,7 +36,10 @@ try {
 				throw new Exception('Autheur inconnu : '.$authorId);
 			
 			$eventDetails['author'] = $authorDetails['name'];
-			$eventDetails['authorEmail'] = $authorDetails['email'];
+			
+			if (isset($authorDetails['email']))
+				$eventDetails['authorEmail'] = $authorDetails['email'];
+			
 			$eventDetails["isParticipating"] = in_array($userId, $eventDetails['participants']);
 			$eventDetails['participants'] = $dbm->findMemberShortDataBatch($eventDetails['participants']);
 			
