@@ -8,7 +8,7 @@ function initialize(){
 	});
 }
 
-function getJson(url, parms, callback) {
+function getJSON(url, parms, callback) {
 	setErrorMessage();
 	$.getJSON(url, parms, function(data){
 		if (processLogin(data))

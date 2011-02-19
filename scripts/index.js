@@ -17,7 +17,7 @@ function loadEvents(hash){
 	var listingMonth = listingDate.getMonth()+1;
 	var listingYear = listingDate.getFullYear();
 
-	getJson("services/listEvents.php", {month:listingMonth, year:listingYear}, buildEventTable);
+	getJSON("services/listEvents.php", {month:listingMonth, year:listingYear}, buildEventTable);
 }
 
 function createMonthLink(year, month, label){
