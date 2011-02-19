@@ -67,27 +67,29 @@ a:hover, a:active {
 	display: compact;
 }
 
-#loginForm {
+#authenticationZone {
 	position: absolute;
 	top: 20px;
 	right: 20px;
-	
 	white-space: nowrap;
-	display: compact;
 	font-size: large;
 }
 
-#loginForm input{
+#loginForm {
+}
+
+#authenticationZone input{
 	border: solid 1px #666666;
 }
 
-#loginForm input[type=submit] {
+#authenticationZone input[type=submit] {
 	background-color: #C30;
 	color: white;
 }
 
-#loginForm input[type=text], #loginForm input[type=password] {
+#authenticationZone input[type=text], #authenticationZone input[type=password] {
 	width: 100px;
+	margin-right: 5px;
 }
 
 #memberName{

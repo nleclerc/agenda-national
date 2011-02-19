@@ -1,36 +1,4 @@
 
-function setContentBody (html){
-	$('#contentBody').hide().html(html).fadeIn(200);
-}
-
-function showLoginForm(){
-	
-	var body = '';
-	
-	// The iframe and form action are used to allow browsers to save login information.
-	body += '<iframe name="dummyFrame" class="hidden" src="dummy.txt"></iframe>';
-	body += '<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt" method="post">';
-	body += '<div id="errorMessage"></div>';
-	body += '<div class="inputLabel">Identifiant</div>';
-	body += '<input type="text" id="login" name="login">';
-
-	body += '<div class="inputLabel">Mot de passe</div>';
-	body += '<input type="password" id="password" name="password">';
-
-	body += '<input id="loginSubmit" type="submit" value="Valider">';
-
-	body += '<a class="footerLink" href="mailto:nicolas.leclerc@mensa.fr?subject=[MENSA-AGENDA] Remarque">Contact</a>';
-	body += '<a class="footerLink" href="https://github.com/mensa-france/agenda-national">Code Source</a>';
-	body += '<a class="footerLink" id="qrcodelink" href="#" onclick="toggleQRCode();return false;">QRCode</a>';
-
-	body += '<div id="qrcode"></div>';
-	body += '</form>';
-		
-	setContentBody(body);
-	
-	$('#loginForm').submit(handleLoginSubmit);
-}
-
 function handleLoginSubmit(eventObject){
 	$.getJSON("services/login.php", {login: $('#login').val(), password: $('#password').val()}, handleLoginresult);
 }
@@ -40,16 +8,21 @@ function handleLoginresult(data){
 		setErrorMessage(data.errorMessage);
 	else if (!data.loggedIn)
 		setErrorMessage("Erreur de login.");
-	else {
-//		$('#headerTitle').html(data.username);
-		jumpTo(".");
-	}
+	else
+		setLoggedIn(data.username);
 }
 
-function toggleQRCode(){
-	var code = $('#qrcode');
-	if (code.html() == '')
-		code.html('<img class="qrcode" src="http://chart.apis.google.com/chart?cht=qr&chs=150x150&choe=UTF-8&chld=chld=L|1&chl='+window.location.href+'">');
-	else
-		code.html('');
+function showLoginForm() {
+	$('#mainContent').html('');
+	$('#authenticationZone').append(
+		$('<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt" method="post">'+
+		'<input type="text" id="login" name="login" placeholder="identifiant">'+
+		'<input type="password" name="password" id="password" placeholder="mot de passe">'+
+		'<input type="submit" value="Valider">'+
+		'</form>').submit(handleLoginSubmit)
+	);
+	
+	if (!Modernizr.input.placeholder) {
+		// TODO: handle case without placeholder support.
+	}
 }

@@ -1,73 +1,26 @@
 
+
 var currentDate = getCurrentDate();
 var listingDate = new Date();
 
-var blockIndex = new Object();
-var eventCount = 0;
-
-var stopLoading = false;
-var eventLoading = false;
-
-function setLoadStatus(data){
-	$('#loadStatus').html(data);
-}
-
-function resetLoadStatus(){
-	setLoadStatus('<a href="javascript:loadNextEvents()">Charger plus d\'évènements...</a>');
-}
-
-function isBottom(){
-	// compares to docheight-1 because of android browser bug.
-	return ($(window).height()+$(window).scrollTop()) >= ($(document).height()-1);
-}
-
-function checkScrollToBottom(){
-	if (isBottom()) {
-		loadNextEvents();
-		return true;
-	}
-	
-	return false;
-}
-
-function loadNextEvents(){
-	if (!eventLoading) {
-		if (!stopLoading) {
-			eventLoading = true;
-			setLoadStatus('Chargement en cours...');
-			$.getJSON("services/listEvents.php", {month:listingDate.getMonth()+1, year:listingDate.getFullYear()}, handleNewEvents);
-		}
-	}
+function loadEvents(){
+	$.getJSON("services/listEvents.php", {month:listingDate.getMonth()+1, year:listingDate.getFullYear()}, handleNewEvents);
 }
 
 function handleNewEvents(data){
-	eventLoading = false;
-	
-	if (isDefined(data.loggedIn) && !data.loggedIn) {
-		window.location.href = "login.html";
+	if (!data.loggedIn) {
+		showLoginForm();
 		return;
 	}
+	else
+		setLoggedIn(data, true);
 	
 	if (data.errorMessage)
 		setErrorMessage(data.errorMessage);
 	else {
-		if (data.events.length == 0) {
-			// found empty month, stop loading
-			stopLoading = true;
-			setLoadStatus("Plus d'autres évènements ensuite.");
-		} else {
-			listingDate = addMonth(listingDate);
-			
-			setLoggedIn(data.username);
-			
-			for (var i=0; i<data.events.length; i++)
-				if (!isBefore(data.events[i].date, currentDate))
-					addEvent(data.events[i]);
-			
-			resetLoadStatus();
-		}
-		
-		checkScrollToBottom();
+		for (var i=0; i<data.events.length; i++)
+			if (!isBefore(data.events[i].date, currentDate))
+				addEvent(data.events[i]);
 	}
 }
 

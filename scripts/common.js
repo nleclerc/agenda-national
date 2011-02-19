@@ -1,8 +1,30 @@
 
-function setLoggedIn(username){
-	$('#headerTitle').html(username);
-	$('#quitButton').show();
+
+function initialize(){
+	$.ajaxSetup({
+		error:function(x){
+			setErrorMessage('Erreur serveur: '+x.status);
+		}
+	});
+	
+	processCurrentAction();
 }
+
+function setLoggedIn(data, skipProcess) {
+	var authZone = $('#authenticationZone');
+	authZone.html('');
+	
+	authZone.append($('<div id="memberName">').html(data.username));
+	authZone.append($('<input type="submit">').val('Déconnection').click(logout));
+	
+	if(!skipProcess)
+		processCurrentAction();
+}
+
+function processCurrentAction(){
+	loadEvents();
+}
+
 
 function isDefined(varname){
 	return typeof(varname) != "undefined";
