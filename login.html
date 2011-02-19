@@ -6,13 +6,20 @@
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
 <script src="scripts/jquery-1.5.min.js"></script>
+<script src="scripts/modernizr-1.6.min.js"></script>
 <script src="scripts/common.js"></script>
 <script src="scripts/login.js"></script>
 
 <script>
 $(function(){
 	$('#loginForm').submit(handleLoginSubmit);
+	
+	if (!Modernizr.input.placeholder) {
+		// TODO: handle case without placeholder support.
+	}
 });
+
+
 </script>
 
 <script src="/ga.js"></script>
@@ -22,14 +29,14 @@ $(function(){
 	<iframe name="dummyFrame" class="hidden" src="dummy.txt"></iframe>
 	<div id="header">
 		<h1 id="title">Mensa</h1>
-		<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt" method="post">
-			<input type="text" id="login" name="login">
-			<input type="password" name="password" id="password">
-			<input type="submit" value="Valider">
-		</form>
+		<div id="authenticationZone">
+			<form name="loginForm" id="loginForm" target="dummyFrame" action="dummy.txt" method="post">
+				<input type="text" id="login" name="login">
+				<input type="password" name="password" id="password">
+				<input type="submit" value="Valider">
+			</form>
+		</div>
 	</div>
 	
 	<div id="errorMessage"></div>
-	
-	<div id="mainContent"></div>
 </body>
