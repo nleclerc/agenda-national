@@ -228,6 +228,7 @@ a:HOVER, a:ACTIVE {
 
 #eventDescription {
 	padding: 3px 5px;
+	width: 100%;
 }
 
 #eventDescription .highlight {
