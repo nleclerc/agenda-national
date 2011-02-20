@@ -5,15 +5,16 @@
 <title>Agenda Mensa</title>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
-<script src="scripts/jquery-1.5.min.js"></script>
-<script src="scripts/modernizr-1.6.min.js"></script>
+<script src="scripts/jquery-1.4.4.min.js"></script>
 <script src="scripts/common.js"></script>
 <script src="scripts/member.js"></script>
 
 <script>
-initialize();
-$(window).bind('hashchange', function(e) {loadMember(location.hash)});
-loadMember(location.hash);
+$(function(){
+	initialize();
+	$(window).bind('hashchange', function(e) {loadMember(location.hash)});
+	loadMember(location.hash);
+});
 </script>
 
 <script src="/ga.js"></script>
