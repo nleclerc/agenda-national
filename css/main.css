@@ -324,6 +324,11 @@ th {
 	font-family: arial, sans-serif;
 }
 
+#deleteButton {
+	color: #CC3300;
+	font-weight: bold;
+}
+
 #cancelLink {
 	color: #666666;
 }
