@@ -196,13 +196,13 @@ th {
 	padding: 2px 5px;
 }
 
-#eventAuthor, #eventAuthor a {
+#eventAuthor, #eventAuthor a, #memberDetails {
 	font-size: small;
 	font-weight: normal;
 	color: #fcbda8;
 }
 
-#eventAuthor {
+#eventAuthor, #memberDetails {
 	font-style: italic;
 }
 
@@ -273,4 +273,37 @@ th {
 
 #controlBar{
 	margin-top: 10px;
+}
+
+.clickable{
+	cursor: pointer;
+}
+
+#memberDetails{
+	font-weight: normal;
+	font-style: italic;	
+	color: #fcbda8;
+}
+
+#memberTable .header{
+	background-color: #EEEEEE;
+	padding: 2px 5px;
+}
+
+#memberTable td {
+	padding: 0;
+}
+
+.memberItem, .memberItem:HOVER {
+	color: #666666;
+	padding: 2px 5px;
+	text-decoration: none;
+	display: block;
+}
+
+.memberItem .label {
+	font-weight: bold;
+}
+.memberItem .details {
+	color: #999999;
 }

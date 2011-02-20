@@ -1,64 +1,31 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-<meta charset="UTF-8" />
-<meta name='HandheldFriendly' content='True' />
-<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="apple-touch-icon" href="images/calendar-big.png" />
-
-<title>iAgenda Mobile</title>
-
-<link rel="shortcut icon" href="images/favicon.png">
-<link rel="stylesheet" href="css/mobile.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Agenda Mensa</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
 
 <script src="scripts/jquery-1.5.min.js"></script>
+<script src="scripts/modernizr-1.6.min.js"></script>
 <script src="scripts/common.js"></script>
 <script src="scripts/member.js"></script>
 
 <script>
-$(loadMember);
+initialize();
+$(window).bind('hashchange', function(e) {loadMember(location.hash)});
+loadMember(location.hash);
 </script>
 
 <script src="/ga.js"></script>
 </head>
 
 <body>
-
-<div id="header">
-<img id="headerLogo" alt="iAgenda" src="images/back.png" onclick="history.go(-1)">
-<div id="headerTitle" class="lineBlock">iAgenda Mobile</div>
-<img id="quitButton" class="hidden" alt="Quit" src="images/close.png" onclick="logout()">
-</div>
-
-<div id="errorMessage"></div>
-
-<div id="pageBody" class="hidden">
-	<div id="memberDetails" class="dataBlock">
-		<div id="memberNameBlock">
-			<span id="memberName"></span>
-			<span id="memberRegion"></span>
-			<span id="memberId"></span>
-		</div>
-		<div id="memberMotto" class="hidden"></div>
+	<div id="header">
+		<h1 id="title"><a href=".">Agenda Mensa</a></h1>
+		<div id="authenticationZone"></div>
 	</div>
 	
-	<div id="actionBlock" class="hidden">
-		<div class="listTitle">Actions</div>
-		<div id="actionList" class="list"></div>
-	</div>
+	<div id="errorMessage"></div>
 	
-	<div id="languageBlock" class="hidden">
-		<div class="listTitle">Langues</div>
-		<div id="languageList" class="list"></div>
-	</div>
-	
-	<div id="interestBlock" class="hidden">
-		<div class="listTitle">Intérêts</div>
-		<div id="interestList" class="list"></div>
-	</div>
-</div>
+	<div id="mainContent"></div>
 </body>
-</html>

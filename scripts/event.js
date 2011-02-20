@@ -22,7 +22,7 @@ function handleEventData(data) {
 	
 	var authorLink = $('<a>').attr({id:'authorLink'}).html(data.author);
 	if (data.authorEmail)
-		authorLink.attr({href:'mailto:'+data.authorEmail+'?subject=[iAgenda] '+data.title});
+		authorLink.attr({href:'member.html#'+data.authorId});
 	
 	$('<span>').attr({id:'eventAuthor'}).text(' par ').append(authorLink).appendTo(headerCell);
 	
@@ -50,7 +50,7 @@ function handleEventData(data) {
 		if (currentParticipant.email)
 			details.append(' - '+currentParticipant.email);
 		
-		$('<a>').addClass('participantLink').append(name).append(details).appendTo($('<td>').appendTo(row));
+		$('<a>').attr({href:'member.html#'+currentParticipant.id}).addClass('participantLink').append(name).append(details).appendTo($('<td>').appendTo(row));
 	}
 	
 	description.append('<div id="controlBar">'+

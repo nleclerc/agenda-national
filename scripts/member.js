@@ -1,34 +1,145 @@
-function loadMember(){
-	$.getJSON("services/getMemberData.php"+window.location.search, null, handleData);
+function loadMember(hash){
+	if (hash && hash.match(/#\d+/))
+		getJSON("services/getMemberData.php", {memberId:hash.substr(1)}, handleMemberData);
+	else
+		setErrorMessage('Membre non spécifié.');
 }
 
-function handleData(data){
-	if (isDefined(data.loggedIn) && !data.loggedIn) {
-		window.location.href = "login.html";
-		return;
+function handleMemberData(data){
+	
+	var table = $('<table>').attr({id:'memberTable'});
+	
+	$('<th>').append(data.name+' ').append($('<span>').attr({id:'memberDetails'}).text(data.region+' #'+data.id)).appendTo($('<tr>').appendTo(table));
+	
+	if (data.motto) {
+		createItemRow('Devise', data.motto).appendTo(table);
 	}
 	
-	if (data.errorMessage)
-		setErrorMessage(data.errorMessage);
-	
-	if (data.id) {
-		setLoggedIn(data.username);
+	if (data.contacts && data.contacts.length > 0) {
+		createRow('Contacter', 'header').appendTo(table);
 		
-		$('#memberName').html(data.name);
-		document.title = data.name+' ['+document.title+']';
-		
-		$('#memberId').html('#'+data.id);
-		$('#memberRegion').html(' - '+data.region);
-		
-		if (data.motto)
-			$('#memberMotto').html('"'+data.motto+'"').show();
-		
-		processActions(data);
-		processLanguages(data.languages);
-		processInterests(data.interests);
-		
-		$('#pageBody').fadeIn(200);
+		$(sortActions(data.contacts)).each(function(index, item){
+			createAction(item.type, item.value).appendTo(table);
+		});
 	}
+	
+	if (data.languages && data.languages.length > 0) {
+		createRow('Langues', 'header').appendTo(table);
+		
+		$(data.languages).each(function(index, item){
+			createItemRow(item.name, item.level, null, isFluent(item.level)).appendTo(table);
+		});
+	}
+	
+	if (data.interests && data.interests.length > 0) {
+		createRow('Intérêts', 'header').appendTo(table);
+		
+		$(sortInterests(data.interests)).each(function(index, item){
+			var details = new Array();
+			
+			if (item.skill)
+				details.push(item.skill);
+			if (item.level)
+				details.push(item.level);
+			
+			createItemRow(item.name, details.join(' '), null, isInterestReference(item.skill)).appendTo(table);
+		});
+	}
+	
+	setMainContent(table);
+}
+
+function createRow(content, classname){
+	var row = $('<tr>');
+	var cell = $('<td>').append(content).appendTo(row);
+	if (classname)
+		cell.addClass(classname);
+	
+	return row;
+}
+
+function createItemRow(label, details, url, highlight){
+	var link = $('<a>').addClass('memberItem');
+	
+	if (url){
+		link.attr({href:url});
+		link.addClass('clickable');
+	}
+	
+	var label = $('<div>').addClass('label').html(label).appendTo(link);
+	
+	if (highlight)
+		label.addClass('highlighted');
+	
+	$('<div>').addClass('details').html(details).appendTo(link);
+	
+	return createRow(link);
+}
+
+function createAction(type, value){
+	var message = 'Contacter';
+	var link = null;
+	
+	if (type == "email") {
+		message = "Envoyer un email";
+		link = 'mailto:'+value;
+	} else if (type == "phone") {
+		message = "Appeler sur son fixe";
+		link = 'tel:'+value;
+	} else if (type == "workphone") {
+		message = "Appeler sur son lieu de travail";
+		link = 'tel:'+value;
+	} else if (type == "mobile") {
+		message = "Appeler sur son mobile";
+		link = 'tel:'+value;
+	} else if (type == "address") {
+		message = "Localiser";
+		value = value.replace(/\s+/g,' ');
+		link = 'http://maps.google.fr/maps?q='+value;
+	} else if (type == "website") {
+		message = "Visiter son site";
+		if (!value.match(/:\/\//))
+			value = 'http://'+value;
+		link = value;
+	}
+	
+	return createItemRow(message, value, link);
+}
+
+function sortActions(actionList){
+	if (!actionList)
+		return new Array();
+	
+	function listTypes(actions, typeName){
+		var actionsOfType = new Array();
+		
+		for (var i=actions.length-1; i>=0; i--)
+			if (actions[i].type == typeName){
+				actionsOfType.unshift(actions[i]);
+				actions.splice(i,1);
+			}
+		
+		return actionsOfType;
+	}
+	
+	var typeOrder = ['mobile', 'phone', 'workphone', 'email', 'website'];
+	var actions = actionList.concat();
+	var result = new Array();
+	
+	$.each(typeOrder, function(index, type){
+		result = result.concat(listTypes(actions,type));
+	});
+	
+	result = result.concat(actions); // add remaining actions
+	return result;
+}
+
+function isFluent(languageLevel){
+	return languageLevel == 'Maternelle' || languageLevel == 'Courant' || languageLevel == 'Expert'; 
+};
+
+function isInterestReference(skill){
+	return skill == 'Professionnel' || skill == 'Expert';
 }
 
 function sortInterests(interests){
@@ -81,139 +192,4 @@ function sortInterests(interests){
 	result = result.concat(source);
 	
 	return result;
-}
-
-function processInterests(interests){
-	if (!interests)
-		return;
-	
-	interests = sortInterests(interests);
-	
-	var hasInterests = false;
-	var list = $('#interestList');
-	
-	for (var i=0; i<interests.length; i++){
-		var interest = interests[i];
-		
-		var details = '';
-		
-		if (interest.skill)
-			details += interest.skill;
-		
-		if (interest.level) {
-			if (details)
-				details += ' ';
-			
-			details += interest.level;
-		}
-		
-		list.append(createListItem(interest.name, details).setFirst(!hasInterests).highlight(isInterestReference(interest.skill)));
-		hasInterests = true;
-	}
-	
-	if (hasInterests)
-		$('#interestBlock').show();
-}
-
-function isInterestReference(skill){
-	return skill == 'Professionnel' || skill == 'Expert';
-}
-
-function processLanguages(languages){
-	if (!languages)
-		return;
-	
-	var hasLanguage = false;
-	var list = $('#languageList');
-	
-	for (var i=0; i<languages.length; i++){
-		var l = languages[i];
-		list.append(createListItem(l.name, l.level, null, null, hasLanguage, isFluent(l.level)).setSingleLine());
-		hasLanguage = true;
-	}
-	
-	if (hasLanguage)
-		$('#languageBlock').show();
-}
-
-function isFluent(languageLevel){
-	return languageLevel == 'Maternelle' || languageLevel == 'Courant' || languageLevel == 'Expert'; 
-};
-
-function processActions(data){
-	var actionList = $('#actionList');
-	var hasAction = false;
-	
-	var actions = sortActions(data.contacts)
-	
-	for (var i=0; i<actions.length; i++) {
-		actionList.append(createAction(actions[i].type, actions[i].value, hasAction));
-		hasAction = true;
-	}
-	
-	if (data.address) {
-		actionList.append(createAction('address', data.address.replace(/\n/g,' '), hasAction));
-		hasAction = true;
-	}
-	
-	if (hasAction)
-		$('#actionBlock').show();
-}
-
-function sortActions(actionList){
-	if (!actionList)
-		return new Array();
-	
-	function listTypes(actions, typeName){
-		var actionsOfType = new Array();
-		
-		for (var i=actions.length-1; i>=0; i--)
-			if (actions[i].type == typeName){
-				actionsOfType.unshift(actions[i]);
-				actions.splice(i,1);
-			}
-		
-		return actionsOfType;
-	}
-	
-	var typeOrder = ['mobile', 'phone', 'workphone', 'email', 'website'];
-	var actions = actionList.concat();
-	var result = new Array();
-	
-	$.each(typeOrder, function(index, type){
-		result = result.concat(listTypes(actions,type));
-	});
-	
-	result = result.concat(actions); // add remaining actions
-	return result;
-}
-
-function createAction(type, value, isSubseq){
-	var message = 'Contacter';
-	var link = null;
-	
-	if (type == "email") {
-		message = "Envoyer un email";
-		link = 'mailto:'+value;
-	} else if (type == "phone") {
-		message = "Appeler sur son fixe";
-		link = 'tel:'+value;
-	} else if (type == "workphone") {
-		message = "Appeler sur son lieu de travail";
-		link = 'tel:'+value;
-	} else if (type == "mobile") {
-		message = "Appeler sur son mobile";
-		link = 'tel:'+value;
-	} else if (type == "address") {
-		message = "Localiser";
-		link = 'http://maps.google.fr/maps?q='+value;
-	} else if (type == "website") {
-		message = "Visiter son site";
-		if (value.indexOf('://') >= 0)
-			link = value;
-		else
-			link = 'http://'+value;
-	}
-	
-	return createListItem(message, value, 'action-'+type, link, isSubseq);
 }
