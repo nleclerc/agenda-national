@@ -13,7 +13,7 @@ try {
 	$foundUser = $dbl->findMemberAuthData($dbr, getQueryParameter('login'), getQueryParameter('password'));
 
 	// No need for check because either user is found or exception is raised.
-	registerUserSessionCookies($foundUser);
+	registerUserSession($foundUser);
 	
 	$result['username'] = $foundUser['firstname'].' '.$foundUser['lastname'];
 	$result['userid'] = $foundUser['id'];
