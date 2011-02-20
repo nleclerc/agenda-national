@@ -161,6 +161,7 @@ class LocalMemberDbConnector {
 		$foundMember = $this->db->getRow($query, $memberId);
 		
 		if ($foundMember) {
+			$foundMember['motto'] = stripcslashes($foundMember['motto']); // motto needs unescaping.
 			$foundMember = $this->fillMemberData($foundMember);
 		}
 		
