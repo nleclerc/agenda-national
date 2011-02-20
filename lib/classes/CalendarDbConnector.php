@@ -7,6 +7,23 @@ class CalendarDbConnector {
 		$this->db = new EzPDO('calendar');
 	}
 	
+	public function deleteEvent($currentMemberId, $eventId) {
+		$this->checkOwner($currentMemberId, $eventId);
+		
+		$this->db->execute('DELETE FROM iActivite WHERE id=?',$eventId); // delete event.
+		$this->db->execute('DELETE FROM iInscription WHERE id=?',$eventId); // delete participations.
+	}
+	
+	private function checkOwner($memberId, $eventId) {
+		$row = $this->db->getRow('SELECT membre as author FROM iActivite WHERE id=?', $eventId);
+		
+		if ($row) {
+			if ($row['author'] != $memberId)
+				throw new Exception("Vous n'êtes pas propriétaire de cet évènement.");
+		} else
+			throw new Exception("Evènement non trouvé: $eventId");
+	}
+	
 	private function listEvents($currentMemberId, $whereClause, $parms=null) {
 		$query =
 			'select'.
