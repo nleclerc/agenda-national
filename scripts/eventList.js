@@ -44,11 +44,15 @@ function getCurrentReferenceDate(hash){
 function buildEventTable(data, referenceDate) {
 	var events = data.events;
 	
+	var title = monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear();
+	
+	document.title = title+' [Agenda Mensa]';
+	
 	var table = $('<table id="eventTable">');
 	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table));
 	createMonthLink(referenceDate.getFullYear(), referenceDate.getMonth()-1, '<').appendTo(globalHeader);
 	createMonthLink(referenceDate.getFullYear(), referenceDate.getMonth()+1, '>').appendTo(globalHeader);
-	$('<span>').text(monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear()).appendTo(globalHeader);
+	$('<span>').text(title).appendTo(globalHeader);
 	
 	var dayHeaders = $('<tr>').appendTo(table);
 	$(dayLabels).each(function(index, item){
