@@ -11,7 +11,7 @@ function loadEvents(hash){
 	
 	if (hash && hash.match(/^#\d{4}-\d{2}$/)) {
 		var tokens = hash.substr(1).split('-');
-		listingDate = new Date(tokens[0], parseInt(tokens[1])-1)
+		listingDate = new Date(tokens[0], parseInt(tokens[1])-1);
 	}
 
 	var listingMonth = listingDate.getMonth()+1;
@@ -29,7 +29,7 @@ function buildEventTable(data) {
 	var events = data.events;
 	
 	var table = $('<table id="eventTable">');
-	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table))
+	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table));
 	createMonthLink(data.year, parseInt(data.month)-1, '<').appendTo(globalHeader);
 	$('<span>').text(monthLabels[data.month-1]+' '+data.year).appendTo(globalHeader);
 	createMonthLink(data.year, parseInt(data.month)+1, '>').appendTo(globalHeader);
