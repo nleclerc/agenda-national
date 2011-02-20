@@ -88,17 +88,17 @@ a:HOVER, a:ACTIVE {
 	margin-right: 5px;
 }
 
-#eventTable, #eventBody {
+table {
 	border: 1px solid gray;
 	border-collapse: collapse;
 	width: 100%;
 }
 
-#eventTable td {
+td {
 	border: 1px gray solid;
 }
 
-#eventTable th {
+th {
 	font-size: medium;
 	text-align: left;
 	border: 1px gray solid;
@@ -190,19 +190,6 @@ a:HOVER, a:ACTIVE {
 	color: black;
 }
 
-
-#eventBody th, #eventBody td {
-	border: 1px gray solid;
-}
-
-#eventBody th {
-	font-size: larger;
-	text-align: left;
-	background-color: #CC3300;
-	color: white;
-	padding: 2px 5px;
-}
-
 #eventBody .header {
 	font-weight: bold;
 	background-color: #EEEEEE;
@@ -258,13 +245,15 @@ a:HOVER, a:ACTIVE {
 	border-top: none;
 	border-left: none;
 	border-right: none;
-	padding: 3px 5px;
+	padding: 0;
 }
 
 .participantLink, .participantLink:HOVER{
 	cursor: pointer;
 	text-decoration: none;
 	display: block;
+	color: #666666;
+	padding: 3px 5px;
 }
 
 .participantName{
