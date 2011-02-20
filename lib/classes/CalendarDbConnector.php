@@ -14,14 +14,22 @@ class CalendarDbConnector {
 		$this->db->execute('DELETE FROM iInscription WHERE id=?',$eventId); // delete participations.
 	}
 	
-	private function checkOwner($memberId, $eventId) {
+	private function checkOwner($currentMemberId, $eventId) {
+		$ownerId = $this->getOwnerId($eventId);
+		
+		if (!$ownerId)
+			throw new Exception("Evènement non trouvé: $eventId");
+		elseif ($ownerId != $currentMemberId)
+			throw new Exception("Vous n'êtes pas propriétaire de cet évènement.");
+	}
+	
+	private function getOwnerId($eventId) {
 		$row = $this->db->getRow('SELECT membre as author FROM iActivite WHERE id=?', $eventId);
 		
-		if ($row) {
-			if ($row['author'] != $memberId)
-				throw new Exception("Vous n'êtes pas propriétaire de cet évènement.");
-		} else
-			throw new Exception("Evènement non trouvé: $eventId");
+		if ($row)
+			return intval($row['author']);
+		
+		return null;
 	}
 	
 	private function listEvents($currentMemberId, $whereClause, $parms=null) {
