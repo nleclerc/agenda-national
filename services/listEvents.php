@@ -4,7 +4,7 @@ require '../lib/serviceCommon.php';
 $errorMessage = null;
 $loggedIn = false;
 $result = array();
-	
+
 try {
 	$currentUser = getCurrentUserData();
 	$currentId = $currentUser['id'];

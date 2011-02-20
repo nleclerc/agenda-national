@@ -13,6 +13,9 @@ function loadEvents(hash){
 	var endDate = findEndDate(listingDate);
 
 	getJSON("services/listEvents.php", {startDate:formatDate(startDate,'-'), endDate:formatDate(endDate,'-')}, function(data){
+		if (location.hash != hash)
+			location.hash = hash;
+		
 		buildEventTable(data, listingDate);
 	});
 }
@@ -20,9 +23,8 @@ function loadEvents(hash){
 function createMonthLink(year, month, label){
 	var targetDate = new Date(year, month);
 	return $('<button>').addClass('monthLink').text(label).click(function(){
-		location.hash = targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1);
+		loadEvents('#'+targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1));
 	});
-//	return $('<a>').addClass('monthLink').text(label).attr({href:'#'+targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1)});
 }
 
 function getCurrentReferenceDate(hash){
