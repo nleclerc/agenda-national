@@ -22,7 +22,7 @@ function loadEvents(hash){
 
 function createMonthLink(year, month, label){
 	var targetDate = new Date(year, month);
-	return $('<button>').addClass('monthLink').text(label).click(function(){
+	return $('<button>').addClass('headerButton').text(label).click(function(){
 		loadEvents('#'+targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1));
 	});
 }

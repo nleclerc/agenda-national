@@ -6,10 +6,12 @@ function loadMember(hash){
 }
 
 function handleMemberData(data){
+	document.title = data.name+' [Agenda Mensa]';
 	
 	var table = $('<table>').attr({id:'memberTable'});
 	
-	$('<th>').append(data.name+' ').append($('<span>').attr({id:'memberDetails'}).text(data.region+' #'+data.id)).appendTo($('<tr>').appendTo(table));
+	var header = $('<th>').append(data.name+' ').append($('<span>').attr({id:'memberDetails'}).text(data.region+' #'+data.id)).appendTo($('<tr>').appendTo(table));
+	insertBackButton(header);
 	
 	if (data.motto) {
 		createItemRow('Devise', data.motto).appendTo(table);
@@ -135,7 +137,7 @@ function sortActions(actionList){
 }
 
 function isFluent(languageLevel){
-	return languageLevel == 'Maternelle' || languageLevel == 'Courant' || languageLevel == 'Expert'; 
+	return languageLevel == ('Maternelle' || languageLevel == 'Courant' || languageLevel == 'Expert');
 };
 
 function isInterestReference(skill){

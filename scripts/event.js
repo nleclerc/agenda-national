@@ -21,8 +21,8 @@ function handleEventData(data) {
 	
 	var eventTable = $('<table>').attr({id:'eventBody'});
 	var headerCell = $('<th>').attr({colspan:2}).appendTo($('<tr>').appendTo(eventTable));
-	
 	$('<span>').attr({id:'eventTitle'}).html(data.title).appendTo(headerCell);
+	insertBackButton(headerCell, './#'+getMonthFromDate(data.date));
 	
 	var authorLink = $('<a>').attr({id:'authorLink'}).html(data.author);
 	if (data.authorId && data.authorId != 0)

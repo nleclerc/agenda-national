@@ -47,13 +47,12 @@ function setLoggedIn(data) {
 	authZone.append($('<input>').attr({type:'submit',id:'logoutButton'}).val('Déconnection').click(logout));
 }
 
-function processCurrentAction(){
-	loadEvents();
-}
-
-
-function isDefined(varname){
-	return typeof(varname) != "undefined";
+function getMonthFromDate(date, separator){
+	if(!separator)
+		separator = '/';
+	
+	var tokens = date.split(separator);
+	return tokens[2]+'-'+tokens[1];
 }
 
 function createListItem(title, details, icon, link, isSubseq, isHighlighted, listName, itemId){
@@ -186,15 +185,6 @@ function getWeekDay(datestr){
 	return daysOfWeek[date.getDay()];
 }
 
-function beautifyDate(date, referenceDate){
-	var result = date+' : '+getWeekDay(date);
-	
-	if (referenceDate == date)
-		result = "Aujourd'hui, "+result;;
-	
-	return result;
-}
-
 function setErrorMessage(message){
 	var errorZone = $("#errorMessage");
 	if(message){
@@ -204,10 +194,6 @@ function setErrorMessage(message){
 	}
 	else
 		errorZone.hide();
-}
-
-function addMonth(date){
-	return new Date(date.getFullYear(), date.getMonth()+1, 1);
 }
 
 function removeDay(ref){
@@ -233,10 +219,6 @@ function decodeHtmlEntities(str){
 	return $('<div>').html(str).text();
 }
 
-function isBefore(testedDate, referenceDate){
-	return parseDate(testedDate) < parseDate(referenceDate);
-}
-
 function parseDate(dateString, separator){
 	if (!separator)
 		separator = '/';
@@ -257,6 +239,15 @@ function formatLongDate(datestr, separator){
 	result += date.getFullYear();
 	
 	return result;
+}
+
+function insertBackButton(container, target){
+	$('<button>').text('< Retour').click(function(){
+		if (target)
+			jumpTo(target);
+		else
+			history.back();
+	}).prependTo(container);
 }
 
 function enable(element){

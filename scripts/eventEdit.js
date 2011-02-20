@@ -1,7 +1,6 @@
 
 
 function processEventEditHash(hash) {
-	setCancelLink('.'); // go to home.
 	
 	if (hash.match(/^#\d{2}-\d{2}-\d{4}$/)){
 		var date = hash.substr(1);
@@ -11,8 +10,10 @@ function processEventEditHash(hash) {
 	} else if (hash.match(/^#\d+$/)) {
 		setCancelLink('event.html'+hash); // go to event page.
 		getJSON("services/getEventData.php", {eventId: hash.substr(1)}, handleEditEventData);
-	} else
+	} else {
+		setCancelLink('.'); // go to home.
 		setErrorMessage("Date ou évènement non spécifiés.");
+	}
 }
 
 function submitEventValues() {
@@ -35,7 +36,7 @@ function submitEventValues() {
 }
 
 function enableSubmit() {
-	$('#submitButton').unbind('click').click(submitEventValues).removeAttr('disabled');
+	enable($('#submitButton').unbind('click').click(submitEventValues));
 }
 
 function setEditEventDate(dateStr) {
@@ -60,11 +61,7 @@ function enableDelete(eventId, exitUrl){
 	}).show();
 }
 
-function getMonthFromDate(date, separator){
-	var tokens = date.split(separator);
-	return tokens[2]+'-'+tokens[1];
-}
-
 function setCancelLink(target){
+	insertBackButton($('#backContainer'), target);
 	$('#cancelLink').attr({href:target});
 }
