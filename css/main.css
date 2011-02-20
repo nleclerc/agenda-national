@@ -26,6 +26,10 @@ body {
 	display: none;
 }
 
+ul {
+	list-style-type: square;
+}
+
 input.placeholderWorkaround{
 	color: #CCCCCC;
 }
@@ -34,7 +38,8 @@ td {
 	vertical-align: top;
 }
 
-a, a:VISITED {
+a {
+	color: #CC3300;
 	text-decoration: none;
 }
 
@@ -147,7 +152,6 @@ th {
 	margin: 0;
 	padding-left: 18px;
 	padding-right: 3px;
-	list-style-type: square;
 }
 
 .today{
@@ -222,10 +226,6 @@ th {
 #eventDescription .highlight {
 	font-weight: bold;
 	color: black;
-}
-
-#eventDescription a {
-	color: #CC3300;
 }
 
 #participantColumn {
