@@ -147,10 +147,10 @@ function isInterestReference(skill){
 function sortInterests(interests){
 	
 	function sortLevel(interests){
-		const levels = ['Passionné','Intéressé','Curieux'];
+		var levels = ['Passionné','Intéressé','Curieux'];
 		levels.reverse();
 		
-		const source = interests.concat();
+		var source = interests.concat();
 		var result = new Array();
 		
 		for (var v=0; v<levels.length; v++){
@@ -170,10 +170,10 @@ function sortInterests(interests){
 		return result;
 	}
 	
-	const skills = ['Professionnel','Expert','Éclairé','Débutant'];
+	var skills = ['Professionnel','Expert','Éclairé','Débutant'];
 	skills.reverse();
 	
-	const source = interests.concat();
+	var source = interests.concat();
 	var result = new Array();
 	
 	for (var s=0; s<skills.length; s++){
