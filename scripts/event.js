@@ -9,10 +9,10 @@ function loadEvent(hash){
 }
 
 function handleEventData(data) {
-	// decode event title because of current db format.
+	// decode event title because of potential html entities.
 	// beware of inserting the decoded version in page body
 	// this could lead to script injection.
-	var decodedTitlePotentialyDangerous = $('<div>').html(data.title).text();
+	var decodedTitlePotentialyDangerous = decodeHtmlEntities(data.title);
 	
 	document.title = decodedTitlePotentialyDangerous+' [Agenda Mensa]';
 	
@@ -40,7 +40,7 @@ function handleEventData(data) {
 	
 	var description = $('<td>').attr({id:'eventDescription'}).append(
 		$('<div>').attr({id:'eventDate'}).text(formatLongDate(data.date))
-	).append(formatDescription(data.description)).appendTo(bodyRow);
+	).append($('<div>').html(formatDescription(data.description))).appendTo(bodyRow);
 	
 	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<tr>').attr({id:'participantColumn'}).appendTo(bodyRow));
 	
@@ -50,7 +50,7 @@ function handleEventData(data) {
 		var name = $('<div>').addClass('participantName').html(currentParticipant.name);
 		var details = $('<div>').addClass('participantDetails').html(currentParticipant.id);
 		
-		if (currentParticipant.id == data.userid)
+		if (currentParticipant.id == userId)
 			name.addClass('highlighted');
 		
 		if (currentParticipant.email)
@@ -59,10 +59,17 @@ function handleEventData(data) {
 		$('<a>').attr({href:'member.html#'+currentParticipant.id}).addClass('participantLink').append(name).append(details).appendTo($('<td>').appendTo(row));
 	}
 	
-	description.append('<div id="controlBar">'+
-			'<button type="button" id="subscribeButton" disabled="true" onclick="subscribe()">S\'inscrire</button>'+
-			'<button type="button" id="unsubscribeButton" disabled="true" onclick="unsubscribe()">Se désinscrire</button>'+
+	var controlBar = $('<div id="controlBar">'+
+			'<button id="subscribeButton" disabled="true" onclick="subscribe()">S\'inscrire</button>'+
+			'<button id="unsubscribeButton" disabled="true" onclick="unsubscribe()">Se désinscrire</button>'+
 			'</div>');
+	
+	if (data.authorId == userId)
+		$('<button>').attr({id:'editButton'}).text('Editer').click(function(){
+			jumpTo('eventEdit.html#'+data.id);
+		}).appendTo(controlBar);
+	
+	description.append(controlBar);
 	
 	setMainContent(eventTable);
 	
@@ -73,20 +80,6 @@ function handleEventData(data) {
 	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length){
 		enable($('#subscribeButton'));
 	}
-}
-
-function formatLongDate(datestr){
-	var date = parseDate(datestr);
-	var result = '';
-	result += dayLabels[date.getDay()];
-	result += ' ';
-	result += date.getDate();
-	result += ' ';
-	result += monthLabels[date.getMonth()];
-	result += ' ';
-	result += date.getFullYear();
-	
-	return result;
 }
 
 function formatDescription(source) {

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Agenda Mensa</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+
+<script src="scripts/jquery-1.4.4.min.js"></script>
+<script src="scripts/json2.js"></script>
+<script src="scripts/common.js"></script>
+<script src="scripts/event.js"></script>
+<script src="scripts/eventEdit.js"></script>
+
+<script>
+$(function(){
+	initialize();
+	
+	getJSON("services/checkLoggedIn.php", null, function(){
+		$(window).bind('hashchange', function(e) {processEventEditHash(location.hash)});
+		processEventEditHash(location.hash);
+	});
+});
+</script>
+
+<script src="/ga.js"></script>
+</head>
+
+<body>
+	<div id="header">
+		<h1 id="title"><a href=".">Agenda Mensa</a></h1>
+		<div id="authenticationZone"></div>
+	</div>
+	
+	<div id="errorMessage"></div>
+	
+	<div id="mainContent">
+		<input type="hidden" id="eventIdInput">
+		<input type="hidden" id="dateInput">
+		
+		<table id="editEventTable">
+			<tr>
+				<th colspan="2">Edition Evènement</th>
+			</tr>
+			
+			<tr>
+				<td class="header">Date</td>
+				<td><div id="eventDateLabel"></div></td>
+			</tr>
+			
+			<tr>
+				<td class="header">Titre</td>
+				<td><input type="text" id="titleInput"></td>
+			</tr>
+			
+			<tr>
+				<td class="header">Nb. personnes max.</td>
+				<td>
+					<input type="text" id="maxParticipantsInput" maxlength="3">
+					0 ou vide pour illimité
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="header">Description</td>
+				<td><textarea id="descriptionInput"></textarea></td>
+			</tr>
+			
+			<tr>
+				<td class="header">&nbsp;</td>
+				<td>
+					<button id="submitButton" disabled="disabled">Valider</button>
+					<a id="cancelLink">Annuler</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>

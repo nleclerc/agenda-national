@@ -128,6 +128,52 @@ class CalendarDbConnector {
 		
 		return array_reverse(explode('-', $datestr));
 	}
+		
+	public function setEventData($currentMemberId, $eventData) {
+		// filter text to avoid script injection.
+		$eventData['title'] = $this->filterHtmlString($eventData['title']);
+		$eventData['description'] = $this->filterHtmlString($eventData['description']);
+		
+		if (isset($eventData['id']) && $eventData['id'])
+			$this->updateEvent($currentMemberId, $eventData);
+		else
+			$this->createEvent($currentMemberId, $eventData);
+	}
+	
+	private function createEvent($authorId, $eventData) {
+		$query = 'INSERT INTO iActivite (titre, jour, mois, annee, membre, texte, limite) '.
+				'VALUES (:title,:day,:month,:year,:authorId,:description,:maxParticipants)';
+		
+		$parms = array(':authorId'=>$authorId);
+		
+		foreach($eventData as $key => $value)
+			$parms[":$key"] = $value;
+		
+		$this->db->execute($query, $parms);
+	}
+	
+	private function updateEvent($authorId, $eventData) {
+		$this->checkOwner($authorId, $eventData['id']);
+		
+		$query = 'UPDATE iActivite '.
+				'SET titre=:title, jour=:day, mois=:month, annee=:year, membre=:authorId, texte=:description, limite=:maxParticipants '.
+				'WHERE id=:id';
+		
+		$parms = array(':authorId'=>$authorId);
+		
+		foreach($eventData as $key => $value)
+			$parms[":$key"] = $value;
+		
+		$this->db->execute($query, $parms);
+	}
+	
+	private function filterHtmlString($str) {
+		$result = $str;
+		$result = preg_replace('/&/', '&amp;', $result);
+		$result = preg_replace('/</', '&lt;', $result);
+		$result = preg_replace('/>/', '&gt;', $result);
+		return $result;
+	}
 	
 	public function findEventData($eventId) {
 		$query =
@@ -154,7 +200,7 @@ class CalendarDbConnector {
 				'date' => formatNb($foundEvent['jour'], 2).'/'.formatNb($foundEvent['mois'], 2).'/'.formatNb($foundEvent['annee'], 4),
 				'description' => $foundEvent['description'],
 				'maxParticipants' => $foundEvent['maxParticipants'],
-				'authorId' => $foundEvent['authorId'],
+				'authorId' => intval($foundEvent['authorId']),
 				'participants' => $this->findParticipants($eventId)
 			);
 			

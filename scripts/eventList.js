@@ -68,7 +68,9 @@ function buildEventTable(data, referenceDate) {
 			currentRow = $('<tr>').appendTo(table);
 		
 		var currentCell = $('<td>').addClass('dayCell').appendTo(currentRow);
-		$('<div>').text(currentDate.getDate()).addClass('dateLabel').appendTo(currentCell);
+		$('<div>').addClass('dateLabel').appendTo(currentCell).append(
+			$('<a>').attr({href:'eventEdit.html#'+formatDate(currentDate, '-'),title:'Ajouter un évènement'}).text(currentDate.getDate()).addClass('dateLabel')
+		);
 		
 		if (currentDate.getMonth() == referenceDate.getMonth())
 			currentCell.addClass('currentMonth');

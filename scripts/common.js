@@ -229,14 +229,34 @@ function modDate(ref, dayDelta, monthDelta, yearDelta){
 	return new Date(ref.getFullYear()+yearDelta, ref.getMonth()+monthDelta, ref.getDate()+dayDelta);
 }
 
+function decodeHtmlEntities(str){
+	return $('<div>').html(str).text();
+}
 
 function isBefore(testedDate, referenceDate){
 	return parseDate(testedDate) < parseDate(referenceDate);
 }
 
-function parseDate(dateString){
-	var dateParts = dateString.split("/");
+function parseDate(dateString, separator){
+	if (!separator)
+		separator = '/';
+	
+	var dateParts = dateString.split(separator);
 	return new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
+}
+
+function formatLongDate(datestr, separator){
+	var date = parseDate(datestr, separator);
+	var result = '';
+	result += dayLabels[date.getDay()];
+	result += ' ';
+	result += date.getDate();
+	result += ' ';
+	result += monthLabels[date.getMonth()];
+	result += ' ';
+	result += date.getFullYear();
+	
+	return result;
 }
 
 function enable(element){
