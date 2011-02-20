@@ -2,7 +2,7 @@ var eventId = null;
 var userId = null;
 
 function loadEvent(hash){
-	if (hash && hash.match(/#\d+/))
+	if (hash && hash.match(/^#\d+$/))
 		getJSON("services/getEventData.php", {eventId: hash.substr(1)}, handleEventData);
 	else
 		setErrorMessage('Evènement non spécifié.');
