@@ -85,6 +85,7 @@ a:HOVER, a:ACTIVE {
 
 #memberName{
 	display: inline;
+	margin-right: 5px;
 }
 
 #eventTable, #eventBody {
