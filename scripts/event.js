@@ -18,7 +18,6 @@ function handleEventData(data) {
 	var eventTable = $('<table>').attr({id:'eventBody'});
 	var headerCell = $('<th>').attr({colspan:2}).appendTo($('<tr>').appendTo(eventTable));
 	
-	$('<span>').attr({id:'eventDate'}).text(data.date+' ').appendTo(headerCell);
 	$('<span>').attr({id:'eventTitle'}).html(data.title).appendTo(headerCell);
 	
 	var authorLink = $('<a>').attr({id:'authorLink'}).html(data.author);
@@ -33,7 +32,9 @@ function handleEventData(data) {
 	
 	var bodyRow = $('<tr>').appendTo(eventTable);
 	
-	var description = $('<td>').attr({id:'eventDescription'}).html(formatDescription(data.description)).appendTo(bodyRow);
+	var description = $('<td>').attr({id:'eventDescription'}).append(
+		$('<div>').attr({id:'eventDate'}).text(formatLongDate(data.date))
+	).append(formatDescription(data.description)).appendTo(bodyRow);
 	
 	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<tr>').attr({id:'participantColumn'}).appendTo(bodyRow));
 	
@@ -66,6 +67,20 @@ function handleEventData(data) {
 	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length){
 		enable($('#subscribeButton'));
 	}
+}
+
+function formatLongDate(datestr){
+	var date = parseDate(datestr);
+	var result = '';
+	result += dayLabels[date.getDay()];
+	result += ' ';
+	result += date.getDate();
+	result += ' ';
+	result += monthLabels[date.getMonth()];
+	result += ' ';
+	result += date.getFullYear();
+	
+	return result;
 }
 
 function formatDescription(source) {

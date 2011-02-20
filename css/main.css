@@ -5,8 +5,9 @@ html,body {
 	padding: 0;
 	color: #666666;
 	background: white;
-	font-family: sans-serif;
+	font-family: arial, sans-serif;
 	font-size: small;
+	background-color: white;
 }
 
 body {
@@ -188,7 +189,7 @@ a:HOVER, a:ACTIVE {
 }
 
 #eventBody th {
-	font-size: x-large;
+	font-size: larger;
 	text-align: left;
 	background-color: #CC3300;
 	color: white;
@@ -201,18 +202,26 @@ a:HOVER, a:ACTIVE {
 	padding: 2px 5px;
 }
 
-#eventDate, #eventAuthor, #eventAuthor a {
+#eventAuthor, #eventAuthor a {
+	font-size: small;
 	font-weight: normal;
-	color: #ccaca2;
+	color: #fcbda8;
 }
 
 #eventAuthor {
+	font-style: italic;
+}
+
+#eventDate {
+	margin-top: 5px;
+	margin-bottom: 15px;
+	font-weight: bold;
 	font-size: medium;
 	font-style: italic;
 }
 
 #eventDescription {
-	padding: 10px 5px;
+	padding: 3px 5px;
 }
 
 #eventDescription .highlight {
