@@ -98,7 +98,8 @@ a:HOVER, a:ACTIVE {
 }
 
 #eventTable th {
-	text-align: center;
+	font-size: medium;
+	text-align: left;
 	border: 1px gray solid;
 	background-color: #CC3300;
 	color: white;
@@ -125,10 +126,15 @@ a:HOVER, a:ACTIVE {
 	padding: 0 3px;
 }
 
-.monthLink, .monthLink:visited {
+.monthLink {
+	font-weight: bold;
+	background-color: #812000;
 	color: white;
-	padding: 0 10px;
-	text-decoration: none;
+	border: none;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-right: 4px;
+	cursor: pointer;
 }
 
 .paddingMonth .dateLabel{
@@ -179,7 +185,7 @@ a:HOVER, a:ACTIVE {
 #eventTable input[type=submit].admin {
 	width: 50px;
 	height: 20px;
-	background-color: #CC3300;eventBody
+	background-color: #CC3300;
 	color: black;
 }
 

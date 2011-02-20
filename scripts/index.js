@@ -22,7 +22,10 @@ function loadEvents(hash){
 
 function createMonthLink(year, month, label){
 	var targetDate = new Date(year, month-1);
-	return $('<a>').addClass('monthLink').text(label).attr({href:'#'+targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1)});
+	return $('<button>').addClass('monthLink').text(label).click(function(){
+		location.hash = targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1);
+	});
+//	return $('<a>').addClass('monthLink').text(label).attr({href:'#'+targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1)});
 }
 
 function buildEventTable(data) {
@@ -31,8 +34,8 @@ function buildEventTable(data) {
 	var table = $('<table id="eventTable">');
 	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table));
 	createMonthLink(data.year, parseInt(data.month)-1, '<').appendTo(globalHeader);
-	$('<span>').text(monthLabels[data.month-1]+' '+data.year).appendTo(globalHeader);
 	createMonthLink(data.year, parseInt(data.month)+1, '>').appendTo(globalHeader);
+	$('<span>').text(monthLabels[data.month-1]+' '+data.year).appendTo(globalHeader);
 	
 	var dayHeaders = $('<tr>').appendTo(table);
 	$(dayLabels).each(function(index, item){
