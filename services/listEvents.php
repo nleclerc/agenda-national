@@ -10,16 +10,16 @@ try {
 	$currentId = $currentUser['id'];
 	$loggedIn = true;
 	
-	$month = getQueryParameter('month');
-	$year = getQueryParameter('year');
+	$startDate = getQueryParameter('startDate');
+	$endDate = getQueryParameter('endDate');
 	
-	if (!$month)
-		$errorMessage = "Le mois n'a pas été spécifié.";
-	else if (!$year)
-		$errorMessage = "L'année n'a pas été spécifié.";
+	if (!$startDate)
+		$errorMessage = "La date de début n'a pas été spécifiée.";
+	else if (!$endDate)
+		$errorMessage = "La date de fin n'a pas été spécifiée.";
 	else {
 		$db = new CalendarDbConnector();
-		$events = $db->listEventsForMonth($currentId, $year, $month);
+		$events = $db->listEventLapse($currentId, $startDate, $endDate);
 		
 		$authorsIds = array();
 		
@@ -42,8 +42,6 @@ try {
 		$result = array(
 			"username" => $currentUser['fullname'],
 			"userid" => $currentId,
-			"month" => $month,
-			"year" => $year,
 			"events" => $events
 		);
 	}

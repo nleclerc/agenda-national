@@ -43,18 +43,33 @@ class EzPDO extends PDO {
 		return null;
 	}
 		
-	public function getList($sqlQuery) {
+	public function getList($sqlQuery, $parms=null) {
 		$stm = $this->prepare($sqlQuery);
 		
-		if ($stm->execute(array_slice(func_get_args(), 1)))
+		$actualParms = null;
+		
+		if (is_array($parms))
+			$actualParms = $parms;
+		else
+			$actualParms = array_slice(func_get_args(), 1);
+		
+		if ($stm->execute($actualParms))
 			return $stm->fetchAll();
 		
 		return null;
 	}
 		
-	public function execute($sqlQuery) {
+	public function execute($sqlQuery, $parms=null) {
 		$stm = $this->prepare($sqlQuery);
-		return $stm->execute(array_slice(func_get_args(), 1));
+		
+		$actualParms = null;
+		
+		if (is_array($parms))
+			$actualParms = $parms;
+		else
+			$actualParms = array_slice(func_get_args(), 1);
+		
+		return $stm->execute($actualParms);
 	}
 }
 

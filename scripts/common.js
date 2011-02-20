@@ -173,8 +173,10 @@ function formatMaxParticipants(count){
 	return "illimité";
 }
 
-function formatDate(date) {
-	return getDoubleDigit(date.getDate())+'/'+getDoubleDigit(date.getMonth()+1)+'/'+date.getFullYear();
+function formatDate(date, separator) {
+	if (!separator)
+		separator = '/';
+	return getDoubleDigit(date.getDate())+separator+getDoubleDigit(date.getMonth()+1)+separator+date.getFullYear();
 }
 
 var daysOfWeek = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];

@@ -7,35 +7,46 @@ var monthLabels = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","A
 var dayLabels = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 
 function loadEvents(hash){
-	var listingDate = new Date();
+	var listingDate = getCurrentReferenceDate(hash);
 	
-	if (hash && hash.match(/^#\d{4}-\d{2}$/)) {
-		var tokens = hash.substr(1).split('-');
-		listingDate = new Date(tokens[0], parseInt(tokens[1])-1);
-	}
+	var startDate = findStartDate(listingDate);
+	var endDate = findEndDate(listingDate);
 
-	var listingMonth = listingDate.getMonth()+1;
-	var listingYear = listingDate.getFullYear();
-
-	getJSON("services/listEvents.php", {month:listingMonth, year:listingYear}, buildEventTable);
+	getJSON("services/listEvents.php", {startDate:formatDate(startDate,'-'), endDate:formatDate(endDate,'-')}, function(data){
+		buildEventTable(data, listingDate);
+	});
 }
 
 function createMonthLink(year, month, label){
-	var targetDate = new Date(year, month-1);
+	var targetDate = new Date(year, month);
 	return $('<button>').addClass('monthLink').text(label).click(function(){
 		location.hash = targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1);
 	});
 //	return $('<a>').addClass('monthLink').text(label).attr({href:'#'+targetDate.getFullYear()+'-'+getDoubleDigit(targetDate.getMonth()+1)});
 }
 
-function buildEventTable(data) {
+function getCurrentReferenceDate(hash){
+	var referenceDate = new Date();
+	
+	if (hash && hash.match(/^#\d{4}-\d{2}$/)) {
+		var tokens = hash.substr(1).split('-');
+		
+		// radix is specified in parseint because of leading zeroes bug.
+		// cf http://www.breakingpar.com/bkp/home.nsf/0/87256B280015193F87256C85006A6604
+		referenceDate = new Date(tokens[0], parseInt(tokens[1],10)-1, 1);
+	}
+	
+	return referenceDate;
+}
+
+function buildEventTable(data, referenceDate) {
 	var events = data.events;
 	
 	var table = $('<table id="eventTable">');
 	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table));
-	createMonthLink(data.year, parseInt(data.month)-1, '<').appendTo(globalHeader);
-	createMonthLink(data.year, parseInt(data.month)+1, '>').appendTo(globalHeader);
-	$('<span>').text(monthLabels[data.month-1]+' '+data.year).appendTo(globalHeader);
+	createMonthLink(referenceDate.getFullYear(), referenceDate.getMonth()-1, '<').appendTo(globalHeader);
+	createMonthLink(referenceDate.getFullYear(), referenceDate.getMonth()+1, '>').appendTo(globalHeader);
+	$('<span>').text(monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear()).appendTo(globalHeader);
 	
 	var dayHeaders = $('<tr>').appendTo(table);
 	$(dayLabels).each(function(index, item){
@@ -43,9 +54,8 @@ function buildEventTable(data) {
 	});
 	
 	var today = getToday();
-	var referenceDate = new Date(data.year, data.month-1, 1);
-	var startDate = findStartDate(data.year, data.month);
-	var endDate = findEndDate(data.year, data.month);
+	var startDate = findStartDate(referenceDate);
+	var endDate = findEndDate(referenceDate);
 	
 	var currentRow = null;
 	
@@ -97,8 +107,8 @@ function isSunday(date){
  * @param month
  * @returns {Date}
  */
-function findStartDate(year, month){
-	var startDate = new Date(year, month-1, 1); // substract 1 to month because of 0 index.
+function findStartDate(referenceDate){
+	var startDate = new Date(referenceDate.getFullYear(), referenceDate.getMonth(), 1); // substract 1 to month because of 0 index.
 	
 	while (!isMonday(startDate))
 		startDate = removeDay(startDate);
@@ -113,9 +123,9 @@ function findStartDate(year, month){
  * @param month
  * @returns {Date}
  */
-function findEndDate(year, month){
+function findEndDate(referenceDate){
 	// not substracting 1 to month gets next month and day 0 gets last day of current month.
-	var endDate = new Date(year, month, 0);
+	var endDate = new Date(referenceDate.getFullYear(), referenceDate.getMonth()+1, 0);
 	
 	while (!isSunday(endDate))
 		endDate = addDay(endDate);

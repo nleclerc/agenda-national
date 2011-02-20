@@ -7,7 +7,7 @@ class CalendarDbConnector {
 		$this->db = new EzPDO('calendar');
 	}
 	
-	public function listEventsForMonth($currentMemberId, $year, $month) {
+	private function listEvents($currentMemberId, $whereClause, $parms=null) {
 		$query =
 			'select'.
 			'	a.id,'.
@@ -22,14 +22,24 @@ class CalendarDbConnector {
 			'left join'.
 			'	iInscription i on a.id = i.id and i.ref = ? '.
 			'left join'.
-			'	iInscription ii on a.id = ii.id '.
-			'where'.
-			'	annee=? and'.
-			'	mois=? '.
-			'group by a.id '.
-			'order by jour asc';
+			'	iInscription ii on a.id = ii.id ';
 		
-		$foundEvents = $this->db->getList($query, $currentMemberId, $year, $month);
+		if ($whereClause)
+			$query.= 'where '.$whereClause;
+		
+		$query.=' group by a.id '.
+			'order by annee asc, mois asc, jour asc';
+		
+		$actualParms = null;
+		
+		if (is_array($parms))
+			$actualParms = $parms;
+		else
+			$actualParms = array_slice(func_get_args(), 2);
+		
+		array_unshift($actualParms, $currentMemberId);
+		
+		$foundEvents = $this->db->getList($query, $actualParms);
 		$events = array();
 		
 		for ($i=count($foundEvents)-1; $i>=0; $i--) {
@@ -45,6 +55,53 @@ class CalendarDbConnector {
 		}
 		
 		return $events;
+	}
+		
+	public function listEventsForMonth($currentMemberId, $year, $month) {
+		return $this->listEvents($currentMemberId, 'annee=? and mois=?', $year, $month);
+	}
+		
+	public function listEventLapse($currentMemberId, $startDate, $endDate) {
+		$start = $this->parseDate($startDate);
+		$end = $this->parseDate($endDate);
+		
+		// where clause mess because of date storage format.
+		
+		$where = '';
+		$where.= '(annee = ? and mois = ? and jour >= ?) OR '; // after start date
+		$where.= '(annee = ? and mois = ? and jour <= ?) OR '; // before end date
+		
+		$sameYear = $start[0] == $end[0];
+		
+		$parms = array();
+		array_push($parms, $start[0]);
+		array_push($parms, $start[1]);
+		array_push($parms, $start[2]);
+		array_push($parms, $end[0]);
+		array_push($parms, $end[1]);
+		array_push($parms, $end[2]);
+		
+		if ($sameYear) {
+			$where.= '(annee = ? and mois > ? and mois < ?)';
+			array_push($parms, $start[0]);
+			array_push($parms, $start[1]);
+			array_push($parms, $end[1]);
+		} else {
+			$where.= '(annee = ? and mois > ?) OR (annee = ? and mois < ?)';
+			array_push($parms, $start[0]);
+			array_push($parms, $start[1]);
+			array_push($parms, $end[0]);
+			array_push($parms, $end[1]);
+		}
+		
+		return $this->listEvents($currentMemberId, $where, $parms);
+	}
+	
+	private function parseDate($datestr){
+		if (!preg_match('/\d{2}-\d{2}-\d{4}/', $datestr))
+			throw new Exception('Date invalide: '.$datestr);
+		
+		return array_reverse(explode('-', $datestr));
 	}
 	
 	public function findEventData($eventId) {
