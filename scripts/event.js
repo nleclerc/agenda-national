@@ -9,9 +9,12 @@ function loadEvent(hash){
 }
 
 function handleEventData(data) {
-	data.title = $('<div>').html(data.title).text(); // decode event title because of current db format.
+	// decode event title because of current db format.
+	// beware of inserting the decoded version in page body
+	// this could lead to script injection.
+	var decodedTitlePotentialyDangerous = $('<div>').html(data.title).text();
 	
-	document.title = data.title+' [Agenda Mensa]';
+	document.title = decodedTitlePotentialyDangerous+' [Agenda Mensa]';
 	
 	eventId = data.id;
 	userId = data.userid;
@@ -25,7 +28,7 @@ function handleEventData(data) {
 	if (data.authorId && data.authorId != 0)
 		authorLink.attr({href:'member.html#'+data.authorId});
 	else if (data.authorEmail)
-		authorLink.attr({href:'mailto:'+data.authorEmail+'?subject=[MENSA-AGENDA] '+data.title});
+		authorLink.attr({href:'mailto:'+data.authorEmail+'?subject=[MENSA-AGENDA] '+decodedTitlePotentialyDangerous});
 	
 	$('<span>').attr({id:'eventAuthor'}).text(' par ').append(authorLink).appendTo(headerCell);
 	
