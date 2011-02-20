@@ -246,3 +246,8 @@ function enable(element){
 function disable(element){
 	element.attr('disabled', 'true');
 }
+
+function hasPlaceholderSupport() {
+	var i = document.createElement('input');
+	return 'placeholder' in i;
+}

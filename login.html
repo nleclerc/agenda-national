@@ -6,7 +6,6 @@
 <link rel="stylesheet" type="text/css" href="css/main.css">
 
 <script src="scripts/jquery-1.4.4.min.js"></script>
-<script src="scripts/modernizr-1.6.min.js"></script>
 <script src="scripts/common.js"></script>
 <script src="scripts/login.js"></script>
 
@@ -15,9 +14,8 @@ $(function(){
 	initialize();
 	$('#loginForm').submit(handleLoginSubmit);
 	
-	if (!Modernizr.input.placeholder) {
+	if (!hasPlaceholderSupport())
 		applyPlaceholderWorkaround();
-	}
 });
 </script>
 
