@@ -1,21 +1,36 @@
 @CHARSET "UTF-8";
 
-html,body {
+html {
 	margin: 0;
 	padding: 0;
-	color: #666666;
-	background: white;
-	font-family: arial, sans-serif;
-	font-size: small;
 	background-color: white;
 }
 
 body {
+	margin: 0;
 	padding-top: 20px;
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-bottom: 10px;
+	color: #666666;
+	background: white;
+	font-family: arial, sans-serif;
+	font-size: small;
 }
+
+
+#footer{
+	display: block;
+	background-color: #BBBBBB;
+	padding: 5px 10px;
+}
+
+#footer a{
+	color: #666666;
+	margin-right: 20px;
+	font-weight: bold;
+}
+
 
 #betaLink {
 	opacity: 0.5;
@@ -355,16 +370,3 @@ th button {
 }
 
 
-
-#footer {
-	display: block;
-	margin-top: 15px;
-	background-color: #999999;
-	padding: 5px 10px;
-}
-
-#footer a {
-	color: #666666;
-	margin-right: 20px;
-	font-weight: bold;
-}
