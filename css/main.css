@@ -147,6 +147,15 @@ th {
 .dayCell .dateLabel{
 	background-color: #EEEEEE;
 	padding: 0 3px;
+	display: block;
+	font-weight: bold;
+}
+
+.dayCell .dateLabel:HOVER{
+	background-color: #ffd7ca;
+	color: #666666;
+	text-decoration: none;
+	white-space: pre;
 }
 
 .currentMonth .dateLabel{
