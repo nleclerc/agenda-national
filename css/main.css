@@ -332,3 +332,18 @@ th button {
 #cancelLink {
 	color: #666666;
 }
+
+
+
+#footer {
+	display: block;
+	margin-top: 15px;
+	background-color: #999999;
+	padding: 5px 10px;
+}
+
+#footer a {
+	color: #666666;
+	margin-right: 20px;
+	font-weight: bold;
+}

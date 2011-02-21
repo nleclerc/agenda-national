@@ -9,6 +9,14 @@ function initialize(){
 			setErrorMessage('Erreur serveur: '+x.status);
 		}
 	});
+	
+	$(document.body).append(
+		'<div id="footer">'+
+		'<a href="http://mensa.fr/">Mensa France</a>'+
+		'<a href="mailto:nl@spirotron.fr?subject=[MENSA-AGENDA] Remarque">Contact</a>'+
+		'<a href="https://github.com/mensa-france/agenda-national">Code Source</a>'+
+		'</div>'
+	);
 }
 
 function setMainContent(node){
