@@ -40,7 +40,7 @@ function handleEventData(data) {
 		$('<div>').attr({id:'eventDate'}).text(formatLongDate(data.date))
 	).append($('<div>').html(formatDescription(data.description))).appendTo(bodyRow);
 	
-	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<tr>').attr({id:'participantColumn'}).appendTo(bodyRow));
+	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<td>').attr({id:'participantColumn'}).appendTo(bodyRow));
 	
 	for (var i=0; i<data.participants.length; i++) {
 		var currentParticipant = data.participants[i];
