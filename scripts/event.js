@@ -10,9 +10,7 @@ function loadEvent(hash){
 
 function handleEventData(data) {
 	// decode event title because of potential html entities.
-	// beware of inserting the decoded version in page body
-	// this could lead to script injection.
-	var decodedTitlePotentialyDangerous = decodeHtmlEntities(data.title);
+	var decodedTitlePotentialyDangerous = decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(data.title);
 	
 	document.title = decodedTitlePotentialyDangerous+' [Agenda Mensa]';
 	

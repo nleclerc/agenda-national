@@ -229,7 +229,16 @@ function modDate(ref, dayDelta, monthDelta, yearDelta){
 	return new Date(ref.getFullYear()+yearDelta, ref.getMonth()+monthDelta, ref.getDate()+dayDelta);
 }
 
-function decodeHtmlEntities(str){
+/**
+ * Decodes html special chars in provided string.
+ * 
+ * Beware of inserting decoded html strings in actual page content,
+ * that could lead to script injection. 
+ * 
+ * @param str
+ * @returns
+ */
+function decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(str){
 	return $('<div>').html(str).text();
 }
 

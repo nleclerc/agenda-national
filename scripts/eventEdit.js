@@ -47,8 +47,8 @@ function setEditEventDate(dateStr) {
 function handleEditEventData(eventData) {
 	setEditEventDate(eventData.date);
 	$('#eventIdInput').val(eventData.id);
-	$('#titleInput').val(decodeHtmlEntities(eventData.title));
-	$('#descriptionInput').val(decodeHtmlEntities(eventData.description));
+	$('#titleInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.title));
+	$('#descriptionInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.description));
 	$('#maxParticipantsInput').val(eventData.maxParticipants);
 	
 	enableDelete(eventData.id, './#'+getMonthFromDate(eventData.date,'/'));
