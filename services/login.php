@@ -8,21 +8,23 @@ $result = array();
 
 try {
 	$dbl = new LocalMemberDbConnector();
-	$dbr = new RemoteMemberDbConnector();
 	
-	$foundUser = $dbl->findMemberAuthData($dbr, getQueryParameter('login'), getQueryParameter('password'));
-
-	// No need for check because either user is found or exception is raised.
+	$foundUser = $dbl->findMemberAuthData(getQueryParameter('login'), getQueryParameter('password'));
+	
+	if (!$foundUser)
+		throw new Exception('Identifiant ou mot de passe incorrect.');
+	
+	if (!$foundUser['subscriptionTerm'] || $foundUser['subscriptionTerm'] < date('Y-m-d'))
+		throw new Exception('Votre cotisation a expirée.');
+	
 	registerUserSession($foundUser);
 	
 	$result['username'] = $foundUser['firstname'].' '.$foundUser['lastname'];
 	$result['userid'] = $foundUser['id'];
 	$loggedIn = true;
-	
 } catch (Exception $e) {
 	// Login failed so clearing auth cookies.
 	logout();
-	
 	$errorMessage = $e->getMessage();
 }
 

@@ -37,7 +37,7 @@ class LocalMemberDbConnector {
 	 * @param string $login
 	 * @param string $password
 	 */
-	public function findMemberAuthData($remoteDbConnector, $login, $password) {
+	public function findMemberAuthData($login, $password) {
 		$foundMember = $this->db->getRow(
 			'SELECT'.
 			' idMembre as id,'.
@@ -64,14 +64,6 @@ class LocalMemberDbConnector {
 			
 			$foundMember['email'] = $primaryEmail;
 			$foundMember['subscriptionTerm'] = $this->findMemberSubscriptionTerm($memberId);
-		} else {
-			$fetchedMember = $this->fetchAndSaveRemoteMemberData($remoteDbConnector, $login, $password);
-			
-			if ($fetchedMember)
-				$foundMember = $fetchedMember;
-			else {
-				// Do nothing, either data is fetched or exception is raised.
-			}
 		}
 		
 		return $foundMember;
@@ -98,7 +90,7 @@ class LocalMemberDbConnector {
 		if ($result)
 			return $result['fin'];
 		
-		throw new Exception("Ce membre n'a pas de cotisation : $memberId");
+		return null;
 	}
 	
 	private function fetchAndSaveRemoteMemberData($remoteDbConnector, $login, $password) {
