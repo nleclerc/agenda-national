@@ -175,6 +175,10 @@ function logout(){
 	loadAndRefresh("services/logout.php");
 }
 
+function applyHtmlLineBreaks(text){
+	return text.replace(/\r?\n\r?/gim, '<br />\n');
+}
+
 function formatMaxParticipants(count){
 	if (count > 0)
 		return ''+count;

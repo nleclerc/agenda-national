@@ -10,11 +10,13 @@ function handleMemberData(data){
 	
 	var table = $('<table>').attr({id:'memberTable'});
 	
-	var header = $('<th>').append(data.name+' ').append($('<span>').attr({id:'memberDetails'}).text(data.region+' #'+data.id)).appendTo($('<tr>').appendTo(table));
+	var header = $('<th>').append(data.name+' ').append(
+		$('<span>').attr({id:'memberDetails'}).text(data.region+' #'+data.id)
+	).appendTo($('<tr>').appendTo(table));
 	insertBackButton(header);
 	
 	if (data.motto) {
-		createItemRow('Devise', data.motto).appendTo(table);
+		createItemRow('Devise', applyHtmlLineBreaks(data.motto)).appendTo(table);
 	}
 	
 	if (data.contacts && data.contacts.length > 0) {

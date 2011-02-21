@@ -108,11 +108,8 @@ function formatDescription(source) {
 	
 	// location hack using custom tag in html.
 	result = result.replace(/<lieu>(.+?)<\/lieu>/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
-
-	// replace soft text linebreaks with br tags.
-	result = result.replace(/\r?\n\r?/gim, '<br />\n');
 	
-	return result;
+	return applyHtmlLineBreaks(result);
 }
 
 function getParticipantHtml(data, highlight, subseq){
