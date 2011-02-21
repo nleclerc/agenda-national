@@ -17,6 +17,18 @@ body {
 	padding-bottom: 10px;
 }
 
+#betaLink {
+	opacity: 0.5;
+	margin-left: 3px;
+	font-size: small;
+	font-style: italic;
+	color: #CCCCCC;
+}
+
+#betaLink:HOVER {
+	text-decoration: underline;
+}
+
 .errorMessage{
 	background-color: red;
 	color: black;

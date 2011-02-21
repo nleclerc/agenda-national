@@ -10,6 +10,8 @@ function initialize(){
 		}
 	});
 	
+	$('#title').append('<a href="http://fr.wikipedia.org/wiki/Version_d%27un_logiciel#Version_b.C3.AAta" id="betaLink">Beta</a>');
+	
 	$(document.body).append(
 		'<div id="footer">'+
 		'<a href="http://mensa.fr/">Mensa France</a>'+
