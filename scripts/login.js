@@ -1,6 +1,12 @@
 
 function handleLoginSubmit(eventObject){
-	$.getJSON("services/login.php", {login: $('#login').val(), password: $('#password').val()}, handleLoginresult);
+	$.ajax({
+		type: 'POST',
+		url: "services/login.php",
+		dataType: 'json',
+		data: {login: $('#login').val(), password: $('#password').val()},
+		success: handleLoginresult
+	});
 }
 
 function handleLoginresult(data){
