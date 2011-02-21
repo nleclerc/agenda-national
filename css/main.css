@@ -51,7 +51,7 @@ td {
 }
 
 a {
-	color: #CC3300;
+	color: #b42d00;
 	text-decoration: none;
 }
 
@@ -190,7 +190,7 @@ th button {
 }
 
 .highlighted {
-	color: #CC3300;
+	color: #b42d00;
 }
 
 #eventTable .paddingMonth{
@@ -337,7 +337,7 @@ th button {
 }
 
 #deleteButton {
-	color: #CC3300;
+	color: #9b2700;
 	font-weight: bold;
 }
 
