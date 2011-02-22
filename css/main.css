@@ -12,7 +12,7 @@ body {
 	padding-left: 20px;
 	padding-right: 20px;
 	padding-bottom: 10px;
-	color: #666666;
+	color: #333333;
 	background: white;
 	font-family: arial, sans-serif;
 	font-size: small;
@@ -91,7 +91,7 @@ input[type=text], input[type=password], textarea {
 }
 
 #title a {
-	color: #666666;
+	color: #333333;
 	text-decoration: none;
 }
 
@@ -204,13 +204,13 @@ th button {
 }
 
 .dayCell li {
-	color: #666666;
+	color: #999999;
 	margin-bottom: 3px;
 }
 
 .eventLink {
 	font-weight: normal;
-	color: #666666;
+	color: #333333;
 }
 
 .highlighted {
@@ -283,7 +283,7 @@ th button {
 	cursor: pointer;
 	text-decoration: none;
 	display: block;
-	color: #666666;
+	color: #333333;
 	padding: 3px 5px;
 }
 
@@ -291,7 +291,7 @@ th button {
 	font-weight: bold;
 }
 .participantDetails{
-	color: #BBBBBB;
+	color: #AAAAAA;
 	font-style: italic;
 }
 
@@ -321,7 +321,7 @@ th button {
 }
 
 .memberItem, .memberItem:HOVER {
-	color: #666666;
+	color: #333333;
 	padding: 2px 5px;
 	text-decoration: none;
 	display: block;
