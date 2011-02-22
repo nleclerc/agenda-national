@@ -54,7 +54,7 @@ function setLoggedIn(data) {
 	authZone.html('');
 	
 	authZone.append($('<div id="memberName">').html(data.username));
-	authZone.append($('<input>').attr({type:'submit',id:'logoutButton'}).val('Déconnection').click(logout));
+	authZone.append($('<input>').attr({type:'submit',id:'logoutButton'}).val('Déconnexion').click(logout));
 }
 
 function getMonthFromDate(date, separator){
