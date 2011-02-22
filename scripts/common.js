@@ -247,13 +247,17 @@ function parseDate(dateString, separator){
 		separator = '/';
 	
 	var dateParts = dateString.split(separator);
+	
+	// substract 1 for month because it is 0 indexed.
 	return new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
 }
 
 function formatLongDate(datestr, separator){
 	var date = parseDate(datestr, separator);
 	var result = '';
-	result += dayLabels[date.getDay()];
+	
+	// Recalculate index because js day index starts on sunday when our week starts on monday.
+	result += dayLabels[(date.getDay()+6)%7];
 	result += ' ';
 	result += date.getDate();
 	result += ' ';
