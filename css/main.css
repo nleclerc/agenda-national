@@ -190,6 +190,7 @@ th button {
 	margin-right: 4px;
 	cursor: pointer;
 	vertical-align: bottom;
+	height: 20px;
 }
 
 .paddingMonth .dateLabel{
