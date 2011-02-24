@@ -41,7 +41,7 @@ function getCurrentReferenceDate(hash){
 }
 
 function buildEventTable(data, referenceDate) {
-	var events = data.events;
+	var events = data;
 	
 	var title = monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear();
 	

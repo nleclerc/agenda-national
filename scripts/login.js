@@ -12,7 +12,7 @@ function handleLoginSubmit(eventObject){
 function handleLoginresult(data){
 	if (data.errorMessage)
 		setErrorMessage(data.errorMessage);
-	else if (!data.loggedIn)
+	else if (!data.user)
 		setErrorMessage("Erreur de login.");
 	else
 		jumpTo('.');

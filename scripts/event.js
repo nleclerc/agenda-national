@@ -8,25 +8,27 @@ function loadEvent(hash){
 		setErrorMessage('Evènement non spécifié.');
 }
 
-function handleEventData(data) {
+function handleEventData(data, currentUser) {
 	// decode event title because of potential html entities.
 	var decodedTitlePotentialyDangerous = decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(data.title);
 	
 	document.title = decodedTitlePotentialyDangerous+' [Agenda Mensa]';
 	
+	eventDate = data.start_date.replace(/^([^\s]+) .*$/, '$1');
+	
 	eventId = data.id;
-	userId = data.userid;
+	userId = currentUser.id;
 	
 	var eventTable = $('<table>').attr({id:'eventBody'});
 	var headerCell = $('<th>').attr({colspan:2}).appendTo($('<tr>').appendTo(eventTable));
 	$('<span>').attr({id:'eventTitle'}).html(data.title).appendTo(headerCell);
-	insertBackButton(headerCell, './#'+getMonthFromDate(data.date));
+	insertBackButton(headerCell, './#'+getMonthFromDate(eventDate));
 	
-	var authorLink = $('<a>').attr({id:'authorLink'}).html(data.author);
-	if (data.authorId && data.authorId != 0)
-		authorLink.attr({href:'member.html#'+data.authorId});
-	else if (data.authorEmail)
-		authorLink.attr({href:'mailto:'+data.authorEmail+'?subject=[MENSA-AGENDA] '+decodedTitlePotentialyDangerous});
+	var authorLink = $('<a>').attr({id:'authorLink'}).html(data.author.name);
+	if (data.author.id != 0)
+		authorLink.attr({href:'member.html#'+data.author.id});
+	else if (data.author.email)
+		authorLink.attr({href:'mailto:'+data.author.email+'?subject=[MENSA-AGENDA] '+decodedTitlePotentialyDangerous});
 	
 	$('<span>').attr({id:'eventAuthor'}).text(' par ').append(authorLink).appendTo(headerCell);
 	
@@ -37,7 +39,7 @@ function handleEventData(data) {
 	var bodyRow = $('<tr>').appendTo(eventTable);
 	
 	var description = $('<td>').append(
-		$('<div>').attr({id:'eventDate'}).text(formatLongDate(data.date))
+		$('<div>').attr({id:'eventDate'}).text(formatLongDate(eventDate))
 	).append($('<div>').attr({id:'eventDescription'}).html(formatDescription(data.description))).appendTo(bodyRow);
 	
 	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<td>').attr({id:'participantColumn'}).appendTo(bodyRow));
@@ -48,7 +50,7 @@ function handleEventData(data) {
 		var name = $('<div>').addClass('participantName').html(currentParticipant.name);
 		var details = $('<div>').addClass('participantDetails').html(currentParticipant.id);
 		
-		if (currentParticipant.id == userId)
+		if (currentParticipant.id == currentUser.id)
 			name.addClass('highlighted');
 		
 		if (currentParticipant.email)
@@ -62,7 +64,7 @@ function handleEventData(data) {
 			'<button id="unsubscribeButton" disabled="true" onclick="unsubscribe()">Se désinscrire</button>'+
 			'</div>');
 	
-	if (data.authorId == userId)
+	if (data.author_id == currentUser.id)
 		$('<button>').attr({id:'editButton'}).text('Editer').click(function(){
 			jumpTo('eventEdit.html#'+data.id);
 		}).appendTo(controlBar);
@@ -71,11 +73,11 @@ function handleEventData(data) {
 	
 	setMainContent(eventTable);
 	
-	if (data.isParticipating) {
+	if (data.is_participating) {
 		$('#eventDetails').addClass('participatingEvent');
 		enable($('#unsubscribeButton'));
 	}
-	else if (data.maxParticipants == 0 || data.maxParticipants > data.participants.length){
+	else if (data.max_participants == 0 || data.max_participants > data.participants.length){
 		enable($('#subscribeButton'));
 	}
 }
@@ -120,9 +122,9 @@ function getParticipantHtml(data, highlight, subseq){
 }
 
 function subscribe(){
-	loadAndRefresh("services/subscribe.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/addParticipation.php", {userId: userId, eventId: eventId});
 }
 
 function unsubscribe(){
-	loadAndRefresh("services/unsubscribe.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/cancelParticipation.php", {userId: userId, eventId: eventId});
 }

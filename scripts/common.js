@@ -33,17 +33,17 @@ function getJSON(url, parms, callback) {
 	setErrorMessage();
 	$.getJSON(url, parms, function(data){
 		if (processLogin(data))
-			callback(data);
+			callback(data.result, data.user);
 	});
 }
 
 function processLogin(data) {
-	if (!data.loggedIn) {
+	if (!data.user) {
 		jumpTo('login.html');
 		return false;
 	}
 	else
-		setLoggedIn(data);
+		setLoggedIn(data.user);
 	
 	if (data.errorMessage) {
 		setErrorMessage(data.errorMessage);
@@ -53,17 +53,16 @@ function processLogin(data) {
 	return true;
 }
 
-function setLoggedIn(data) {
+function setLoggedIn(user) {
 	var authZone = $('#authenticationZone');
 	authZone.html('');
 	
-	authZone.append($('<div id="memberName">').html(data.user.firstname+' '+data.user.lastname));
+	authZone.append($('<div id="memberName">').html(user.firstname+' '+user.lastname));
 	authZone.append($('<input>').attr({type:'submit',id:'logoutButton'}).val('Déconnexion').click(logout));
 }
 
 function getMonthFromDate(date){
-	var tokens = date.split('-');
-	return tokens[0]+'-'+tokens[1];
+	return date.replace(/^(\d{4}-\d{2}).*$/, '$1');
 }
 
 function createListItem(title, details, icon, link, isSubseq, isHighlighted, listName, itemId){
@@ -248,8 +247,8 @@ function parseDate(dateString){
 	return new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
 }
 
-function formatLongDate(datestr, separator){
-	var date = parseDate(datestr, separator);
+function formatLongDate(datestr){
+	var date = parseDate(datestr);
 	var result = '';
 	
 	// Recalculate index because js day index starts on sunday when our week starts on monday.

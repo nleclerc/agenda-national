@@ -19,10 +19,11 @@ try {
 		$eventDetails = $dbc->findEventData($eventId);
 		
 		if ($eventDetails) {
-			$authorId = $eventDetails['authorId'];
+			$authorId = $eventDetails['author_id'];
 			
 			// default author details.
 			$authorDetails = array(
+				'id' => 0,
 				'name' => 'Mensa IDF',
 				'email' => 'idf@mensa.fr'
 			);
@@ -34,12 +35,8 @@ try {
 			if (!$authorDetails)
 				throw new Exception('Autheur inconnu : '.$authorId);
 			
-			$eventDetails['author'] = $authorDetails['name'];
-			
-			if (isset($authorDetails['email']))
-				$eventDetails['authorEmail'] = $authorDetails['email'];
-			
-			$eventDetails["isParticipating"] = in_array($currentUser['id'], $eventDetails['participants']);
+			$eventDetails['author'] = $authorDetails;
+			$eventDetails["is_participating"] = in_array($currentUser['id'], $eventDetails['participants']);
 			$eventDetails['participants'] = $dbm->findMemberShortDataBatch($eventDetails['participants']);
 			
 			$result['result'] = $eventDetails;

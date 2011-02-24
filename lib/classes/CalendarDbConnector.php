@@ -179,18 +179,18 @@ class CalendarDbConnector {
 			'	author_id,'.
 			'	region_id,'.
 			'	start_date,'.
-			'	if(p.member_id is not null,true,false) as is_participating,'.
-			'	max_participants'.
+			'	description,'.
+			'	max_participants '.
 			'from'.
 			'	event '.
-			'WHERE '.
+			'WHERE'.
 			'	id=?';
 		
 		$foundEvent = $this->db->getRow($query, $eventId);
 		
 		if ($foundEvent) {
 			$foundEvent['participants'] = $this->findParticipants($eventId);
-			return $result;
+			return $foundEvent;
 		}
 		
 		return null;

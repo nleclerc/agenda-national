@@ -10,7 +10,7 @@ try {
 	
 	$eventId = getQueryParameter('eventId');
 	
-	if (!$userId)
+	if (!$eventId)
 		$errorMessage = "Identifiant d'événement manquant (eventId).";
 	else {
 		$dbc = new CalendarDbConnector();
