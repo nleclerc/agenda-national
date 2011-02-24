@@ -147,36 +147,6 @@ function findEndDate(referenceDate){
 	return endDate;
 }
 
-function addEvent(eventData){
-	var dateBlock = blockIndex[eventData.date];
-	var first = false;
-	
-	if (!dateBlock) {
-		dateBlock = createDateBlock(eventData.date);
-		first = true;		
-	}
-	
-	var details = "";
-	
-	details += eventData.participantCount+" / ";
-	
-	if (eventData.maxParticipants > 0)
-		details += eventData.maxParticipants;
-	else
-		details += "illimité";
-	
-	details += " - ";
-	details += eventData.author;
-	
-	var eventDiv = createListItem(eventData.title, details, null, 'event.html?eventId='+eventData.id, false, eventData.isParticipating);
-	
-	eventDiv.setFirst(first);
-	eventDiv.setId('item-event-'+eventData.id);
-	
-	eventDiv.hide().appendTo(dateBlock).fadeIn(500);
-	eventCount++;
-}
-
 function createDateBlock(date){
 	var events = $('#eventList');
 	var dateBlock = $('<div id="block-'+date+'" class="list"></div>\n');
