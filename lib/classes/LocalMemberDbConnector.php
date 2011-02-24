@@ -145,7 +145,6 @@ class LocalMemberDbConnector {
 			' civilite as title,'.
 			' nom as lastname,'.
 			' prenom as firstname,'.
-			" CONCAT(prenom,' ',nom) as name,".
 			' idRegion as region,'.
 			' devise as motto '.
 			'FROM Membre '.
@@ -154,6 +153,19 @@ class LocalMemberDbConnector {
 		$foundMember = $this->db->getRow($query, $memberId);
 		
 		if ($foundMember) {
+			$fullname = '';
+			
+			if ($foundMember['firstname'])
+				$fullname.= $foundMember['firstname'];
+			
+			if ($foundMember['lastname']) {
+				if (strlen($fullname))
+					$fullname.= ' ';
+				
+				$fullname.= $foundMember['lastname'];
+				$foundMember['name'] = $fullname;
+			}
+			
 			$foundMember['motto'] = stripcslashes($foundMember['motto']); // motto needs unescaping.
 			$foundMember = $this->fillMemberData($foundMember);
 		}
