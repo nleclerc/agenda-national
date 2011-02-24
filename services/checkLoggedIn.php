@@ -6,12 +6,7 @@ $result = array();
 	
 try {
 	$currentUser = getCurrentUserData();
-	
-	$result = array(
-		"username" => $currentUser['fullname'],
-		"userid" => $currentUser['id'],
-		"loggedIn" => true
-	);
+	$result["user"] = filterCurrentUserDate($currentUser);
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
 }

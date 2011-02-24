@@ -2,14 +2,12 @@
 require '../lib/serviceCommon.php';
 
 $errorMessage = null;
-$loggedIn = false;
 $result = array();
 
 try {
 	$currentUser = getCurrentUserData();
-	$currentId = $currentUser['id'];
-	$loggedIn = true;
-	
+	$result["user"] = filterCurrentUserDate($currentUser);
+
 	$startDate = getQueryParameter('startDate');
 	$endDate = getQueryParameter('endDate');
 	
@@ -19,7 +17,7 @@ try {
 		$errorMessage = "La date de fin n'a pas été spécifiée.";
 	else {
 		$db = new CalendarDbConnector();
-		$events = $db->listEventLapse($currentId, $startDate, $endDate);
+		$events = $db->listEventLapse($currentUser['id'], $startDate, $endDate);
 		
 		$authorsIds = array();
 		
@@ -41,13 +39,12 @@ try {
 		
 		$result = array(
 			"user" => filterCurrentUserDate($currentUser),
-			"events" => $events
+			"result" => $events
 		);
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
 }
 
-$result["loggedIn"] = $loggedIn;
 $result["errorMessage"] = $errorMessage;
 echo json_encode($result);

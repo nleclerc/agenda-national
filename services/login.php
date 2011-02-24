@@ -3,7 +3,6 @@ require '../lib/serviceCommon.php';
 logout();
 
 $errorMessage = null;
-$loggedIn = false;
 $result = array();
 
 try {
@@ -18,10 +17,8 @@ try {
 		throw new Exception('Votre cotisation a expirée.');
 	
 	registerUserSession($foundUser);
-	
-	$result['username'] = $foundUser['firstname'].' '.$foundUser['lastname'];
-	$result['userid'] = $foundUser['id'];
-	$loggedIn = true;
+	$result["user"] = filterCurrentUserDate($foundUser);
+
 } catch (Exception $e) {
 	// Login failed so clearing auth cookies.
 	logout();
@@ -29,5 +26,4 @@ try {
 }
 
 $result["errorMessage"] = $errorMessage;
-$result['loggedIn'] = $loggedIn;
 echo json_encode($result);

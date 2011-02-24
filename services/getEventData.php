@@ -2,12 +2,12 @@
 require '../lib/serviceCommon.php';
 
 $errorMessage = null;
-$loggedIn = false;
 $result = array();
 	
 try {
 	$currentUser = getCurrentUserData();
-	$loggedIn = true;
+	$result["user"] = filterCurrentUserDate($currentUser);
+
 	$eventId = getQueryParameter('eventId');
 	
 	if (!$eventId)
@@ -17,7 +17,6 @@ try {
 		$dbm = new LocalMemberDbConnector();
 		
 		$eventDetails = $dbc->findEventData($eventId);
-		$userId = $currentUser['id'];
 		
 		if ($eventDetails) {
 			$authorId = $eventDetails['authorId'];
@@ -40,21 +39,17 @@ try {
 			if (isset($authorDetails['email']))
 				$eventDetails['authorEmail'] = $authorDetails['email'];
 			
-			$eventDetails["isParticipating"] = in_array($userId, $eventDetails['participants']);
+			$eventDetails["isParticipating"] = in_array($currentUser['id'], $eventDetails['participants']);
 			$eventDetails['participants'] = $dbm->findMemberShortDataBatch($eventDetails['participants']);
 			
-			$result = $eventDetails;
+			$result['result'] = $eventDetails;
 		}
 		else
 			$errorMessage = "Evènement inconnu : $eventId";
-		
-		$result["username"] = $currentUser['fullname'];
-		$result["userid"] = $userId;
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
 }
 
-$result["loggedIn"] = $loggedIn;
 $result["errorMessage"] = $errorMessage;
 echo json_encode($result);

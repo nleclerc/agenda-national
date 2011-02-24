@@ -2,12 +2,12 @@
 require '../lib/serviceCommon.php';
 
 $errorMessage = null;
-$loggedIn = false;
 $result = array();
 	
 try {
 	$currentUser = getCurrentUserData();
-	$loggedIn = true;
+	$result["user"] = filterCurrentUserDate($currentUser);
+	
 	$eventData = json_decode(getQueryParameter('eventData'), true);
 	
 	if (!$eventData)
@@ -36,14 +36,10 @@ try {
 			$eventData['maxParticipants'] = 0;
 		
 		$dbc->setEventData($userId, $eventData);
-		
-		$result["username"] = $currentUser['fullname'];
-		$result["userid"] = $userId;
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
 }
 
-$result["loggedIn"] = $loggedIn;
 $result["errorMessage"] = $errorMessage;
 echo json_encode($result);

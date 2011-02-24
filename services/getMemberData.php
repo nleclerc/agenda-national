@@ -2,12 +2,12 @@
 require '../lib/serviceCommon.php';
 
 $errorMessage = null;
-$loggedIn = false;
 $result = array();
 	
 try {
 	$currentUser = getCurrentUserData();
-	$loggedIn = true;
+	$result["user"] = filterCurrentUserDate($currentUser);
+	
 	$memberId = getQueryParameter('memberId');
 	
 	if (!$memberId)
@@ -18,17 +18,13 @@ try {
 		$member = $dbm->findMemberPublicData($memberId);
 		
 		if ($member)
-			$result = $member;
+			$result['result'] = $member;
 		else
 			$errorMessage = "Membre non trouvé : $memberId";
-		
-		$result["username"] = $currentUser['fullname'];
-		$result["userid"] = $currentUser['id'];
 	}
 } catch (Exception $e) {
 	$errorMessage = $e->getMessage();
 }
 
-$result["loggedIn"] = $loggedIn;
 $result["errorMessage"] = $errorMessage;
 echo json_encode($result);
