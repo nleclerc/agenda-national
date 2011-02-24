@@ -123,10 +123,10 @@ class CalendarDbConnector {
 	}
 	
 	private function parseDate($datestr){
-		if (!preg_match('/\d{2}-\d{2}-\d{4}/', $datestr))
+		if (!preg_match('/\d{4}-\d{2}-\d{2}/', $datestr))
 			throw new Exception('Date invalide: '.$datestr);
 		
-		return array_reverse(explode('-', $datestr));
+		return explode('-', $datestr);
 	}
 		
 	public function setEventData($currentMemberId, $eventData) {
@@ -197,7 +197,7 @@ class CalendarDbConnector {
 			$result = array(
 				'id' => $foundEvent['id'],
 				'title' => $foundEvent['title'],
-				'date' => formatNb($foundEvent['jour'], 2).'/'.formatNb($foundEvent['mois'], 2).'/'.formatNb($foundEvent['annee'], 4),
+				'date' => $this->formatEventDate($foundEvent),
 				'description' => $foundEvent['description'],
 				'maxParticipants' => $foundEvent['maxParticipants'],
 				'authorId' => intval($foundEvent['authorId']),
@@ -230,6 +230,6 @@ class CalendarDbConnector {
 	}
 	
 	private function formatEventDate($event) {
-		return formatNb($event['jour'],2).'/'.formatNb($event['mois'],2).'/'.$event['annee'];
+		return $event['annee'].'-'.formatNb($event['mois'],2).'-'.formatNb($event['jour'],2);
 	}
 }

@@ -2,10 +2,10 @@
 
 function processEventEditHash(hash) {
 	
-	if (hash.match(/^#\d{2}-\d{2}-\d{4}$/)){
+	if (hash.match(/^#\d{4}-\d{2}-\d{2}$/)){
 		var date = hash.substr(1);
-		setEditEventDate(date.replace(/-/g,'/'));
-		setCancelLink('./#'+getMonthFromDate(date, '-')); // go to month page.
+		setEditEventDate(date);
+		setCancelLink('./#'+getMonthFromDate(date)); // go to month page.
 		enableSubmit();
 	} else if (hash.match(/^#\d+$/)) {
 		setCancelLink('event.html'+hash); // go to event page.
@@ -51,7 +51,7 @@ function handleEditEventData(eventData) {
 	$('#descriptionInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.description));
 	$('#maxParticipantsInput').val(eventData.maxParticipants);
 	
-	enableDelete(eventData.id, './#'+getMonthFromDate(eventData.date,'/'));
+	enableDelete(eventData.id, './#'+getMonthFromDate(eventData.date));
 	enableSubmit();
 }
 

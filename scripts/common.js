@@ -61,12 +61,9 @@ function setLoggedIn(data) {
 	authZone.append($('<input>').attr({type:'submit',id:'logoutButton'}).val('Déconnexion').click(logout));
 }
 
-function getMonthFromDate(date, separator){
-	if(!separator)
-		separator = '/';
-	
-	var tokens = date.split(separator);
-	return tokens[2]+'-'+tokens[1];
+function getMonthFromDate(date){
+	var tokens = date.split('-');
+	return tokens[0]+'-'+tokens[1];
 }
 
 function createListItem(title, details, icon, link, isSubseq, isHighlighted, listName, itemId){
@@ -190,10 +187,8 @@ function formatMaxParticipants(count){
 	return "illimité";
 }
 
-function formatDate(date, separator) {
-	if (!separator)
-		separator = '/';
-	return getDoubleDigit(date.getDate())+separator+getDoubleDigit(date.getMonth()+1)+separator+date.getFullYear();
+function formatDate(date) {
+	return date.getFullYear()+'-'+getDoubleDigit(date.getMonth()+1)+'-'+getDoubleDigit(date.getDate());
 }
 
 var daysOfWeek = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
@@ -246,14 +241,11 @@ function decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(str){
 	return $('<div>').html(str).text();
 }
 
-function parseDate(dateString, separator){
-	if (!separator)
-		separator = '/';
-	
-	var dateParts = dateString.split(separator);
+function parseDate(dateString){
+	var dateParts = dateString.split('-');
 	
 	// substract 1 for month because it is 0 indexed.
-	return new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
+	return new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
 }
 
 function formatLongDate(datestr, separator){
