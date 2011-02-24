@@ -2,7 +2,7 @@
 function handleLoginSubmit(eventObject){
 	$.ajax({
 		type: 'POST',
-		url: "services/login.php",
+		url: "services/login",
 		dataType: 'json',
 		data: {login: $('#login').val(), password: $('#password').val()},
 		success: handleLoginresult

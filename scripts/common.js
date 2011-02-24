@@ -25,6 +25,10 @@ function setMainContent(node){
 	$('#mainContent').html('').append(node);
 }
 
+function callService(name, parms, callback) {
+	getJSON('services/'+name, parms, callback);
+}
+
 function getJSON(url, parms, callback) {
 	setErrorMessage();
 	$.getJSON(url, parms, function(data){

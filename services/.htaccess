@@ -1,0 +1,5 @@
+Options -Indexes
+
+RewriteEngine on
+RewriteCond	%{REQUEST_URI}.php	-f
+RewriteRule	^(\w+)(\?.*)?$		$1.php$2

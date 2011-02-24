@@ -9,7 +9,7 @@ function processEventEditHash(hash) {
 		enableSubmit();
 	} else if (hash.match(/^#\d+$/)) {
 		setCancelLink('event.html'+hash); // go to event page.
-		getJSON("services/getEventData.php", {eventId: hash.substr(1)}, handleEditEventData);
+		callService("getEventData", {eventId: hash.substr(1)}, handleEditEventData);
 	} else {
 		setCancelLink('.'); // go to home.
 		setErrorMessage("Date ou évènement non spécifiés.");
@@ -29,7 +29,7 @@ function submitEventValues() {
 	if (currentId)
 		data.id = currentId;
 	
-	getJSON('services/setEventData.php', {eventData: JSON.stringify(data)}, function(){
+	callService('setEventData', {eventData: JSON.stringify(data)}, function(){
 		// on save, activate cancel link.
 		jumpTo($('#cancelLink').attr('href'));
 	});
@@ -57,7 +57,7 @@ function handleEditEventData(eventData) {
 
 function enableDelete(eventId, exitUrl){
 	$('#deleteButton').unbind('click').click(function(){
-		getJSON('services/deleteEvent.php', {eventId: eventId}, function(){jumpTo(exitUrl);});
+		callService('deleteEvent', {eventId: eventId}, function(){jumpTo(exitUrl);});
 	}).show();
 }
 

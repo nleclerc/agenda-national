@@ -12,7 +12,7 @@ function loadEvents(hash){
 	var startDate = findStartDate(listingDate);
 	var endDate = findEndDate(listingDate);
 
-	getJSON("services/listEvents.php", {startDate:formatDate(startDate,'-'), endDate:formatDate(endDate,'-')}, function(data){
+	callService("listEvents", {startDate:formatDate(startDate,'-'), endDate:formatDate(endDate,'-')}, function(data){
 		if (location.hash != hash)
 			location.hash = hash;
 		

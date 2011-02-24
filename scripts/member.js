@@ -1,6 +1,6 @@
 function loadMember(hash){
 	if (hash && hash.match(/^#\d+$/))
-		getJSON("services/getMemberData.php", {memberId:hash.substr(1)}, handleMemberData);
+		callService("getMemberData", {memberId:hash.substr(1)}, handleMemberData);
 	else
 		setErrorMessage('Membre non spécifié.');
 }

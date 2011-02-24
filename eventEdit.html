@@ -15,7 +15,7 @@
 $(function(){
 	initialize();
 	
-	getJSON("services/checkLoggedIn.php", null, function(){
+	callService("checkLoggedIn", null, function(){
 		$(window).bind('hashchange', function(e) {processEventEditHash(location.hash)});
 		processEventEditHash(location.hash);
 	});
