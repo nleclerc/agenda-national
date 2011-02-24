@@ -36,9 +36,9 @@ function handleEventData(data) {
 	
 	var bodyRow = $('<tr>').appendTo(eventTable);
 	
-	var description = $('<td>').attr({id:'eventDescription'}).append(
+	var description = $('<td>').append(
 		$('<div>').attr({id:'eventDate'}).text(formatLongDate(data.date))
-	).append($('<div>').html(formatDescription(data.description))).appendTo(bodyRow);
+	).append($('<div>').attr({id:'eventDescription'}).html(formatDescription(data.description))).appendTo(bodyRow);
 	
 	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<td>').attr({id:'participantColumn'}).appendTo(bodyRow));
 	

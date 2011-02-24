@@ -63,6 +63,7 @@ input.placeholderWorkaround{
 
 td {
 	vertical-align: top;
+	padding: 0;
 }
 
 a {
@@ -247,16 +248,17 @@ th button {
 }
 
 #eventDate {
-	margin-top: 5px;
-	margin-bottom: 15px;
 	font-weight: bold;
 	font-size: medium;
 	font-style: italic;
+	
+	background-color: #EEEEEE;
+	
+	padding: 5px;
 }
 
 #eventDescription {
-	padding: 3px 5px;
-	width: 100%;
+	padding: 5px;
 }
 
 #eventDescription .highlight {
@@ -308,7 +310,13 @@ th button {
 }
 
 #controlBar{
-	margin-top: 10px;
+	margin: 5px;
+	margin-bottom: 10px;
+}
+
+#controlBar button{
+	margin: 0;
+	margin-right: 5px;
 }
 
 .clickable{
