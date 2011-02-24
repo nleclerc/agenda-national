@@ -95,12 +95,16 @@ function buildEventTable(data, referenceDate) {
 	
 	for (var i=0; i<events.length; i++) {
 		var currentEvent = events[i];
-		var link = $('<a>').attr({href:'event.html#'+currentEvent.id}).addClass('eventLink').html(currentEvent.title);
+		var link = $('<a>').attr({href:'event.html#'+currentEvent.id}).addClass('eventLink').html(
+			' '+currentEvent.title
+		).prepend(
+			$('<time>').html(currentEvent.start_date.replace(/^.+ (.+):\d{2}$/, '$1'))
+		);
 		
-		if (currentEvent.isParticipating)
+		if (currentEvent.is_participating)
 			link.addClass('highlighted');
 		
-		$('<li>').append(link).appendTo(cellIndex[currentEvent.date]);
+		$('<li>').append(link).appendTo(cellIndex[currentEvent.start_date.replace(/ .+$/, '')]);
 	}
 	
 	setMainContent(table);

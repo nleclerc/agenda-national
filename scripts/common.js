@@ -57,7 +57,7 @@ function setLoggedIn(data) {
 	var authZone = $('#authenticationZone');
 	authZone.html('');
 	
-	authZone.append($('<div id="memberName">').html(data.username));
+	authZone.append($('<div id="memberName">').html(data.user.firstname+' '+data.user.lastname));
 	authZone.append($('<input>').attr({type:'submit',id:'logoutButton'}).val('Déconnexion').click(logout));
 }
 

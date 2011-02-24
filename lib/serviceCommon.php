@@ -17,8 +17,15 @@ function getCurrentUserData() {
 		if (isUserKey($key))
 			$userdata[getUserKey($key)] = $value;
 	
-	$userdata['fullname'] = $userdata['firstname'].' '.$userdata['lastname'];
 	return $userdata;
+}
+
+function filterCurrentUserDate($userData) {
+	unset($userData['email']);
+	unset($userData['privilege']);
+	unset($userData['subscriptionTerm']);
+	
+	return $userData;
 }
 
 function logout() {

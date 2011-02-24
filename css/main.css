@@ -219,6 +219,10 @@ th button {
 	color: #333333;
 }
 
+.eventLink time {
+	font-weight: bold;
+}
+
 .highlighted {
 	color: #b42d00;
 }

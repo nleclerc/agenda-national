@@ -10,8 +10,8 @@ class CalendarDbConnector {
 	public function deleteEvent($currentMemberId, $eventId) {
 		$this->checkOwner($currentMemberId, $eventId);
 		
-		$this->db->execute('DELETE FROM iActivite WHERE id=?',$eventId); // delete event.
-		$this->db->execute('DELETE FROM iInscription WHERE id=?',$eventId); // delete participations.
+		$this->db->execute('DELETE FROM event WHERE id=?',$eventId); // delete event.
+		$this->db->execute('DELETE FROM event_participation WHERE event_id=?',$eventId); // delete participations.
 	}
 	
 	private function checkOwner($currentMemberId, $eventId) {
@@ -24,10 +24,10 @@ class CalendarDbConnector {
 	}
 	
 	private function getOwnerId($eventId) {
-		$row = $this->db->getRow('SELECT membre as author FROM iActivite WHERE id=?', $eventId);
+		$row = $this->db->getRow('SELECT author_id FROM event WHERE id=?', $eventId);
 		
 		if ($row)
-			return intval($row['author']);
+			return intval($row['author_id']);
 		
 		return null;
 	}
@@ -35,25 +35,27 @@ class CalendarDbConnector {
 	private function listEvents($currentMemberId, $whereClause, $parms=null) {
 		$query =
 			'select'.
-			'	a.id,'.
-			'	titre as title,'.
-			'	annee, mois, jour,'.
-			'	if(i.ref is not null,true,false) as isParticipating,'.
-			'	membre as author,'.
-			'	limite as maxParticipants,'.
-			'	count(ii.ref) as participantCount '.
+			'	e.id,'.
+			'	modification_date,'.
+			'	title,'.
+			'	author_id,'.
+			'	region_id,'.
+			'	start_date,'.
+			'	if(p.member_id is not null,true,false) as is_participating,'.
+			'	max_participants,'.
+			'	count(pcount.member_id) as participant_count '.
 			'from'.
-			'	iActivite a '.
+			'	event e '.
 			'left join'.
-			'	iInscription i on a.id = i.id and i.ref = ? '.
+			'	event_participation p on p.event_id = e.id and p.member_id = ? '.
 			'left join'.
-			'	iInscription ii on a.id = ii.id ';
+			'	event_participation pcount on pcount.event_id = e.id ';
 		
 		if ($whereClause)
 			$query.= 'where '.$whereClause;
 		
-		$query.=' group by a.id '.
-			'order by annee asc, mois asc, jour asc';
+		$query.=' group by e.id '.
+			'order by start_date asc';
 		
 		$actualParms = null;
 		
@@ -69,12 +71,7 @@ class CalendarDbConnector {
 		
 		for ($i=count($foundEvents)-1; $i>=0; $i--) {
 			$data = $foundEvents[$i];
-			$data['date'] = $this->formatEventDate($data);
-			$data['isParticipating'] = $data['isParticipating'] == true; // converts because query returns 0 or 1 as a string.
-			
-			unset($data['annee']);
-			unset($data['mois']);
-			unset($data['jour']);
+			$data['is_participating'] = $data['is_participating'] == true; // converts because query returns 0 or 1 as a string.
 			
 			array_unshift($events, $data);
 		}
@@ -83,68 +80,55 @@ class CalendarDbConnector {
 	}
 		
 	public function listEventsForMonth($currentMemberId, $year, $month) {
-		return $this->listEvents($currentMemberId, 'annee=? and mois=?', $year, $month);
+		return $this->listEvents($currentMemberId, 'year(start_date)=? and month(start_date)=?', $year, $month);
 	}
 		
 	public function listEventLapse($currentMemberId, $startDate, $endDate) {
-		$start = $this->parseDate($startDate);
-		$end = $this->parseDate($endDate);
+		$this->checkDate($startDate);
+		$this->checkDate($endDate);
 		
 		// where clause mess because of date storage format.
 		
 		$where = '';
-		$where.= '(annee = ? and mois = ? and jour >= ?) OR '; // after start date
-		$where.= '(annee = ? and mois = ? and jour <= ?) OR '; // before end date
+		$where.= 'date(start_date) >= ? AND '; // equal or after start date
+		$where.= 'date(start_date) <= ? '; // equal or before end date
 		
-		$sameYear = $start[0] == $end[0];
-		
-		$parms = array();
-		array_push($parms, $start[0]);
-		array_push($parms, $start[1]);
-		array_push($parms, $start[2]);
-		array_push($parms, $end[0]);
-		array_push($parms, $end[1]);
-		array_push($parms, $end[2]);
-		
-		if ($sameYear) {
-			$where.= '(annee = ? and mois > ? and mois < ?)';
-			array_push($parms, $start[0]);
-			array_push($parms, $start[1]);
-			array_push($parms, $end[1]);
-		} else {
-			$where.= '(annee = ? and mois > ?) OR (annee = ? and mois < ?)';
-			array_push($parms, $start[0]);
-			array_push($parms, $start[1]);
-			array_push($parms, $end[0]);
-			array_push($parms, $end[1]);
-		}
-		
-		return $this->listEvents($currentMemberId, $where, $parms);
+		return $this->listEvents($currentMemberId, $where, $startDate, $endDate);
 	}
 	
-	private function parseDate($datestr){
+	private function checkDate($datestr){
 		if (!preg_match('/\d{4}-\d{2}-\d{2}/', $datestr))
 			throw new Exception('Date invalide: '.$datestr);
-		
-		return explode('-', $datestr);
 	}
 		
 	public function setEventData($currentMemberId, $eventData) {
-		// filter text to avoid script injection.
-		$eventData['title'] = $this->filterHtmlString($eventData['title']);
-		$eventData['description'] = $this->filterHtmlString($eventData['description']);
-		
 		if (isset($eventData['id']) && $eventData['id'])
 			$this->updateEvent($currentMemberId, $eventData);
 		else
 			$this->createEvent($currentMemberId, $eventData);
 	}
 	
-	private function createEvent($authorId, $eventData) {
-		$query = 'INSERT INTO iActivite (titre, jour, mois, annee, membre, texte, limite) '.
-				'VALUES (:title,:day,:month,:year,:authorId,:description,:maxParticipants)';
+	public function importEvent($eventData) {
+		// filter text to avoid script injection.
+		$eventData = $this->filterEventData($eventData);
 		
-		$parms = array(':authorId'=>$authorId);
+		$query = 'INSERT INTO event (id, author_id, region_id, start_date, title, location, description, max_participants) '.
+				'VALUES (:id, :author_id, :region_id, :start_date, :title, :location, :description, :max_participants)';
+		
+		foreach($eventData as $key => $value)
+			$parms[":$key"] = $value;
+		
+		$this->db->execute($query, $parms);
+	}
+	
+	private function createEvent($authorId, $eventData) {
+		// filter text to avoid script injection.
+		$eventData = $this->filterEventData($eventData);
+		
+		$query = 'INSERT INTO event (author_id, region_id, start_date, title, location, description, max_participants) '.
+				'VALUES (:author_id, :region_id, :start_date, :title, :location, :description, :max_participants)';
+		
+		$parms = array(':author_id'=>$authorId);
 		
 		foreach($eventData as $key => $value)
 			$parms[":$key"] = $value;
@@ -153,18 +137,29 @@ class CalendarDbConnector {
 	}
 	
 	private function updateEvent($authorId, $eventData) {
+		// filter text to avoid script injection.
+		$eventData = $this->filterEventData($eventData);
+		
 		$this->checkOwner($authorId, $eventData['id']);
 		
-		$query = 'UPDATE iActivite '.
-				'SET titre=:title, jour=:day, mois=:month, annee=:year, membre=:authorId, texte=:description, limite=:maxParticipants '.
+		$query = 'UPDATE event '.
+				'SET author_id=:author_id, region_id=:region_id, start_date=:start_date, '.
+				'title=:title, location=:location, description=:description, max_participants=:max_participants '.
 				'WHERE id=:id';
 		
-		$parms = array(':authorId'=>$authorId);
+		$parms = array(':author_id'=>$authorId);
 		
 		foreach($eventData as $key => $value)
 			$parms[":$key"] = $value;
 		
 		$this->db->execute($query, $parms);
+	}
+	
+	private function filterEventData($eventData) {
+		$eventData['title'] = $this->filterHtmlString($eventData['title']);
+		$eventData['description'] = $this->filterHtmlString($eventData['description']);
+		$eventData['location'] = $this->filterHtmlString($eventData['location']);
+		return $eventData;
 	}
 	
 	private function filterHtmlString($str) {
@@ -177,33 +172,24 @@ class CalendarDbConnector {
 	
 	public function findEventData($eventId) {
 		$query =
-			'SELECT'.
+			'select'.
 			'	id,'.
-			'	titre as title,'.
-			'	jour,'.
-			'	mois,'.
-			'	annee,'.
-			'	membre as authorId,'.
-			'	texte as description,'.
-			'	limite as maxParticipants '.
-			'FROM '.
-			'	iActivite '.
+			'	modification_date,'.
+			'	title,'.
+			'	author_id,'.
+			'	region_id,'.
+			'	start_date,'.
+			'	if(p.member_id is not null,true,false) as is_participating,'.
+			'	max_participants'.
+			'from'.
+			'	event '.
 			'WHERE '.
 			'	id=?';
 		
 		$foundEvent = $this->db->getRow($query, $eventId);
 		
 		if ($foundEvent) {
-			$result = array(
-				'id' => $foundEvent['id'],
-				'title' => $foundEvent['title'],
-				'date' => $this->formatEventDate($foundEvent),
-				'description' => $foundEvent['description'],
-				'maxParticipants' => $foundEvent['maxParticipants'],
-				'authorId' => intval($foundEvent['authorId']),
-				'participants' => $this->findParticipants($eventId)
-			);
-			
+			$foundEvent['participants'] = $this->findParticipants($eventId);
 			return $result;
 		}
 		
@@ -212,24 +198,20 @@ class CalendarDbConnector {
 	
 	public function addParticipant($eventId, $memberId) {
 		$this->removeParticipant($eventId, $memberId);
-		return $this->db->execute("INSERT INTO iInscription (id, ref) VALUES (?, ?)", $eventId, $memberId);
+		return $this->db->execute("INSERT INTO event_participation (event_id, member_id) VALUES (?, ?)", $eventId, $memberId);
 	}
 	
 	public function removeParticipant($eventId, $memberId) {
-		return $this->db->execute("DELETE FROM iInscription WHERE id=? AND ref=?", $eventId, $memberId);
+		return $this->db->execute("DELETE FROM event_participation WHERE event_id=? AND member_id=?", $eventId, $memberId);
 	}
 	
 	private function findParticipants($eventId) {
-		$foundIds = $this->db->getList('SELECT ref as memberId FROM iInscription WHERE id=?', $eventId);
+		$foundIds = $this->db->getList('SELECT member_id FROM event_participation WHERE event_id=?', $eventId);
 		$result = array();
 		
-		foreach($foundIds as $insc)
-			array_push($result, $insc['memberId']);
+		foreach($foundIds as $participation)
+			array_push($result, $participation['member_id']);
 		
 		return $result;
-	}
-	
-	private function formatEventDate($event) {
-		return $event['annee'].'-'.formatNb($event['mois'],2).'-'.formatNb($event['jour'],2);
 	}
 }

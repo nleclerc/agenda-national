@@ -24,13 +24,13 @@ try {
 		$authorsIds = array();
 		
 		foreach($events as $event)
-			array_push($authorsIds, $event['author']);
+			array_push($authorsIds, $event['author_id']);
 		
 		$dbm = new LocalMemberDbConnector();
 		$authors = $dbm->findMemberShortDataBatch($authorsIds, true);
 		
 		for ($i=0; $i<count($events); $i++) {
-			$authorId = $events[$i]['author'];
+			$authorId = $events[$i]['author_id'];
 			$authorName = "Mensa IDF"; // default name.
 			
 			if ($authorId > 0)
@@ -40,8 +40,7 @@ try {
 		}
 		
 		$result = array(
-			"username" => $currentUser['fullname'],
-			"userid" => $currentId,
+			"user" => filterCurrentUserDate($currentUser),
 			"events" => $events
 		);
 	}

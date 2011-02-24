@@ -23,3 +23,7 @@ function getQueryParameter($parmName){
 	
 	return $value;
 }
+
+function puts($msg) {
+	echo "$msg\n";
+}
