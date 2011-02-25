@@ -273,6 +273,10 @@ class LocalMemberDbConnector {
 			$memberId
 		);
 		
+		// interest description needs escaping.
+		for ($i=0; $i < count($result); $i++)
+			$result[$i]['name'] = stripcslashes($result[$i]['name']);
+		
 		return $result;
 	}
 		
