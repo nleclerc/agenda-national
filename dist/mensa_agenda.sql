@@ -22,8 +22,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `event`;
-DROP TRIGGER IF EXISTS `event_before_insert_created_date`;
-
 DROP TABLE IF EXISTS `event_participation`;
 
 
@@ -35,7 +33,7 @@ CREATE TABLE `event` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author_id` int(11) NOT NULL,
   `region_id` char(3) NOT NULL,
-  `creation_date` timestamp NULL DEFAULT NULL,
+  `creation_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modification_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `start_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `title` varchar(256) NOT NULL,
@@ -47,10 +45,16 @@ CREATE TABLE `event` (
   KEY `id_author` (`author_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+
+/*
+-- trigger is disabled because of current hosting limitations.
+-- workaround it to set creation_date to null on create as null value is replaced with current_timestamp.
+
 -- trigger to set creation_date automatically.
+DROP TRIGGER IF EXISTS `event_before_insert_created_date`;
 CREATE TRIGGER event_before_insert_created_date BEFORE INSERT ON `event`
 FOR EACH ROW SET NEW.creation_date = CURRENT_TIMESTAMP;
-
+*/
 
 
 -- --------------------------------------------------------

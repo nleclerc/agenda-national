@@ -114,8 +114,9 @@ class CalendarDbConnector {
 		// filter text to avoid script injection.
 		$eventData = $this->filterEventData($eventData);
 		
-		$query = 'INSERT INTO event (author_id, region_id, start_date, title, location, description, max_participants) '.
-				'VALUES (:author_id, :region_id, :start_date, :title, :location, :description, :max_participants)';
+		// creation date set to null is a workaround to missing trigger in db.
+		$query = 'INSERT INTO event (creation_date, author_id, region_id, start_date, title, location, description, max_participants) '.
+				'VALUES (NULL, :author_id, :region_id, :start_date, :title, :location, :description, :max_participants)';
 		
 		$parms = array(':author_id'=>$authorId);
 		
