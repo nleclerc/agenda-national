@@ -56,14 +56,16 @@ function getCurrentReferenceDate(hash){
 
 function buildEventTable(data, referenceDate) {
 	var events = data.events;
-	var title = monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear();
 	
+	var title = monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear();
 	document.title = title+' [Agenda Mensa]';
+	
+	var currentRegion = data.region_id;
 	
 	var table = $('<table id="eventTable">');
 	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table));
-	createMonthLink(data.region_id, referenceDate.getFullYear(), referenceDate.getMonth()-1, '<').appendTo(globalHeader);
-	createMonthLink(data.region_id, referenceDate.getFullYear(), referenceDate.getMonth()+1, '>').appendTo(globalHeader);
+	createMonthLink(currentRegion, referenceDate.getFullYear(), referenceDate.getMonth()-1, '<').appendTo(globalHeader);
+	createMonthLink(currentRegion, referenceDate.getFullYear(), referenceDate.getMonth()+1, '>').appendTo(globalHeader);
 	
 	globalHeader.append(
 		$('<span>').text(title)
@@ -91,7 +93,7 @@ function buildEventTable(data, referenceDate) {
 		var currentCell = $('<td>').addClass('dayCell').appendTo(currentRow);
 		
 		var dayLabel = $('<a>').addClass('dateLabel').attr(
-				{href:'eventEdit.html#'+formatDate(currentDate, '-'),title:'Ajouter un évènement',day:currentDate.getDate()}
+				{href:'eventEdit.html#'+currentRegion+':'+formatDate(currentDate, '-'),title:'Ajouter un évènement',day:currentDate.getDate()}
 			).text(currentDate.getDate())
 			.mouseover(function(event){$(event.target).prepend('Ajouter > ');})
 			.mouseout(function(event){
@@ -113,16 +115,16 @@ function buildEventTable(data, referenceDate) {
 	
 	for (var i=0; i<events.length; i++) {
 		if (events[i].is_idf_event)
-			addIdfEvent(events[i], cellIndex);
+			addIdfEvent(events[i], cellIndex, currentRegion);
 		else
-			addEvent(events[i], cellIndex);
+			addEvent(events[i], cellIndex, currentRegion);
 	}
 	
 	setMainContent(table);
 }
 
-function addIdfEvent(eventData, cellIndex) {
-	var link = $('<a>').attr({href:'idf-event.html#'+eventData.id}).addClass('eventLink').html(
+function addIdfEvent(eventData, cellIndex, regionId) {
+	var link = $('<a>').attr({href:'idf-event.html#'+regionId+':'+eventData.id}).addClass('eventLink').html(
 		' '+eventData.title
 	);
 	
@@ -132,8 +134,8 @@ function addIdfEvent(eventData, cellIndex) {
 	$('<li>').append(link).appendTo(cellIndex[eventData.start_date.replace(/ .+$/, '')]);
 }
 
-function addEvent(eventData, cellIndex) {
-	var link = $('<a>').attr({href:'event.html#'+eventData.id}).addClass('eventLink').html(
+function addEvent(eventData, cellIndex, regionId) {
+	var link = $('<a>').attr({href:'event.html#'+regionId+':'+eventData.id}).addClass('eventLink').html(
 		' '+eventData.title
 	).prepend(
 		$('<time>').html(eventData.start_date.replace(/^.+ (.+):\d{2}$/, '$1'))

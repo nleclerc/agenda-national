@@ -2,13 +2,19 @@ var eventId = null;
 var userId = null;
 
 function loadIdfEvent(hash){
-	if (hash && hash.match(/^#\d+$/))
-		callService("idf/getEventData", {eventId: hash.substr(1)}, handleIdfEventData);
+	if (hash && hash.match(/^#[a-z]+:\d+$/i)) {
+		var eventId = hash.replace(/^#[a-z]+:(\d+)$/i, '$1');
+		var regionId = hash.replace(/^#([a-z]+):\d+$/i, '$1');
+		
+		callService("idf/getEventData", {eventId: eventId}, function(data, user){
+			handleEventData(data, user, regionId);
+		});
+	}
 	else
 		setErrorMessage('Evènement non spécifié.');
 }
 
-function handleIdfEventData(data, currentUser) {
+function handleIdfEventData(data, currentUser, regionId) {
 	// decode event title because of potential html entities.
 	var decodedTitlePotentialyDangerous = decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(data.title);
 	
@@ -22,7 +28,7 @@ function handleIdfEventData(data, currentUser) {
 	var eventTable = $('<table>').attr({id:'eventBody'});
 	var headerCell = $('<th>').attr({colspan:2}).appendTo($('<tr>').appendTo(eventTable));
 	$('<span>').attr({id:'eventTitle'}).html(data.title).appendTo(headerCell);
-	insertBackButton(headerCell, './#'+getMonthFromDate(eventDate));
+	insertBackButton(headerCell, './#'+regionId+':'+getMonthFromDate(eventDate));
 	
 	var authorLink = $('<a>').html(data.author.name);
 	if (data.author.id != 0)
@@ -70,7 +76,7 @@ function handleIdfEventData(data, currentUser) {
 	
 	if (data.author_id == currentUser.id)
 		$('<button>').attr({id:'editButton'}).text('Editer').click(function(){
-			jumpTo('idf-eventEdit.html#'+data.id);
+			jumpTo('idf-eventEdit.html#'+regionId+':'+data.id);
 		}).appendTo(controlBar);
 	
 	description.append(controlBar);
