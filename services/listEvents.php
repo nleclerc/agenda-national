@@ -4,6 +4,28 @@ require '../lib/serviceCommon.php';
 $errorMessage = null;
 $result = array();
 
+function sortEventsOnStartDate($a, $b){
+	$dateA = $a['start_date'];
+	$dateB = $b['start_date'];
+	
+	return ($dateA < $dateB) ? -1 : 1;
+}
+
+function addIdfEvents($events, $currentUserId, $startDate, $endDate) {
+	$dbidf = new IdfCalendarDbConnector();
+	$idfEvents = $dbidf->listEventLapse($currentUserId, $startDate, $endDate);
+	$events = array_merge($idfEvents, $events);
+	uasort($events, 'sortEventsOnStartDate');
+	
+	// must rebuild array because of strange array behavior.
+	$result = array();
+	
+	foreach($events as $event)
+		array_push($result, $event);
+	
+	return $result;
+}
+
 try {
 	$currentUser = getCurrentUserData();
 	$result["user"] = filterCurrentUserDate($currentUser);
@@ -18,6 +40,8 @@ try {
 	else {
 		$db = new CalendarDbConnector();
 		$events = $db->listEventLapse($currentUser['id'], $startDate, $endDate);
+		
+		$events = addIdfEvents($events, $currentUser['id'], $startDate, $endDate);
 		
 		$authorsIds = array();
 		

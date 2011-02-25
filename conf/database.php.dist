@@ -8,6 +8,13 @@
 			'password' => '',
 			'charset' => 'UTF8'
 		),
+		'idfCalendar' => array(
+			'host' => '',
+			'database' => '',
+			'user' => '',
+			'password' => '',
+			'charset' => 'UTF8'
+		),
 		'member' => array(
 			'host' => '',
 			'database' => '',

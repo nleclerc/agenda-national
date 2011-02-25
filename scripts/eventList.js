@@ -40,9 +40,7 @@ function getCurrentReferenceDate(hash){
 	return referenceDate;
 }
 
-function buildEventTable(data, referenceDate) {
-	var events = data;
-	
+function buildEventTable(events, referenceDate) {
 	var title = monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear();
 	
 	document.title = title+' [Agenda Mensa]';
@@ -94,20 +92,37 @@ function buildEventTable(data, referenceDate) {
 	}
 	
 	for (var i=0; i<events.length; i++) {
-		var currentEvent = events[i];
-		var link = $('<a>').attr({href:'event.html#'+currentEvent.id}).addClass('eventLink').html(
-			' '+currentEvent.title
-		).prepend(
-			$('<time>').html(currentEvent.start_date.replace(/^.+ (.+):\d{2}$/, '$1'))
-		);
-		
-		if (currentEvent.is_participating)
-			link.addClass('highlighted');
-		
-		$('<li>').append(link).appendTo(cellIndex[currentEvent.start_date.replace(/ .+$/, '')]);
+		if (events[i].is_idf_event)
+			addIdfEvent(events[i], cellIndex);
+		else
+			addEvent(events[i], cellIndex);
 	}
 	
 	setMainContent(table);
+}
+
+function addIdfEvent(eventData, cellIndex) {
+	var link = $('<a>').attr({href:'idf-event.html#'+eventData.id}).addClass('eventLink').html(
+		' '+eventData.title
+	);
+	
+	if (eventData.is_participating)
+		link.addClass('highlighted');
+	
+	$('<li>').append(link).appendTo(cellIndex[eventData.start_date.replace(/ .+$/, '')]);
+}
+
+function addEvent(eventData, cellIndex) {
+	var link = $('<a>').attr({href:'event.html#'+eventData.id}).addClass('eventLink').html(
+		' '+eventData.title
+	).prepend(
+		$('<time>').html(eventData.start_date.replace(/^.+ (.+):\d{2}$/, '$1'))
+	);
+	
+	if (eventData.is_participating)
+		link.addClass('highlighted');
+	
+	$('<li>').append(link).appendTo(cellIndex[eventData.start_date.replace(/ .+$/, '')]);
 }
 
 function isMonday(date){

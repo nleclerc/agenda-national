@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Agenda Mensa</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+
+<script src="scripts/jquery-1.4.4.min.js"></script>
+<script src="scripts/common.js"></script>
+<script src="scripts/idf/event.js"></script>
+
+<script>
+$(function(){
+	initialize();
+	$(window).bind('hashchange', function(e) {loadIdfEvent(location.hash)});
+	loadIdfEvent(location.hash);
+});
+</script>
+
+<script src="/ga.js"></script>
+</head>
+
+<body>
+	<div id="header">
+		<h1 id="title"><a href=".">Agenda Mensa</a></h1>
+		<div id="authenticationZone"></div>
+	</div>
+	
+	<div id="errorMessage"></div>
+	
+	<div id="mainContent"></div>
+</body>

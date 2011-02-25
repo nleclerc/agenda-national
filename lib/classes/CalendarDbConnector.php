@@ -71,6 +71,7 @@ class CalendarDbConnector {
 		
 		for ($i=count($foundEvents)-1; $i>=0; $i--) {
 			$data = $foundEvents[$i];
+			$data['id'] = intval($data['id']);
 			$data['is_participating'] = $data['is_participating'] == true; // converts because query returns 0 or 1 as a string.
 			
 			array_unshift($events, $data);
@@ -190,6 +191,7 @@ class CalendarDbConnector {
 		$foundEvent = $this->db->getRow($query, $eventId);
 		
 		if ($foundEvent) {
+			$foundEvent['id'] = intval($foundEvent['id']);
 			$foundEvent['participants'] = $this->findParticipants($eventId);
 			return $foundEvent;
 		}
