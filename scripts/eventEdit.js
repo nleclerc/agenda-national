@@ -39,7 +39,9 @@ function setRegion(selectedRegion){
 }
 
 function setLocationPreviewLink(){
-	$('#locationInput').change($('#locationPreview').attr({href:getLocationLink($('#locationInput').val())}));
+	$('#locationInput').change(function(){
+		$('#locationPreview').attr('href', getLocationLink($('#locationInput').val()))
+	});
 }
 
 function submitEventValues() {
