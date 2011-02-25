@@ -148,6 +148,14 @@ th {
 	padding: 2px 5px;
 }
 
+#regionSelector {
+	margin: 0;
+	margin-left: 5px;
+	width: 60px;
+	
+	vertical-align: bottom;
+}
+
 #eventTable .dayHeader{
 	font-weight: bold;
 	width: 100px;

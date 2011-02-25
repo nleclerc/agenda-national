@@ -22,8 +22,20 @@ function processEventEditHash(hash) {
 	setLocationPreviewLink();
 }
 
-function setRegion(regionId){
-	$('#regionInput').val(regionId);
+function setRegion(selectedRegion){
+	$('#regionSelector').val(selectedRegion);
+	
+	callService("listRegions", null, function(regions){
+		var selector = $('#regionSelector').html('');
+		
+		for (var i=0; i<regions.length; i++) {
+			var currentRegion = regions[i].id;
+			var option = $('<option>').text(currentRegion).appendTo(selector);
+			
+			if (currentRegion == selectedRegion)
+				option.attr({selected:'selected'});
+		}
+	});
 }
 
 function setLocationPreviewLink(){
@@ -34,7 +46,7 @@ function submitEventValues() {
 	var data = {
 		start_date: $('#dateInput').val()+' '+$('#timeInput').val(),	
 		title: $('#titleInput').val(),
-		region_id: $('#regionInput').val(),
+		region_id: $('#regionSelector').val(),
 		location: $('#locationInput').val(),	
 		description: $('#descriptionInput').val(),	
 		max_participants: $('#maxParticipantsInput').val()
@@ -62,8 +74,9 @@ function setEditEventDate(dateStr) {
 
 function handleEditEventData(eventData, regionId) {
 	setEditEventDate(eventData.start_date.replace(/^([\-0-9]*) .*$/, '$1'));
+	setRegion(eventData.region_id);
+	
 	$('#eventIdInput').val(eventData.id);
-	$('#regionInput').val(eventData.region_id);
 	$('#timeInput').val(eventData.start_date.replace(/^.* (.*):\d{2}$/, '$1'));
 	$('#locationInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.location));
 	$('#titleInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.title));

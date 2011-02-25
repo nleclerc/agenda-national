@@ -40,11 +40,19 @@ function createMonthLink(regionId, year, month, label){
 	});
 }
 
+function getMonthFromHash(hash) {
+	if (hash && hash.match(/^#([a-z]{3}:)?\d{4}-\d{2}$/i))
+		return hash.replace(/^#([a-z]{3}:)?(\d{4}-\d{2})$/i, '$2');
+	
+	return null;
+}
+
 function getCurrentReferenceDate(hash){
 	var referenceDate = new Date();
+	var currentMonth = getMonthFromHash(hash);
 	
-	if (hash && hash.match(/^#([a-z]{3}:)?\d{4}-\d{2}$/i)) {
-		var tokens = hash.replace(/^#([a-z]{3}:)?(\d{4}-\d{2})$/i, '$2').split('-');
+	if (currentMonth) {
+		var tokens = currentMonth.split('-');
 		
 		// radix is specified in parseint because of leading zeroes bug.
 		// cf http://www.breakingpar.com/bkp/home.nsf/0/87256B280015193F87256C85006A6604
@@ -52,6 +60,32 @@ function getCurrentReferenceDate(hash){
 	}
 	
 	return referenceDate;
+}
+
+function loadRegions(selectedRegion){
+	callService("listRegions", null, function(regions){
+		var selector = $('#regionSelector').html('');
+		
+		for (var i=0; i<regions.length; i++) {
+			var currentRegion = regions[i].id;
+			var option = $('<option>').text(currentRegion).appendTo(selector);
+			
+			if (currentRegion == selectedRegion)
+				option.attr({selected:'selected'});
+		}
+		
+		selector.change(function(){selectRegion(selector.val());});
+	});
+}
+
+function selectRegion(regionId) {
+	var targetHash  = '#'+regionId;
+	var currentMonth = getMonthFromHash(location.hash);
+	
+	if (currentMonth)
+		targetHash += ':'+currentMonth;
+	
+	location.hash = targetHash;
 }
 
 function buildEventTable(data, referenceDate) {
@@ -70,7 +104,8 @@ function buildEventTable(data, referenceDate) {
 	globalHeader.append(
 		$('<span>').text(title)
 	).append(' ').append(
-		$('<span>').addClass('subtitle').text(data.region_id)
+		$('<select>').attr({id:'regionSelector'}).append($('<option>').text(currentRegion))
+//		$('<span>').addClass('subtitle').text(data.region_id)
 	);
 	
 	var dayHeaders = $('<tr>').appendTo(table);
@@ -121,6 +156,7 @@ function buildEventTable(data, referenceDate) {
 	}
 	
 	setMainContent(table);
+	loadRegions(currentRegion);
 }
 
 function addIdfEvent(eventData, cellIndex, regionId) {
