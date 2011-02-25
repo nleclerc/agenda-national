@@ -32,7 +32,7 @@ try {
 
 	$startDate = getQueryParameter('startDate');
 	$endDate = getQueryParameter('endDate');
-	$region = getQueryParameter('regionId');
+	$region = strtoupper(getQueryParameter('regionId'));
 	
 	if (!$region)
 		$region = $currentUser['region_id'];

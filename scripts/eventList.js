@@ -9,10 +9,17 @@ var dayLabels = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanch
 function loadEvents(hash){
 	var listingDate = getCurrentReferenceDate(hash);
 	
-	var startDate = findStartDate(listingDate);
-	var endDate = findEndDate(listingDate);
+	var region = getRegion(hash);
 	
-	callService("listEvents", {startDate:formatDate(startDate), endDate:formatDate(endDate)}, function(data){
+	parms = {
+		startDate:formatDate(findStartDate(listingDate)),
+		endDate:formatDate(findEndDate(listingDate))
+	};
+	
+	if (region)
+		parms.regionId = region;
+	
+	callService("listEvents", parms, function(data){
 		if (location.hash != hash)
 			location.hash = hash;
 		
@@ -20,17 +27,24 @@ function loadEvents(hash){
 	});
 }
 
-function createMonthLink(year, month, label){
+function getRegion(hash) {
+	if (hash && hash.match(/^#[a-z]{3}(:\d{4}-\d{2}$)?/i))
+		return hash.replace(/^#([a-z]{3})(:\d{4}-\d{2}$)?/i, '$1');
+	
+	return null;
+}
+
+function createMonthLink(regionId, year, month, label){
 	return $('<button>').addClass('headerButton').text(label).click(function(){
-		loadEvents('#'+year+'-'+getDoubleDigit(month+1));
+		loadEvents('#'+regionId+':'+year+'-'+getDoubleDigit(month+1));
 	});
 }
 
 function getCurrentReferenceDate(hash){
 	var referenceDate = new Date();
 	
-	if (hash && hash.match(/^#\d{4}-\d{2}$/)) {
-		var tokens = hash.substr(1).split('-');
+	if (hash && hash.match(/^#([a-z]{3}:)?\d{4}-\d{2}$/i)) {
+		var tokens = hash.replace(/^#([a-z]{3}:)?(\d{4}-\d{2})$/i, '$2').split('-');
 		
 		// radix is specified in parseint because of leading zeroes bug.
 		// cf http://www.breakingpar.com/bkp/home.nsf/0/87256B280015193F87256C85006A6604
@@ -48,9 +62,14 @@ function buildEventTable(data, referenceDate) {
 	
 	var table = $('<table id="eventTable">');
 	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table));
-	createMonthLink(referenceDate.getFullYear(), referenceDate.getMonth()-1, '<').appendTo(globalHeader);
-	createMonthLink(referenceDate.getFullYear(), referenceDate.getMonth()+1, '>').appendTo(globalHeader);
-	$('<span>').text(title).appendTo(globalHeader);
+	createMonthLink(data.region_id, referenceDate.getFullYear(), referenceDate.getMonth()-1, '<').appendTo(globalHeader);
+	createMonthLink(data.region_id, referenceDate.getFullYear(), referenceDate.getMonth()+1, '>').appendTo(globalHeader);
+	
+	globalHeader.append(
+		$('<span>').text(title)
+	).append(' ').append(
+		$('<span>').addClass('subtitle').text(data.region_id)
+	);
 	
 	var dayHeaders = $('<tr>').appendTo(table);
 	$(dayLabels).each(function(index, item){
@@ -176,8 +195,4 @@ function createDateBlock(date){
 	dateBlock.hide().appendTo(events).fadeIn(500);
 	
 	return dateBlock;
-}
-
-function openEvent(eventId) {
-	window.location.href = "event.html?eventId="+eventId;
 }
