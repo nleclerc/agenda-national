@@ -44,6 +44,15 @@ body {
 	text-decoration: underline;
 }
 
+#forgottenPasswordLink{
+	display: inline;
+	font-size: small;
+	font-style: italic;
+	
+	color: #CCCCCC;
+	vertical-align: middle;
+}
+
 .errorMessage{
 	background-color: red;
 	color: black;
