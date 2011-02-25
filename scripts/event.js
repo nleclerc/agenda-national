@@ -42,7 +42,11 @@ function handleEventData(data, currentUser) {
 		$('<eventDetails>').append(
 			$('<date>').text(formatLongDate(eventDate)+' à '+getTime(data.start_date))
 		).append(
-			$('<a>').attr({id:'locationLink', href:getLocationLink(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(data.location))}).html(data.location)
+			$('<region>').html('Région '+data.region_id)
+		).append(
+			$('<div>').attr({id:'locationLink'}).text('Lieu : ').append(
+				$('<a>').attr({id:'locationLink', href:getLocationLink(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(data.location))}).html(data.location)
+			)
 		)
 	).append($('<div>').attr({id:'eventDescription'}).html(formatDescription(data.description))).appendTo(bodyRow);
 	

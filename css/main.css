@@ -252,6 +252,7 @@ th button {
 }
 
 eventDetails {
+	font-weight: bold;
 	display: block;
 	background-color: #EEEEEE;
 	padding: 5px;
@@ -259,8 +260,13 @@ eventDetails {
 
 eventDetails date {
 	display: block;
-	font-weight: bold;
 	font-size: medium;
+	font-style: italic;
+}
+
+eventDetails region {
+	display: block;
+	font-size: normal;
 	font-style: italic;
 }
 

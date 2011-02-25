@@ -41,6 +41,8 @@ function handleIdfEventData(data, currentUser) {
 	var description = $('<td>').append(
 		$('<eventDetails>').append(
 			$('<date>').text(formatLongDate(eventDate))
+		).append(
+			$('<region>').text('Région '+data.region_id)
 		)
 	).append($('<div>').attr({id:'eventDescription'}).html(formatDescription(data.description))).appendTo(bodyRow);
 	
