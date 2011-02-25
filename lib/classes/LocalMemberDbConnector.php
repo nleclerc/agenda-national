@@ -232,6 +232,7 @@ class LocalMemberDbConnector {
 			
 			$result.= $foundAddress['cp'].' '.$foundAddress['ville']."\n";
 			$result.= $foundAddress['pays'];
+			$result = stripcslashes($result); // address needs unescaping.
 		}
 		
 		// trim because it seems some countries have trailing spaces...
