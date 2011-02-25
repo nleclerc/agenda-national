@@ -11,7 +11,7 @@ function handleMemberData(data){
 	var table = $('<table>').attr({id:'memberTable'});
 	
 	var header = $('<th>').append(data.name+' ').append(
-		$('<span>').attr({id:'memberDetails'}).text(data.region+' #'+data.id)
+		$('<span>').attr({id:'memberDetails'}).text(data.region_id+' #'+data.id)
 	).appendTo($('<tr>').appendTo(table));
 	insertBackButton(header);
 	

@@ -124,7 +124,8 @@ class LocalMemberDbConnector {
 		if ($foundData) {
 			$result = array(
 				'id' => $foundData['id'],
-				'name' => $foundData['name']
+				'name' => $foundData['name'],
+				'region_id' => $foundData['region_id']
 			);
 			
 			if (isset($foundData['contacts']))
@@ -145,7 +146,7 @@ class LocalMemberDbConnector {
 			' civilite as title,'.
 			' nom as lastname,'.
 			' prenom as firstname,'.
-			' idRegion as region,'.
+			' idRegion as region_id,'.
 			' devise as motto '.
 			'FROM Membre '.
 			'WHERE idMembre=?';

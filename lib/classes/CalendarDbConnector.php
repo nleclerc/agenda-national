@@ -84,7 +84,7 @@ class CalendarDbConnector {
 		return $this->listEvents($currentMemberId, 'year(start_date)=? and month(start_date)=?', $year, $month);
 	}
 		
-	public function listEventLapse($currentMemberId, $startDate, $endDate) {
+	public function listEventLapse($currentMemberId, $region, $startDate, $endDate) {
 		$this->checkDate($startDate);
 		$this->checkDate($endDate);
 		
@@ -92,9 +92,10 @@ class CalendarDbConnector {
 		
 		$where = '';
 		$where.= 'date(start_date) >= ? AND '; // equal or after start date
-		$where.= 'date(start_date) <= ? '; // equal or before end date
+		$where.= 'date(start_date) <= ? AND '; // equal or before end date
+		$where.= "(region_id = 'FRA' OR region_id = ?) "; // region filter
 		
-		return $this->listEvents($currentMemberId, $where, $startDate, $endDate);
+		return $this->listEvents($currentMemberId, $where, $startDate, $endDate, $region);
 	}
 	
 	private function checkDate($datestr){

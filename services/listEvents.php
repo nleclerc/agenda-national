@@ -32,6 +32,10 @@ try {
 
 	$startDate = getQueryParameter('startDate');
 	$endDate = getQueryParameter('endDate');
+	$region = getQueryParameter('region');
+	
+	if (!$region)
+		$region = $currentUser['region'];
 	
 	if (!$startDate)
 		$errorMessage = "La date de début n'a pas été spécifiée.";
@@ -39,9 +43,10 @@ try {
 		$errorMessage = "La date de fin n'a pas été spécifiée.";
 	else {
 		$db = new CalendarDbConnector();
-		$events = $db->listEventLapse($currentUser['id'], $startDate, $endDate);
+		$events = $db->listEventLapse($currentUser['id'], $region, $startDate, $endDate);
 		
-		$events = addIdfEvents($events, $currentUser['id'], $startDate, $endDate);
+		if ($region == 'IDF')
+			$events = addIdfEvents($events, $currentUser['id'], $startDate, $endDate);
 		
 		$authorsIds = array();
 		
@@ -63,7 +68,10 @@ try {
 		
 		$result = array(
 			"user" => filterCurrentUserDate($currentUser),
-			"result" => $events
+			"result" => array(
+				'region' => $region,
+				'events' => $events
+			)
 		);
 	}
 } catch (Exception $e) {

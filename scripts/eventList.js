@@ -40,7 +40,8 @@ function getCurrentReferenceDate(hash){
 	return referenceDate;
 }
 
-function buildEventTable(events, referenceDate) {
+function buildEventTable(data, referenceDate) {
+	var events = data.events;
 	var title = monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear();
 	
 	document.title = title+' [Agenda Mensa]';

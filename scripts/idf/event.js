@@ -52,7 +52,7 @@ function handleIdfEventData(data, currentUser) {
 		var currentParticipant = data.participants[i];
 		var row = $('<tr>').appendTo(participantTable);
 		var name = $('<div>').addClass('participantName').html(currentParticipant.name);
-		var details = $('<div>').addClass('participantDetails').html(currentParticipant.id);
+		var details = $('<div>').addClass('participantDetails').text(currentParticipant.region_id+' #'+currentParticipant.id);
 		
 		if (currentParticipant.id == currentUser.id)
 			name.addClass('highlighted');
@@ -114,15 +114,6 @@ function formatDescription(source) {
 	result = result.replace(/<lieu>(.+?)<\/lieu>/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
 	
 	return applyHtmlLineBreaks(result);
-}
-
-function getParticipantHtml(data, highlight, subseq){
-	var details = ''+data.id;
-	
-	if (data.email)
-		details += ' - '+data.email;
-	
-	return createListItem(data.name, details, 'person', 'member.html?memberId='+data.id, subseq, highlight);
 }
 
 function subscribe(){
