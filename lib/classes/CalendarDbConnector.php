@@ -179,6 +179,7 @@ class CalendarDbConnector {
 			'	author_id,'.
 			'	region_id,'.
 			'	start_date,'.
+			'	location,'.
 			'	description,'.
 			'	max_participants '.
 			'from'.

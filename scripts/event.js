@@ -39,7 +39,11 @@ function handleEventData(data, currentUser) {
 	var bodyRow = $('<tr>').appendTo(eventTable);
 	
 	var description = $('<td>').append(
-		$('<div>').attr({id:'eventDate'}).text(formatLongDate(eventDate))
+		$('<eventDetails>').append(
+			$('<date>').text(formatLongDate(eventDate)+' à '+getTime(data.start_date))
+		).append(
+			$('<a>').attr({id:'locationLink', href:getLocationLink(data.location)}).html(data.location)
+		)
 	).append($('<div>').attr({id:'eventDescription'}).html(formatDescription(data.description))).appendTo(bodyRow);
 	
 	var participantTable = $('<table>').attr({id:'participantTable'}).appendTo($('<td>').attr({id:'participantColumn'}).appendTo(bodyRow));

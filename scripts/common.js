@@ -240,11 +240,19 @@ function decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(str){
 	return $('<div>').html(str).text();
 }
 
+function getLocationLink(location) {
+	return 'http://maps.google.fr/maps?q='+location;
+}
+
 function parseDate(dateString){
 	var dateParts = dateString.split('-');
 	
 	// substract 1 for month because it is 0 indexed.
 	return new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+}
+
+function getTime(datestr){
+	return datestr.replace(/^.* (.*):\d{2}$/, '$1');
 }
 
 function formatLongDate(datestr){

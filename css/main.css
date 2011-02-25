@@ -251,14 +251,23 @@ th button {
 	font-style: italic;
 }
 
-#eventDate {
+eventDetails {
+	display: block;
+	background-color: #EEEEEE;
+	padding: 5px;
+}
+
+eventDetails date {
+	display: block;
 	font-weight: bold;
 	font-size: medium;
 	font-style: italic;
-	
-	background-color: #EEEEEE;
-	
-	padding: 5px;
+}
+
+eventDetails #locationLink {
+	font-weight: bold;
+	font-size: normal;
+	font-style: italic;
 }
 
 #eventDescription {
