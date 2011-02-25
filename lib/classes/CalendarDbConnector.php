@@ -110,19 +110,6 @@ class CalendarDbConnector {
 			$this->createEvent($currentMemberId, $eventData);
 	}
 	
-	public function importEvent($eventData) {
-		// filter text to avoid script injection.
-		$eventData = $this->filterEventData($eventData);
-		
-		$query = 'INSERT INTO event (id, author_id, region_id, start_date, title, location, description, max_participants) '.
-				'VALUES (:id, :author_id, :region_id, :start_date, :title, :location, :description, :max_participants)';
-		
-		foreach($eventData as $key => $value)
-			$parms[":$key"] = $value;
-		
-		$this->db->execute($query, $parms);
-	}
-	
 	private function createEvent($authorId, $eventData) {
 		// filter text to avoid script injection.
 		$eventData = $this->filterEventData($eventData);
