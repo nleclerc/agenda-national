@@ -53,6 +53,11 @@ body {
 	display: none;
 }
 
+.inputInstructions{
+	font-style: italic;
+	color: #AAAAAA;
+}
+
 ul {
 	list-style-type: square;
 }
