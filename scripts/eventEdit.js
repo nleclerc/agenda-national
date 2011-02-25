@@ -14,14 +14,22 @@ function processEventEditHash(hash) {
 		setCancelLink('.'); // go to home.
 		setErrorMessage("Date ou évènement non spécifiés.");
 	}
+	
+	setLocationPreviewLink();
+}
+
+function setLocationPreviewLink(){
+	$('#locationInput').change($('#locationPreview').attr({href:getLocationLink($('#locationInput').val())}));
 }
 
 function submitEventValues() {
 	var data = {
-		date: $('#dateInput').val(),	
-		title: $('#titleInput').val(),	
+		start_date: $('#dateInput').val()+' '+$('#timeInput').val(),	
+		title: $('#titleInput').val(),
+		region_id: $('#regionInput').val(),
+		location: $('#locationInput').val(),	
 		description: $('#descriptionInput').val(),	
-		maxParticipants: $('#maxParticipantsInput').val()
+		max_participants: $('#maxParticipantsInput').val()
 	};
 	
 	var currentId = $('#eventIdInput').val();
@@ -45,13 +53,16 @@ function setEditEventDate(dateStr) {
 }
 
 function handleEditEventData(eventData) {
-	setEditEventDate(eventData.date);
+	setEditEventDate(eventData.start_date.replace(/^([\-0-9]*) .*$/, '$1'));
 	$('#eventIdInput').val(eventData.id);
+	$('#regionInput').val(eventData.region_id);
+	$('#timeInput').val(eventData.start_date.replace(/^.* (.*):\d{2}$/, '$1'));
+	$('#locationInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.location));
 	$('#titleInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.title));
 	$('#descriptionInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.description));
-	$('#maxParticipantsInput').val(eventData.maxParticipants);
+	$('#maxParticipantsInput').val(eventData.max_participants);
 	
-	enableDelete(eventData.id, './#'+getMonthFromDate(eventData.date));
+	enableDelete(eventData.id, './#'+getMonthFromDate(eventData.start_date));
 	enableSubmit();
 }
 

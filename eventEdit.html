@@ -43,13 +43,30 @@ $(function(){
 			</tr>
 			
 			<tr>
+				<td class="header editHeader">Titre</td>
+				<td><input type="text" id="titleInput"></td>
+			</tr>
+			
+			<tr>
+				<td class="header editHeader">Region</td>
+				<td><input type="text" id="regionInput" maxlength="3"></td>
+			</tr>
+			
+			<tr>
 				<td class="header">Date</td>
 				<td><div id="eventDateLabel"></div></td>
 			</tr>
 			
 			<tr>
-				<td class="header editHeader">Titre</td>
-				<td><input type="text" id="titleInput"></td>
+				<td class="header editHeader">Heure</td>
+				<td><input type="text" id="timeInput" maxlength="5">
+				format: hh:mm</td>
+			</tr>
+			
+			<tr>
+				<td class="header editHeader">Lieu</td>
+				<td><input type="text" id="locationInput">
+				<a id="locationPreview" target="_blank">Tester le lien</a></td>
 			</tr>
 			
 			<tr>

@@ -370,12 +370,21 @@ eventDetails #locationLink {
 	width: 150px;
 }
 
-#editEventTable #titleInput {
+#editEventTable #titleInput, #editEventTable #locationInput {
 	font-size: small;
 	width: 300px;
 }
 
-#editEventTable #maxParticipantsInput {
+#editEventTable #maxParticipantsInput, #editEventTable #regionInput {
+	font-size: small;
+	width: 30px;
+}
+
+#editEventTable #locationPreview {
+	cursor: pointer;
+}
+
+#editEventTable #timeInput {
 	font-size: small;
 	width: 50px;
 }
