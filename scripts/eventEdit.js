@@ -1,21 +1,29 @@
 
 
 function processEventEditHash(hash) {
-	
-	if (hash.match(/^#\d{4}-\d{2}-\d{2}$/)){
-		var date = hash.substr(1);
+	if (hash.match(/^#[a-z]{3}:\d{4}-\d{2}-\d{2}$/i)){
+		var date = hash.substr(5);
+		var regionId = hash.substr(1,3);
 		setEditEventDate(date);
-		setCancelLink('./#'+getMonthFromDate(date)); // go to month page.
+		setRegion(regionId);
+		setCancelLink('./#'+regionId+':'+getMonthFromDate(date)); // go to month page.
 		enableSubmit();
-	} else if (hash.match(/^#\d+$/)) {
+	} else if (hash.match(/^#[a-z]{3}:\d+$/i)) {
+		var regionId = hash.substr(1,3);
 		setCancelLink('event.html'+hash); // go to event page.
-		callService("getEventData", {eventId: hash.substr(1)}, handleEditEventData);
+		callService("getEventData", {eventId: hash.substr(5)}, function(data){
+			handleEditEventData(data, regionId);
+		});
 	} else {
 		setCancelLink('.'); // go to home.
 		setErrorMessage("Date ou évènement non spécifiés.");
 	}
 	
 	setLocationPreviewLink();
+}
+
+function setRegion(regionId){
+	$('#regionInput').val(regionId);
 }
 
 function setLocationPreviewLink(){
@@ -52,7 +60,7 @@ function setEditEventDate(dateStr) {
 	$('#dateInput').val(dateStr);
 }
 
-function handleEditEventData(eventData) {
+function handleEditEventData(eventData, regionId) {
 	setEditEventDate(eventData.start_date.replace(/^([\-0-9]*) .*$/, '$1'));
 	$('#eventIdInput').val(eventData.id);
 	$('#regionInput').val(eventData.region_id);
@@ -62,7 +70,7 @@ function handleEditEventData(eventData) {
 	$('#descriptionInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.description));
 	$('#maxParticipantsInput').val(eventData.max_participants);
 	
-	enableDelete(eventData.id, './#'+getMonthFromDate(eventData.start_date));
+	enableDelete(eventData.id, './#'+regionId+':'+getMonthFromDate(eventData.start_date));
 	enableSubmit();
 }
 

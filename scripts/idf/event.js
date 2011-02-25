@@ -7,7 +7,7 @@ function loadIdfEvent(hash){
 		var regionId = hash.replace(/^#([a-z]+):\d+$/i, '$1');
 		
 		callService("idf/getEventData", {eventId: eventId}, function(data, user){
-			handleEventData(data, user, regionId);
+			handleIdfEventData(data, user, regionId);
 		});
 	}
 	else
