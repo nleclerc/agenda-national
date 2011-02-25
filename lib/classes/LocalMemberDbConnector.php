@@ -294,4 +294,9 @@ class LocalMemberDbConnector {
 		
 		return $result;
 	}
+	
+	public function listRegions() {
+		return $this->db->getList("SELECT idRegion as id, region as name FROM Region".
+			" WHERE idRegion != 'NA' AND idRegion != 'ETR' AND idRegion != 'FRA' ORDER BY idRegion ASC");
+	}
 }
