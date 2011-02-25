@@ -32,10 +32,10 @@ try {
 
 	$startDate = getQueryParameter('startDate');
 	$endDate = getQueryParameter('endDate');
-	$region = getQueryParameter('region');
+	$region = getQueryParameter('regionId');
 	
 	if (!$region)
-		$region = $currentUser['region'];
+		$region = $currentUser['region_id'];
 	
 	if (!$startDate)
 		$errorMessage = "La date de début n'a pas été spécifiée.";
@@ -69,7 +69,7 @@ try {
 		$result = array(
 			"user" => filterCurrentUserDate($currentUser),
 			"result" => array(
-				'region' => $region,
+				'region_id' => $region,
 				'events' => $events
 			)
 		);

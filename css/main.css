@@ -241,13 +241,10 @@ th button {
 	padding: 2px 5px;
 }
 
-#eventAuthor, #eventAuthor a, #memberDetails {
+th .subtitle, th .subtitle a, #memberDetails {
 	font-size: small;
 	font-weight: normal;
 	color: #fcbda8;
-}
-
-#eventAuthor, #memberDetails {
 	font-style: italic;
 }
 

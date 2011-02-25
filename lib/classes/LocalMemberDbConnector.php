@@ -41,7 +41,7 @@ class LocalMemberDbConnector {
 		$foundMember = $this->db->getRow(
 			'SELECT'.
 			' idMembre as id,'.
-			' idRegion as region,'.
+			' idRegion as region_id,'.
 			' droits as privilege,'.
 			' nom as lastname,'.
 			' prenom as firstname '.

@@ -24,13 +24,13 @@ function handleEventData(data, currentUser) {
 	$('<span>').attr({id:'eventTitle'}).html(data.title).appendTo(headerCell);
 	insertBackButton(headerCell, './#'+getMonthFromDate(eventDate));
 	
-	var authorLink = $('<a>').attr({id:'authorLink'}).html(data.author.name);
+	var authorLink = $('<a>').html(data.author.name);
 	if (data.author.id != 0)
 		authorLink.attr({href:'member.html#'+data.author.id});
 	else if (data.author.email)
 		authorLink.attr({href:'mailto:'+data.author.email+'?subject=[MENSA-AGENDA] '+decodedTitlePotentialyDangerous});
 	
-	$('<span>').attr({id:'eventAuthor'}).text(' par ').append(authorLink).appendTo(headerCell);
+	$('<span>').addClass('subtitle').text(' par ').append(authorLink).appendTo(headerCell);
 	
 	eventTable.append('<tr><td class="header">Description</td><td class="header">Participants ( '+
 			data.participants.length+' / '+
