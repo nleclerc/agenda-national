@@ -1,5 +1,5 @@
 <?php
-require __DIR__.'/../../lib/serviceCommon.php';
+require '../lib/serviceCommon.php';
 
 $errorMessage = null;
 $result = array();

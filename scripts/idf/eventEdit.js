@@ -10,7 +10,7 @@ function processEventEditHash(hash) {
 	} else if (hash.match(/^#[a-z]{3}:\d+$/i)) {
 		var regionId = hash.substr(1,3);
 		setCancelLink('idf-event.html'+hash); // go to event page.
-		callService("idf/getEventData", {eventId: hash.substr(5)}, function(data){
+		callService("idf-getEventData", {eventId: hash.substr(5)}, function(data){
 			handleEditEventData(data, regionId);
 		});
 	} else {
@@ -32,7 +32,7 @@ function submitEventValues() {
 	if (currentId)
 		data.id = currentId;
 	
-	callService('idf/setEventData', {eventData: JSON.stringify(data)}, function(){
+	callService('idf-setEventData', {eventData: JSON.stringify(data)}, function(){
 		// on save, activate cancel link.
 		jumpTo($('#cancelLink').attr('href'));
 	});
@@ -60,7 +60,7 @@ function handleEditEventData(eventData, regionId) {
 
 function enableDelete(eventId, exitUrl){
 	$('#deleteButton').unbind('click').click(function(){
-		callService('idf/deleteEvent', {eventId: eventId}, function(){jumpTo(exitUrl);});
+		callService('idf-deleteEvent', {eventId: eventId}, function(){jumpTo(exitUrl);});
 	}).show();
 }
 

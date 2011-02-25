@@ -6,7 +6,7 @@ function loadIdfEvent(hash){
 		var eventId = hash.replace(/^#[a-z]+:(\d+)$/i, '$1');
 		var regionId = hash.replace(/^#([a-z]+):\d+$/i, '$1');
 		
-		callService("idf/getEventData", {eventId: eventId}, function(data, user){
+		callService("idf-getEventData", {eventId: eventId}, function(data, user){
 			handleIdfEventData(data, user, regionId);
 		});
 	}
@@ -123,9 +123,9 @@ function formatDescription(source) {
 }
 
 function subscribe(){
-	loadAndRefresh("services/idf/addParticipation.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/idf-addParticipation.php", {userId: userId, eventId: eventId});
 }
 
 function unsubscribe(){
-	loadAndRefresh("services/idf/cancelParticipation.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/idf-cancelParticipation.php", {userId: userId, eventId: eventId});
 }
