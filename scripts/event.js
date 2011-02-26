@@ -103,7 +103,7 @@ function formatDescription(source) {
 	result = result.replace(/&lt;\/?(i|em)(&gt;|>)/ig, '*'); // italic tags
 	
 	// highlight some specific values.
-	result = result.replace(/([^*]|^)(\d?\dh\d{0,2})([^*]|$)/ig, '$1**$2**$3'); // hours
+	result = result.replace(/([^*]|^)(\d?\d\s?h\s?\d{0,2})([^*]|$)/ig, '$1**$2**$3'); // hours
 	result = result.replace(/([^*]|^)(\d+[\.,]?\d*\s*(€|euros?))([^*]|$)/ig, '$1**$2**$4'); // price
 	result = result.replace(/([^*]|^)(gratuite?(ment)?s?)([^*]|$)/ig, '$1**$2**$4'); // price
 	
