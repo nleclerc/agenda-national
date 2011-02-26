@@ -40,8 +40,8 @@ function setRegion(selectedRegion){
 
 function setLocationPreviewLink(){
 	$('#locationInput').change(function(){
-		$('#locationPreview').attr('href', getLocationLink($('#locationInput').val()))
-	});
+		$('#locationPreview').attr('href', getLocationLink($('#locationInput').val()));
+	}).change();
 }
 
 function submitEventValues() {
@@ -84,6 +84,8 @@ function handleEditEventData(eventData, regionId) {
 	$('#titleInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.title));
 	$('#descriptionInput').val(decodeHtmlEntitiesAndPotentialyInsertMaliciousCode(eventData.description));
 	$('#maxParticipantsInput').val(eventData.max_participants);
+	
+	setLocationPreviewLink(); // link is not updated on programmatic change.
 	
 	enableDelete(eventData.id, './#'+regionId+':'+getMonthFromDate(eventData.start_date));
 	enableSubmit();
