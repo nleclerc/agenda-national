@@ -2,11 +2,13 @@
 var monthLabels = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
 var dayLabels = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 
+var currentServiceCalls = 0;
 
 function initialize(){
 	$.ajaxSetup({
 		error:function(x){
 			setErrorMessage('Erreur serveur: '+x.status);
+			stopWaitMessage();
 		}
 	});
 	
@@ -21,6 +23,42 @@ function initialize(){
 	);
 }
 
+function startWaitMessage(){
+	// wait message is not compatible with IE6.
+	if (navigator.userAgent.match(/MSIE 6\./i))
+		return;
+	
+	currentServiceCalls++;
+	
+	if (currentServiceCalls == 1)
+		$.blockUI({
+			message: 'Chargement en cours...',
+			css: { 
+				'font-weight': 'bold',
+				border: 'none', 
+				padding: '5px 5px',
+				backgroundColor: '#000000', 
+				'-webkit-border-radius': '10px', 
+				'-moz-border-radius': '10px', 
+				opacity: .5, 
+				color: '#ffffff',
+				top: '20px'
+	        },
+	        overlayCSS: {opacity: 0}
+		});
+}
+
+function stopWaitMessage(){
+	// wait message is not compatible with IE6.
+	if (navigator.userAgent.match(/MSIE 6\./i))
+		return;
+	
+	currentServiceCalls--;
+	
+	if (currentServiceCalls <= 0)
+		$.unblockUI();
+}
+
 function setMainContent(node){
 	$('#mainContent').html('').append(node);
 }
@@ -30,10 +68,14 @@ function callService(name, parms, callback) {
 }
 
 function getJSON(url, parms, callback) {
+	startWaitMessage();
+	
 	setErrorMessage();
 	$.getJSON(url, parms, function(data){
 		if (processLogin(data))
 			callback(data.result, data.user);
+		
+		stopWaitMessage();
 	});
 }
 
@@ -158,6 +200,7 @@ function getDoubleDigit(number){
 }
 
 function loadAndRefresh(url, args, callback){
+	startWaitMessage();
 	$.ajax({
 		url: url,
 		dataType: 'json',

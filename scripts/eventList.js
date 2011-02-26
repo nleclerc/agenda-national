@@ -7,6 +7,11 @@ var monthLabels = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","A
 var dayLabels = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
 
 function loadEvents(hash){
+	if ($('#eventTable').attr('hash') == hash) {
+		// hash is the same as the one already loaded, skipping load.
+		return;
+	}
+	
 	var listingDate = getCurrentReferenceDate(hash);
 	
 	var region = getRegion(hash);
@@ -23,7 +28,7 @@ function loadEvents(hash){
 		if (location.hash != hash)
 			location.hash = hash;
 		
-		buildEventTable(data, listingDate);
+		buildEventTable(data, listingDate, hash);
 	});
 }
 
@@ -74,7 +79,7 @@ function loadRegions(selectedRegion){
 				option.attr({selected:'selected'});
 		}
 		
-		selector.change(function(){selectRegion(selector.val());});
+		selector.unbind('change').change(function(){selectRegion(selector.val());});
 	});
 }
 
@@ -85,10 +90,10 @@ function selectRegion(regionId) {
 	if (currentMonth)
 		targetHash += ':'+currentMonth;
 	
-	location.hash = targetHash;
+	loadEvents(targetHash);
 }
 
-function buildEventTable(data, referenceDate) {
+function buildEventTable(data, referenceDate, hash) {
 	var events = data.events;
 	
 	var title = monthLabels[referenceDate.getMonth()]+' '+referenceDate.getFullYear();
@@ -96,7 +101,7 @@ function buildEventTable(data, referenceDate) {
 	
 	var currentRegion = data.region_id;
 	
-	var table = $('<table id="eventTable">');
+	var table = $('<table>').attr({id:'eventTable', hash:hash});
 	var globalHeader = $('<th colspan="7">').appendTo($('<tr>').appendTo(table));
 	createMonthLink(currentRegion, referenceDate.getFullYear(), referenceDate.getMonth()-1, '<').appendTo(globalHeader);
 	createMonthLink(currentRegion, referenceDate.getFullYear(), referenceDate.getMonth()+1, '>').appendTo(globalHeader);

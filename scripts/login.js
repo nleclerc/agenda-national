@@ -1,5 +1,6 @@
 
 function handleLoginSubmit(eventObject){
+	startWaitMessage();
 	$.ajax({
 		type: 'POST',
 		url: "services/login",
@@ -16,6 +17,8 @@ function handleLoginresult(data){
 		setErrorMessage("Erreur de login.");
 	else
 		jumpTo('.');
+	
+	stopWaitMessage();
 }
 
 function applyPlaceholderWorkaround(){
