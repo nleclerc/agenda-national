@@ -1,6 +1,3 @@
-var eventId = null;
-var userId = null;
-
 function loadIdfEvent(hash){
 	if (hash && hash.match(/^#[a-z]+:\d+$/i)) {
 		var eventId = hash.replace(/^#[a-z]+:(\d+)$/i, '$1');
@@ -70,8 +67,8 @@ function handleIdfEventData(data, currentUser, regionId) {
 	}
 	
 	var controlBar = $('<div id="controlBar">'+
-			'<button id="subscribeButton" disabled="true" onclick="subscribe()">S\'inscrire</button>'+
-			'<button id="unsubscribeButton" disabled="true" onclick="unsubscribe()">Se désinscrire</button>'+
+			'<button id="subscribeButton" disabled="true" onclick="subscribeIdf()">S\'inscrire</button>'+
+			'<button id="unsubscribeButton" disabled="true" onclick="unsubscribeIdf()">Se désinscrire</button>'+
 			'</div>');
 	
 	if (data.author_id == currentUser.id)
@@ -92,40 +89,10 @@ function handleIdfEventData(data, currentUser, regionId) {
 	}
 }
 
-function formatDescription(source) {
-	var result = source;
-	
-	// highlight some specific values.
-	result = result.replace(/(\d?\dh\d{0,2})/ig, '<span class="highlight">$1</span>'); // hours
-	result = result.replace(/(\d+[\.,]?\d*\s*(€|euros?))/ig, '<span class="highlight">$1</span>'); // price
-	result = result.replace(/(gratuite?(ment)?s?)/ig, '<span class="highlight">$1</span>'); // price
-//	result = result.replace(/(ATTENTION)/g, '<span class="highlight">$1</span>');
-//	result = result.replace(/(NOTE)/g, '<span class="highlight">$1</span>');
-	
-	// replace phone numbers with tel: links.
-	result = result.replace(/((0\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d))/g, '<a href="tel:$2$3$4$5$6">$1</a>');
-	
-	// replace full url (including protocol part) 
-	result = result.replace(/(\(\s*)((https?|ftp):\/\/[^\s<"\)]+)(\s*\))/gim, '$1<a href="$2">$2</a>$4'); // url between round brackets
-	result = result.replace(/(^|[^>"])((https?|ftp):\/\/[^\s<"]+)/gim, '$1<a href="$2">$2</a>');
-	
-	// replace url without protocol part.
-	result = result.replace(/(\(\s*)(www.[^\s<"\)]+)(\s*\))/gim, '$1<a href="http://$2">$2</a>$3'); // url between round brackets
-	result = result.replace(/(^|[^>":\/])(www.[^\s<"]+)/gim, '$1<a href="http://$2">$2</a>');
-	
-	// replace email address with mailto link.
-	result = result.replace(/([a-z0-9.\+\-]+@[a-z0-9.\-]+\.[a-z]+)/gim, '<a href="mailto:$1">$1</a>');
-	
-	// location hack using custom tag in html.
-	result = result.replace(/<lieu>(.+?)<\/lieu>/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
-	
-	return applyHtmlLineBreaks(result);
-}
-
-function subscribe(){
+function subscribeIdf(){
 	loadAndRefresh("services/idf-addParticipation.php", {userId: userId, eventId: eventId});
 }
 
-function unsubscribe(){
+function unsubscribeIdf(){
 	loadAndRefresh("services/idf-cancelParticipation.php", {userId: userId, eventId: eventId});
 }

@@ -99,15 +99,22 @@ function handleEventData(data, currentUser, regionId) {
 function formatDescription(source) {
 	var result = source;
 	
+	result = result.replace(/&lt;\/?(b|string)&gt;/ig, '**'); // bold tags
+	result = result.replace(/&lt;\/?(i|em)&gt;/ig, '*'); // italic tags
+	
+	// location hack using custom tag in html.
+	result = result.replace(/$lt;lieu&gt;(.*?)$lt;\/lieu&gt;/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
+	
 	// highlight some specific values.
-	result = result.replace(/(\d?\dh\d{0,2})/ig, '<span class="highlight">$1</span>'); // hours
-	result = result.replace(/(\d+[\.,]?\d*\s*(€|euros?))/ig, '<span class="highlight">$1</span>'); // price
-	result = result.replace(/(gratuite?(ment)?s?)/ig, '<span class="highlight">$1</span>'); // price
+	result = result.replace(/([^*]|^)(\d?\dh\d{0,2})([^*]|$)/ig, '$1**$2**$3'); // hours
+	result = result.replace(/([^*]|^)(\d+[\.,]?\d*\s*(€|euros?))([^*]|$)/ig, '$1**$2**$4'); // price
+	result = result.replace(/([^*]|^)(gratuite?(ment)?s?)([^*]|$)/ig, '$1**$2**$4'); // price
 //	result = result.replace(/(ATTENTION)/g, '<span class="highlight">$1</span>');
 //	result = result.replace(/(NOTE)/g, '<span class="highlight">$1</span>');
 	
 	// replace phone numbers with tel: links.
-	result = result.replace(/((0\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d))/g, '<a href="tel:$2$3$4$5$6">$1</a>');
+	result = result.replace(/([^\[]|^)((0\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d))([^\]]|$)/gm, '$1[$2](tel:$3$4$5$6$7)$8');
+	/*
 	
 	// replace full url (including protocol part) 
 	result = result.replace(/(\(\s*)((https?|ftp):\/\/[^\s<"\)]+)(\s*\))/gim, '$1<a href="$2">$2</a>$4'); // url between round brackets
@@ -120,10 +127,15 @@ function formatDescription(source) {
 	// replace email address with mailto link.
 	result = result.replace(/([a-z0-9.\+\-]+@[a-z0-9.\-]+\.[a-z]+)/gim, '<a href="mailto:$1">$1</a>');
 	
-	// location hack using custom tag in html.
-	result = result.replace(/<lieu>(.+?)<\/lieu>/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
+	result = applyHtmlLineBreaks(result);
+	*/
 	
-	return applyHtmlLineBreaks(result);
+	result = result.replace(/&gt;/g, '>'); // decode gt for blockquotes.
+	
+	var converter = new Showdown.converter();
+	result = converter.makeHtml(result);
+	
+	return result;
 }
 
 function subscribe(){

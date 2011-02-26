@@ -158,7 +158,6 @@ class IdfCalendarDbConnector {
 		$result = $str;
 		$result = preg_replace('/&/', '&amp;', $result);
 		$result = preg_replace('/</', '&lt;', $result);
-		$result = preg_replace('/>/', '&gt;', $result);
 		return $result;
 	}
 	

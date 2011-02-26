@@ -63,6 +63,7 @@ body {
 }
 
 .inputInstructions{
+	font-weight: normal;
 	font-style: italic;
 	color: #AAAAAA;
 }
@@ -89,6 +90,15 @@ a:HOVER, a:ACTIVE {
 	text-decoration: underline;
 }
 
+hr{
+	border: none;
+	height: 1px;
+	background-color: #DDDDDD;
+	color: #DDDDDD;
+	
+	margin: 0;
+	padding: 0;
+}
 
 input[type=text], input[type=password], textarea {
 	border: solid 1px #666666;
@@ -275,12 +285,14 @@ eventDetails {
 	display: block;
 	background-color: #EEEEEE;
 	padding: 5px;
+	color: #999999;
 }
 
 eventDetails date {
 	display: block;
-	font-size: medium;
+	font-size: normal;
 	font-style: italic;
+	color: #333333;
 }
 
 eventDetails region {
@@ -297,11 +309,6 @@ eventDetails #locationLink {
 
 #eventDescription {
 	padding: 5px;
-}
-
-#eventDescription .highlight {
-	font-weight: bold;
-	color: black;
 }
 
 #participantColumn {
@@ -420,7 +427,6 @@ eventDetails #locationLink {
 	width: 100%;
 	height: 200px;
 	font-size: small;
-	font-family: arial, sans-serif;
 }
 
 #deleteButton {
