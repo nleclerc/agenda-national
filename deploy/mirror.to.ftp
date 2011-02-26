@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# set BASEDIR to current script folder path
+BASEDIR="$(dirname $0)"
+CONFIG_FILE="$BASEDIR/conf.ftp"
+
+# import conf from external file if it exist.
+if [ -f "$CONFIG_FILE" ]
+then
+	echo Using configuration: $CONFIG_FILE
+	source "$CONFIG_FILE"
+else
+	echo Missing configuration file: $CONFIG_FILE
+	exit 1
+fi
+
+echo Mirroring to "$FTP_HOST" in folder "$FTP_PATH"
+
+# if username not set, prompt for user input. Otherwise display current value.
+if [ -z $FTP_USERNAME ]
+then
+	echo user:
+	read FTP_USERNAME
+else
+	echo Connecting as user $FTP_USERNAME
+fi
+
+CREDENTIAL="$FTP_USERNAME"
+
+# add prompt because lftp does not show one.
+if [ -z "$FTP_PASSWORD" ]
+then
+	echo password:
+else
+	CREDENTIAL="$FTP_USERNAME:$FTP_PASSWORD"
+fi
+
+# do actual ftp sync.
+lftp << EOF
+open -u $CREDENTIAL $FTP_HOST
+mirror -c -e -R -v -x conf -x deploy -x test -x dist -x .* -i .htaccess "$BASEDIR/.." "$FTP_PATH"
+exit
+EOF

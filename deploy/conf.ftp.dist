@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# target server host
+export FTP_HOST=""
+
+# target path on server
+export FTP_PATH=""
+
+# following values are optional
+# export FTP_USERNAME=""
+# export FTP_PASSWORD=""
