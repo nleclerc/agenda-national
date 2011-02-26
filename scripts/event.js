@@ -99,11 +99,8 @@ function handleEventData(data, currentUser, regionId) {
 function formatDescription(source) {
 	var result = source;
 	
-	result = result.replace(/&lt;\/?(b|string)&gt;/ig, '**'); // bold tags
-	result = result.replace(/&lt;\/?(i|em)&gt;/ig, '*'); // italic tags
-	
-	// location hack using custom tag in html.
-	result = result.replace(/$lt;lieu&gt;(.*?)$lt;\/lieu&gt;/gim, '<a href="http://maps.google.fr/maps?q=$1">$1</a>');
+	result = result.replace(/&lt;\/?(b|string)(&gt;|>)/ig, '**'); // bold tags
+	result = result.replace(/&lt;\/?(i|em)(&gt;|>)/ig, '*'); // italic tags
 	
 	// highlight some specific values.
 	result = result.replace(/([^*]|^)(\d?\dh\d{0,2})([^*]|$)/ig, '$1**$2**$3'); // hours
