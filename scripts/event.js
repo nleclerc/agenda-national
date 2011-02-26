@@ -99,19 +99,16 @@ function handleEventData(data, currentUser, regionId) {
 function formatDescription(source) {
 	var result = source;
 	
-	result = result.replace(/&lt;\/?(b|string)(&gt;|>)/ig, '**'); // bold tags
+	result = result.replace(/&lt;\/?(b|strong)(&gt;|>)/ig, '**'); // bold tags
 	result = result.replace(/&lt;\/?(i|em)(&gt;|>)/ig, '*'); // italic tags
 	
 	// highlight some specific values.
 	result = result.replace(/([^*]|^)(\d?\dh\d{0,2})([^*]|$)/ig, '$1**$2**$3'); // hours
 	result = result.replace(/([^*]|^)(\d+[\.,]?\d*\s*(€|euros?))([^*]|$)/ig, '$1**$2**$4'); // price
 	result = result.replace(/([^*]|^)(gratuite?(ment)?s?)([^*]|$)/ig, '$1**$2**$4'); // price
-//	result = result.replace(/(ATTENTION)/g, '<span class="highlight">$1</span>');
-//	result = result.replace(/(NOTE)/g, '<span class="highlight">$1</span>');
 	
 	// replace phone numbers with tel: links.
 	result = result.replace(/([^\[]|^)((0\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d))([^\]]|$)/gm, '$1[$2](tel:$3$4$5$6$7)$8');
-
 	
 	// replace url without protocol part.
 	result = result.replace(/(\(\s*)(www.[^\s<"\)]+)(\s*\))/gim, '$1[$2]($2)$3'); // url between round brackets
@@ -127,9 +124,9 @@ function formatDescription(source) {
 }
 
 function subscribe(){
-	loadAndRefresh("services/addParticipation.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/addParticipation.php", {eventId: eventId});
 }
 
 function unsubscribe(){
-	loadAndRefresh("services/cancelParticipation.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/cancelParticipation.php", {eventId: eventId});
 }
