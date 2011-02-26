@@ -2,7 +2,7 @@
 
 # set BASEDIR to current script folder path
 BASEDIR="$(dirname $0)"
-CONFIG_FILE="$BASEDIR/conf.ftp"
+CONFIG_FILE="$BASEDIR/ftp.conf"
 
 # import conf from external file if it exist.
 if [ -f "$CONFIG_FILE" ]
