@@ -124,9 +124,9 @@ function formatDescription(source) {
 }
 
 function subscribe(){
-	loadAndRefresh("services/addParticipation.php", {eventId: eventId});
+	loadAndRefresh("services/addParticipation", {eventId: eventId});
 }
 
 function unsubscribe(){
-	loadAndRefresh("services/cancelParticipation.php", {eventId: eventId});
+	loadAndRefresh("services/cancelParticipation", {eventId: eventId});
 }
