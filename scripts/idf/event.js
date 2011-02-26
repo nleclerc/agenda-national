@@ -90,9 +90,9 @@ function handleIdfEventData(data, currentUser, regionId) {
 }
 
 function subscribeIdf(){
-	loadAndRefresh("services/idf-addParticipation.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/idf-addParticipation", {eventId: eventId});
 }
 
 function unsubscribeIdf(){
-	loadAndRefresh("services/idf-cancelParticipation.php", {userId: userId, eventId: eventId});
+	loadAndRefresh("services/idf-cancelParticipation", {eventId: eventId});
 }
