@@ -2,7 +2,15 @@
 
 # set BASEDIR to current script folder path
 BASEDIR="$(dirname $0)"
-CONFIG_FILE="$BASEDIR/ftp.conf"
+
+if [ -z $1 ]
+then
+	echo "Configuration file not specified."
+	echo "Usage: $0 <conf name>"
+	exit 1
+fi
+
+CONFIG_FILE="$BASEDIR/$1.conf"
 
 # import conf from external file if it exist.
 if [ -f "$CONFIG_FILE" ]
@@ -10,7 +18,7 @@ then
 	echo Using configuration: $CONFIG_FILE
 	source "$CONFIG_FILE"
 else
-	echo Missing configuration file: $CONFIG_FILE
+	echo Configuration file not found: $CONFIG_FILE
 	exit 1
 fi
 
@@ -38,6 +46,6 @@ fi
 # do actual ftp sync.
 lftp << EOF
 open -u $CREDENTIAL $FTP_HOST
-mirror -c -e -R -v -x conf -x deploy -x test -x dist -x .* -i .htaccess "$BASEDIR/.." "$FTP_PATH"
+mirror -e -R -v -x conf -x deploy -x test -x dist -x .project -x .settings -x .buildpath -x ".git*" "$BASEDIR/.." "$FTP_PATH"
 exit
 EOF
