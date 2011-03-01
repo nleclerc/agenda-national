@@ -46,6 +46,6 @@ fi
 # do actual ftp sync.
 lftp << EOF
 open -u $CREDENTIAL $FTP_HOST
-mirror -e -R -v -x conf -x deploy -x test -x dist -x .project -x .settings -x .buildpath -x ".git*" "$BASEDIR/.." "$FTP_PATH"
+mirror -e -R -v -x conf -x deploy -x test -x dist -x \.project -x \.settings -x \.buildpath -x \.git -x \.gitignore "$BASEDIR/.." "$FTP_PATH"
 exit
 EOF
