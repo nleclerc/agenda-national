@@ -139,8 +139,8 @@ function sortActions(actionList){
 }
 
 function isFluent(languageLevel){
-	return languageLevel == ('Maternelle' || languageLevel == 'Courant' || languageLevel == 'Expert');
-};
+	return (languageLevel == 'Maternelle' || languageLevel == 'Courant' || languageLevel == 'Expert');
+}
 
 function isInterestReference(skill){
 	return skill == 'Professionnel' || skill == 'Expert';
