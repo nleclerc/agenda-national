@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+
+#ui-datepicker-div th {
+	background-color: white;
+	color: #666666;
+	font-weight: normal;
+	font-size: x-small;
+}

@@ -1,7 +1,13 @@
 
 
 function processEventEditHash(hash) {
-	if (hash.match(/^#[a-z]{3}:\d{4}-\d{2}-\d{2}$/i)){
+	if (hash.match(/^#[a-z]{3}:?$/i)) {
+		var regionId = hash.substr(1,3);
+		setEditEventDate(formatDate(new Date()));
+		setRegion(regionId);
+		setCancelLink('./#'+regionId); // go to month page.
+		enableSubmit();
+	} else if (hash.match(/^#[a-z]{3}:\d{4}-\d{2}-\d{2}$/i)) {
 		var date = hash.substr(5);
 		var regionId = hash.substr(1,3);
 		setEditEventDate(date);
@@ -15,11 +21,31 @@ function processEventEditHash(hash) {
 			handleEditEventData(data, regionId);
 		});
 	} else {
-		setCancelLink('.'); // go to home.
-		setErrorMessage("Date ou évènement non spécifiés.");
+		setEditEventDate(formatDate(new Date()));
+		setRegion('FRA');
+		setCancelLink('./#'+regionId); // go to month page.
+		enableSubmit();
 	}
 	
 	setLocationPreviewLink();
+}
+
+function reformatDateInput (event){
+	var input = $(event.target);
+	var value = input.val();
+	
+	if (value.match(/\d{1,2}\/\d{1,2}\/\d{3,4}/)) {
+		var tokens = value.split('/');
+		input.val(getDoubleDigit(tokens[0])+'/'+getDoubleDigit(tokens[1])+'/'+tokens[2]);
+	}
+}
+
+function toDisplayDate(datestr){
+	return datestr.replace(/^(\d{4})-(\d{2})-(\d{2})$/,'$3/$2/$1');
+}
+
+function fromDisplayDate(datestr){
+	return datestr.replace(/^(\d{2})\/(\d{2})\/(\d{4})$/,'$3-$2-$1');
 }
 
 function setRegion(selectedRegion){
@@ -46,7 +72,7 @@ function setLocationPreviewLink(){
 
 function submitEventValues() {
 	var data = {
-		start_date: $('#dateInput').val()+' '+$('#timeInput').val(),	
+		start_date: fromDisplayDate($('#dateInput').val())+' '+$('#timeInput').val(),	
 		title: $('#titleInput').val(),
 		region_id: $('#regionSelector').val(),
 		location: $('#locationInput').val(),	
@@ -60,8 +86,12 @@ function submitEventValues() {
 		data.id = currentId;
 	
 	callService('setEventData', {eventData: JSON.stringify(data)}, function(){
-		// on save, activate cancel link.
-		jumpTo($('#cancelLink').attr('href'));
+		if (currentId)
+			// if editing existing event, go back to event page.
+			jumpTo('event.html#'+data.region_id+':'+currentId);
+		else
+			// else go to month and region of saved event.
+			jumpTo('./#'+data.region_id+':'+getMonthFromDate(data.start_date));
 	});
 }
 
@@ -70,8 +100,7 @@ function enableSubmit() {
 }
 
 function setEditEventDate(dateStr) {
-	$('#eventDateLabel').text(formatLongDate(dateStr));
-	$('#dateInput').val(dateStr);
+	$('#dateInput').val(toDisplayDate(dateStr));
 }
 
 function handleEditEventData(eventData, regionId) {
@@ -98,6 +127,6 @@ function enableDelete(eventId, exitUrl){
 }
 
 function setCancelLink(target){
-	insertBackButton($('#backContainer'), target);
+	insertBackButton($('#backContainer').html(''), target);
 	$('#cancelLink').attr({href:target});
 }

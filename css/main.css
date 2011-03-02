@@ -119,6 +119,10 @@ input[type=text], input[type=password], textarea {
 	text-decoration: none;
 }
 
+#addEventButton {
+	margin-left: 20px;
+}
+
 #authenticationZone {
 	position: absolute;
 	top: 25px;
@@ -402,13 +406,20 @@ eventDetails #locationLink {
 	width: 150px;
 }
 
-#editEventTable #titleInput, #editEventTable #locationInput {
+#editEventTable input, #editEventTable select, #editEventTable td button {
 	font-size: small;
+	margin: 1px 0;
+}
+
+#editEventTable #titleInput, #editEventTable #locationInput {
 	width: 300px;
 }
 
+#editEventTable #dateInput {
+	width: 80px;
+}
+
 #editEventTable #maxParticipantsInput, #editEventTable #regionInput {
-	font-size: small;
 	width: 30px;
 }
 
@@ -417,7 +428,6 @@ eventDetails #locationLink {
 }
 
 #editEventTable #timeInput {
-	font-size: small;
 	width: 50px;
 }
 
@@ -439,5 +449,5 @@ eventDetails #locationLink {
 }
 
 #editEventTable td.editHeader{
-	padding-top: 6px; 
+	padding-top: 5px;
 }

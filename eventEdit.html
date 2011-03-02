@@ -4,8 +4,12 @@
 <meta charset="utf-8" />
 <title>Agenda Mensa</title>
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.10.custom.css">
+<link rel="stylesheet" type="text/css" href="css/jquery-ui-fix.css">
 
 <script src="scripts/vendors/jquery-1.5.1.min.js"></script>
+<script src="scripts/vendors/jquery-ui-1.8.10.custom.min.js"></script>
+<script src="scripts/vendors/jquery.ui.datepicker-fr.js"></script>
 <script src="scripts/vendors/jquery.blockUI.js"></script>
 <script src="scripts/vendors/json2.js"></script>
 <script src="scripts/common.js"></script>
@@ -14,6 +18,10 @@
 <script>
 $(function(){
 	initialize();
+	
+	$.datepicker.setDefaults( $.datepicker.regional[ "fr" ] );
+	$('#dateInput').datepicker();
+	$('#dateInput').blur(reformatDateInput);
 	
 	callService("checkLoggedIn", null, function(){
 		$(window).bind('hashchange', function(e) {processEventEditHash(location.hash)});
@@ -35,11 +43,10 @@ $(function(){
 	
 	<div id="mainContent">
 		<input type="hidden" id="eventIdInput">
-		<input type="hidden" id="dateInput">
 		
 		<table id="editEventTable">
 			<tr>
-				<th colspan="2" id="backContainer">Edition Evènement</th>
+				<th colspan="2"><span id="backContainer"></span>Edition Evènement</th>
 			</tr>
 			
 			<tr>
@@ -53,8 +60,8 @@ $(function(){
 			</tr>
 			
 			<tr>
-				<td class="header">Date</td>
-				<td><div id="eventDateLabel"></div></td>
+				<td class="header editHeader">Date</td>
+				<td><input type="text" id="dateInput"></td>
 			</tr>
 			
 			<tr>

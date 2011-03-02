@@ -162,6 +162,16 @@ function buildEventTable(data, referenceDate, hash) {
 	
 	setMainContent(table);
 	loadRegions(currentRegion);
+	
+	addCreateEventButton();
+}
+
+function addCreateEventButton(){
+	if ($('#addEventButton').length == 0){
+		$('<button>').attr('id','addEventButton').text('Créer un évènement').click(function(){
+			jumpTo('eventEdit.html#'+$('#regionSelector').val());
+		}).appendTo($('#title'));
+	}
 }
 
 function addIdfEvent(eventData, cellIndex, regionId) {
