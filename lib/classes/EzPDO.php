@@ -71,5 +71,28 @@ class EzPDO extends PDO {
 		
 		return $stm->execute($actualParms);
 	}
+	
+	public function insertInto($tableName, $values) {
+		// ensure $values is an array in case we receive an object.
+		$values = (array)$values;
+		
+		$valueNames = array_keys($values);
+		
+		if (count($valueNames) == 0)
+			throw new Exception('No values to insert into table `'.$tableName.'`.');
+		
+		$query = "INSERT INTO `$tableName` (`";
+		$query.= implode('`, `', $valueNames);
+		$query.= '`) VALUES (:';
+		$query.= implode(', :', $valueNames);
+		$query.= ')';
+		
+		$parms = array();
+		
+		foreach($values as $key => $value)
+			$parms[":$key"] = $value;
+		
+		return $this->execute($query, $parms);
+	}
 }
 

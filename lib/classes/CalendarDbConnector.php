@@ -115,15 +115,10 @@ class CalendarDbConnector {
 		$eventData = $this->filterEventData($eventData);
 		
 		// creation date set to null is a workaround to missing trigger in db.
-		$query = 'INSERT INTO event (creation_date, author_id, region_id, start_date, title, location, description, max_participants) '.
-				'VALUES (NULL, :author_id, :region_id, :start_date, :title, :location, :description, :max_participants)';
+		$eventData['creation_date'] = null;
+		$eventData['author_id'] = $authorId;
 		
-		$parms = array(':author_id'=>$authorId);
-		
-		foreach($eventData as $key => $value)
-			$parms[":$key"] = $value;
-		
-		$this->db->execute($query, $parms);
+		$this->db->insertInto('event', $eventData);
 	}
 	
 	private function updateEvent($authorId, $eventData) {
