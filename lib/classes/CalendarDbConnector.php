@@ -92,10 +92,17 @@ class CalendarDbConnector {
 		
 		$where = '';
 		$where.= 'date(start_date) >= ? AND '; // equal or after start date
-		$where.= 'date(start_date) <= ? AND '; // equal or before end date
-		$where.= "(region_id = 'FRA' OR region_id = ?) "; // region filter
+		$where.= 'date(start_date) <= ?'; // equal or before end date
 		
-		return $this->listEvents($currentMemberId, $where, $startDate, $endDate, $region);
+		$parms = array($startDate, $endDate);
+		
+		// only filter regions if not all of them are selected.
+		if ($region != 'FRA') {
+			$where.= " AND (region_id = 'FRA' OR region_id = ?) "; // region filter
+			array_push($parms, $region);
+		}
+		
+		return $this->listEvents($currentMemberId, $where, $parms);
 	}
 	
 	private function checkDate($datestr){

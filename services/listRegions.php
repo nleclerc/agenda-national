@@ -11,12 +11,10 @@ try {
 	$db = new LocalMemberDbConnector();
 	$regions = $db->listRegions();
 	
-	$national = array(
+	array_unshift($regions, array(
 		'id' => 'FRA',
-		'name' => 'National'
-	);
-	
-	array_unshift($regions, $national);
+		'name' => 'Toutes les régions'
+	));
 	
 	$result = array(
 		"user" => $currentUser,

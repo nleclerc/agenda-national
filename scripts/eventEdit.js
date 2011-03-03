@@ -55,10 +55,10 @@ function setRegion(selectedRegion){
 		var selector = $('#regionSelector').html('');
 		
 		for (var i=0; i<regions.length; i++) {
-			var currentRegion = regions[i].id;
-			var option = $('<option>').text(currentRegion).appendTo(selector);
+			var currentRegion = regions[i];
+			var option = $('<option>').text(currentRegion.name).attr('value', currentRegion.id).appendTo(selector);
 			
-			if (currentRegion == selectedRegion)
+			if (currentRegion.id == selectedRegion)
 				option.attr({selected:'selected'});
 		}
 	});

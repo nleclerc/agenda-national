@@ -45,7 +45,7 @@ try {
 		$db = new CalendarDbConnector();
 		$events = $db->listEventLapse($currentUser['id'], $region, $startDate, $endDate);
 		
-		if ($region == 'IDF')
+		if ($region == 'IDF' || $region == 'FRA')
 			$events = addIdfEvents($events, $currentUser['id'], $startDate, $endDate);
 		
 		$authorsIds = array();

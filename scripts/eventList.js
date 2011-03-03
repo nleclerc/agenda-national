@@ -72,10 +72,10 @@ function loadRegions(selectedRegion){
 		var selector = $('#regionSelector').html('');
 		
 		for (var i=0; i<regions.length; i++) {
-			var currentRegion = regions[i].id;
-			var option = $('<option>').text(currentRegion).appendTo(selector);
+			var currentRegion = regions[i];
+			var option = $('<option>').text(currentRegion.name).attr('value', currentRegion.id).appendTo(selector);
 			
-			if (currentRegion == selectedRegion)
+			if (currentRegion.id == selectedRegion)
 				option.attr({selected:'selected'});
 		}
 		
@@ -110,7 +110,6 @@ function buildEventTable(data, referenceDate, hash) {
 		$('<span>').text(title)
 	).append(' ').append(
 		$('<select>').attr({id:'regionSelector'}).append($('<option>').text(currentRegion))
-//		$('<span>').addClass('subtitle').text(data.region_id)
 	);
 	
 	var dayHeaders = $('<tr>').appendTo(table);
