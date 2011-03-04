@@ -1,0 +1,13 @@
+
+# disable cache to avoid problems on file update.
+# files are quite small so it's not so much of a problem.
+# NOTE: requires 'expires' an 'headers' apache mods to run.
+
+<IfModule mod_expires.c>
+	ExpiresActive Off
+</IfModule>
+
+<IfModule mod_headers.c>
+	Header set Cache-Control "private, no-cache, no-store, proxy-revalidate, no-transform"
+	Header set Pragma "no-cache"
+</IfModule>
