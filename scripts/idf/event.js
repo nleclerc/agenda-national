@@ -37,7 +37,7 @@ function handleIdfEventData(data, currentUser, regionId) {
 	
 	eventTable.append('<tr><td class="header">Description</td><td class="header">Participants ( '+
 			data.participants.length+' / '+
-			formatMaxParticipants(data.maxParticipants)+' )</td></tr>');
+			formatMaxParticipants(data.max_participants)+' )</td></tr>');
 	
 	var bodyRow = $('<tr>').appendTo(eventTable);
 	

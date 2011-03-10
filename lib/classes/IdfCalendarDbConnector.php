@@ -74,6 +74,7 @@ class IdfCalendarDbConnector {
 			$data['is_participating'] = $data['is_participating'] == true; // converts because query returns 0 or 1 as a string.
 			$data['is_idf_event'] = true;
 			$data['region_id'] = 'IDF';
+			$data['max_participants'] = intval($data['max_participants']);
 			
 			unset($data['annee']);
 			unset($data['mois']);
@@ -185,7 +186,7 @@ class IdfCalendarDbConnector {
 				'title' => $foundEvent['title'],
 				'start_date' => $this->formatEventDate($foundEvent),
 				'description' => $foundEvent['description'],
-				'max_participants' => $foundEvent['max_participants'],
+				'max_participants' => intval($foundEvent['max_participants']),
 				'author_id' => intval($foundEvent['author_id']),
 				'participants' => $this->findParticipants($eventId),
 				'region_id' => 'IDF'
