@@ -1,0 +1,12 @@
+
+# Enable cache for 3rd party scripts.
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+</IfModule>
+<IfModule mod_headers.c>
+	<FilesMatch "\.js$">
+		# 1 WEEK
+		Header set Cache-Control "max-age=604800, public"
+	</FilesMatch>
+</IfModule>
