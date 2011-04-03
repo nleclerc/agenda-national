@@ -110,6 +110,10 @@ function formatDescription(source) {
 	// replace phone numbers with tel: links.
 	result = result.replace(/([^\[]|^)((0\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d)[.\- ]?(\d\d))([^\]]|$)/gm, '$1[$2](tel:$3$4$5$6$7)$8');
 	
+	// replace full url (including protocol part) 
+	result = result.replace(/(\(\s*)((https?|ftp):\/\/[^\s<"\)]+)(\s*\))/gim, '$1<a href="$2">$2</a>$4'); // url between round brackets
+	result = result.replace(/(^|[^>"])((https?|ftp):\/\/[^\s<"]+)/gim, '$1<a href="$2">$2</a>');
+	
 	// replace url without protocol part.
 	result = result.replace(/(\(\s*)(www.[^\s<"\)]+)(\s*\))/gim, '$1[$2]($2)$3'); // url between round brackets
 	result = result.replace(/(^|[^>":\/\[])(www.[^\s<"]+)/gim, '$1[$2]($2)');
