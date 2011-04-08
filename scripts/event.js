@@ -118,6 +118,9 @@ function formatDescription(source) {
 	result = result.replace(/(\(\s*)(www.[^\s<"\)]+)(\s*\))/gim, '$1[$2]($2)$3'); // url between round brackets
 	result = result.replace(/(^|[^>":\/\[])(www.[^\s<"]+)/gim, '$1[$2]($2)');
 	
+	// replace email address with mailto link.
+	result = result.replace(/([a-z0-9.\+\-]+@[a-z0-9.\-]+\.[a-z]+)/gim, '<a href="mailto:$1">$1</a>');
+	
 	// decode gt for blockquotes.
 	result = result.replace(/&gt;/g, '>');
 	
