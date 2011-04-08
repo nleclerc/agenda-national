@@ -99,6 +99,12 @@ function handleEventData(data, currentUser, regionId) {
 function formatDescription(source) {
 	var result = source;
 	
+	// decode gt for blockquotes.
+	result = result.replace(/&gt;/ig, '>');
+	
+	// replace html tags.
+	result = result.replace(/&lt;br\s*\/?>/ig, '  \n');
+	
 	result = result.replace(/&lt;\/?(b|strong)(&gt;|>)/ig, '**'); // bold tags
 	result = result.replace(/&lt;\/?(i|em)(&gt;|>)/ig, '*'); // italic tags
 	
@@ -120,9 +126,6 @@ function formatDescription(source) {
 	
 	// replace email address with mailto link.
 	result = result.replace(/([a-z0-9.\+\-]+@[a-z0-9.\-]+\.[a-z]+)/gim, '<a href="mailto:$1">$1</a>');
-	
-	// decode gt for blockquotes.
-	result = result.replace(/&gt;/g, '>');
 	
 	var converter = new Showdown.converter();
 	result = converter.makeHtml(result);
